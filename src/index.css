@@ -1,0 +1,9 @@
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+}
+
+* {
+  font-family: 'Lato', sans-serif !important;
+}
