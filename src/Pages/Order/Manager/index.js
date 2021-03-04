@@ -12,12 +12,12 @@ const Manager = ({
   history,
   orderSearch,
   setOrderSearch,
-  cleanOrderSearch,
+  cleanOrderSearch
 }) => {
   const [datasource, setDatasource] = useState({})
   const [datasourceChart, setDatasourceChart] = useState({
     source: [],
-    chartSettings: [],
+    chartSettings: []
   })
   const [page, setPage] = useState(1)
 
@@ -28,7 +28,9 @@ const Manager = ({
   const handleGetAllOrders = async () => {
     try {
       const { data } = await getAllOrder(buildOrderSearch(orderSearch))
-      const { data: dataChart } = await getAllOrderSummary(buildOrderSearch(orderSearch))
+      const { data: dataChart } = await getAllOrderSummary(
+        buildOrderSearch(orderSearch)
+      )
       setDatasourceChart(dataChart)
       setDatasource(data)
     } catch (error) {
@@ -38,25 +40,27 @@ const Manager = ({
 
   const buildOrderSearch = (orderSearch) => {
     const { user_name, dates, pendingReview } = orderSearch
-    const checkedPendingReview = (
+    const checkedPendingReview =
       pendingReview && pendingReview.length < 2 && pendingReview.length !== 0
-       ? { pendingReview:  pendingReview[0] === 'Não' ? false : true }
-       : {}
-    )
+        ? { pendingReview: pendingReview[0] !== 'Não' }
+        : {}
 
-    const datesSpec = dates[0] && dates[1] ? {
-      initialDate: dates[0].toString(),
-      finalyDate: dates[1].toString(),
-    } : {}
+    const datesSpec =
+      dates[0] && dates[1]
+        ? {
+            initialDate: dates[0].toString(),
+            finalyDate: dates[1].toString()
+          }
+        : {}
     const checkedName = isEmpty(user_name) ? {} : { user_name }
 
-    return ({
+    return {
       ...checkedName,
       ...datesSpec,
-      ...checkedPendingReview ,
+      ...checkedPendingReview,
       page,
       limit: 25
-    })
+    }
   }
 
   const handlePagination = async (nextpage) => {
@@ -64,9 +68,7 @@ const Manager = ({
       const { data } = await getAllOrder({ page: nextpage, limit: 25 })
       setPage(nextpage)
       setDatasource(data)
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const goToAddOrder = () => history.push('/logged/order-inputs')
@@ -75,13 +77,9 @@ const Manager = ({
 
   const handleOnChange = ({ target }) => {
     const { name, value } = target
-    if(name === 'pendingReview') {
+    if (name === 'pendingReview') {
       return setOrderSearch({
-        [name]: (
-          value.length === 0
-          ? pendingReview
-          : value
-        )
+        [name]: value.length === 0 ? pendingReview : value
       })
     }
 
@@ -111,17 +109,18 @@ const Manager = ({
 }
 
 const mapStateToProps = ({ orderSearch }) => ({
-  orderSearch,
+  orderSearch
 })
 
-const mapDispatchToProps = dispatch => ({
-  setOrderSearch: payload => dispatch({ type: 'SET_ORDER_GLOBAL_SEARCH', payload }),
-  cleanOrderSearch: () => dispatch({ type: 'CLEAN_ORDER_GLOBAL_SEARCH' }),
+const mapDispatchToProps = (dispatch) => ({
+  setOrderSearch: (payload) =>
+    dispatch({ type: 'SET_ORDER_GLOBAL_SEARCH', payload }),
+  cleanOrderSearch: () => dispatch({ type: 'CLEAN_ORDER_GLOBAL_SEARCH' })
 })
 
 const enhanced = compose(
   connect(mapStateToProps, mapDispatchToProps),
-  withRouter,
+  withRouter
 )
 
 export default enhanced(Manager)

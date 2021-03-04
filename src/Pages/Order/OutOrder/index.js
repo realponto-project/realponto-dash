@@ -10,10 +10,7 @@ import { getAll as getAllProductService } from '../../../Services/Product'
 import { getAll as getAllCustomerService } from '../../../Services/Customer'
 import { createOrder } from '../../../Services/Order'
 
-const OutOrder = ({
-  history,
-  status,
-}) => {
+const OutOrder = ({ history, status }) => {
   const [userList, setUserList] = useState([])
   const [customerList, setCustomerList] = useState([])
   const [productList, setProductList] = useState([])
@@ -25,45 +22,42 @@ const OutOrder = ({
     getAllProduct()
   }, [])
 
-
   const getAllProduct = async () => {
     try {
-      const { data: { source }} = await getAllProductService({ activated: true })
+      const {
+        data: { source }
+      } = await getAllProductService({ activated: true })
       setProductList(source)
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const getAllUser = async () => {
     try {
-      const { data: { source }} = await getAllUserService({ activated: true })
+      const {
+        data: { source }
+      } = await getAllUserService({ activated: true })
       setUserList(source)
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const getAllCustomer = async () => {
     try {
-      const { data: { source }} = await getAllCustomerService()
+      const {
+        data: { source }
+      } = await getAllCustomerService()
       setCustomerList(source)
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const goToManagerOrder = () => {
     console.log('manager order')
   }
 
-  const handleSubmit = async values => {
+  const handleSubmit = async (values) => {
     try {
       await createOrder(buildOrderSpec(values))
       setKey(key + 1)
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const goToOrder = () => history.push('/logged/order/manager')
@@ -74,7 +68,7 @@ const OutOrder = ({
       customerList={customerList}
       userList={userList}
       productList={productList}
-      statusList={status.filter(s => s.type === 'outputs')}
+      statusList={status.filter((s) => s.type === 'outputs')}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={handleSubmit}
       goToOrder={goToOrder}
@@ -84,14 +78,11 @@ const OutOrder = ({
 
 const mapStateToProps = (state) => {
   const status = pathOr([], ['status', 'source'], state)
-  return ({
-    status,
-  })
+  return {
+    status
+  }
 }
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter,
-)
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 export default enhanced(OutOrder)

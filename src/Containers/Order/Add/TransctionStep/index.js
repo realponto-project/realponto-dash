@@ -8,14 +8,15 @@ const TransactionStep = ({
   formErrors,
   formData,
   handleOnChange,
-  statusList,
+  statusList
 }) => {
-  const changeFormValue = name => value => handleOnChange({
-    target: {
-      name,
-      value,
-    }
-  })
+  const changeFormValue = (name) => (value) =>
+    handleOnChange({
+      target: {
+        name,
+        value
+      }
+    })
   return (
     <>
       <Title level={4}>TIPO ORDEM</Title>
@@ -27,16 +28,19 @@ const TransactionStep = ({
             label="Tipo da ordem"
             validateStatus={formErrors && formErrors.statusId ? 'error' : ''}
             hasFeedback
-            style={{ marginBottom: '4px' }}
-          >
+            style={{ marginBottom: '4px' }}>
             <Select
               placeholder="Selecione o tipo da ordem"
               onChange={changeFormValue('statusId')}
-              notFoundContent="Nenhum tipo de ordem encontrado!"
-            >
-              {statusList && statusList.filter(status => status.label !== 'pending_analysis').map(({ value, label, id }) => (
-                <Option key={label} value={id}>{value}</Option>
-              ))}
+              notFoundContent="Nenhum tipo de ordem encontrado!">
+              {statusList &&
+                statusList
+                  .filter((status) => status.label !== 'pending_analysis')
+                  .map(({ value, label, id }) => (
+                    <Option key={label} value={id}>
+                      {value}
+                    </Option>
+                  ))}
             </Select>
           </Form.Item>
           <Text type="danger">{formErrors && formErrors.statusId}</Text>

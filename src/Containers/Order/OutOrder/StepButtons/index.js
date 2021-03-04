@@ -1,13 +1,7 @@
 import React from 'react'
 import { Button } from 'antd'
 
-const StepButtons = ({
-  current,
-  steps,
-  next,
-  prev,
-  done,
-}) => (
+const StepButtons = ({ current, steps, next, prev, done }) => (
   <div className="steps-action">
     {current > 0 && (
       <Button style={{ margin: '0 8px 0 0' }} onClick={prev}>

@@ -1,7 +1,7 @@
 import axiosIntance from '../../utils/axiosInstance'
 
 const getAllOrder = (params = {}) => {
-  return axiosIntance.get(`/orders`, { params })
+  return axiosIntance.get('/orders', { params })
 }
 
 const getOrderById = (orderId) => {
@@ -16,7 +16,7 @@ const createOrder = (values) => {
   return axiosIntance.post('/orders', values)
 }
 
-const updateOrder =  (orderId, values) => {
+const updateOrder = (orderId, values) => {
   return axiosIntance.put(`/orders/${orderId}`, values)
 }
 
@@ -35,5 +35,5 @@ export {
   getOrderById,
   updateOrder,
   finished,
-  customerAssocite,
+  customerAssocite
 }

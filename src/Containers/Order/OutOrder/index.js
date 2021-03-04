@@ -1,21 +1,6 @@
 import React, { useState } from 'react'
-import {
-  Card,
-  Form,
-  Row,
-  Col,
-  Steps,
-  message,
-  Button,
-} from 'antd'
-import {
-  isEmpty,
-  mergeRight,
-  lte,
-  length,
-  find,
-  propEq,
-} from 'ramda'
+import { Card, Form, Row, Col, Steps, message, Button } from 'antd'
+import { isEmpty, mergeRight, lte, length, find, propEq } from 'ramda'
 
 import OrderInfoStep from './OrderInfoStep'
 import TransactionStep from './TransctionStep'
@@ -26,18 +11,13 @@ import validatorStep from './validatorForm'
 
 const { Step } = Steps
 
-const steps = [
-  TransactionStep,
-  OrderInfoStep,
-  ProductStep,
-  ConfirmStep,
-]
+const steps = [TransactionStep, OrderInfoStep, ProductStep, ConfirmStep]
 
 const initialFormData = {
   customerId: '',
   userId: '',
   statusId: '',
-  products: [],
+  products: []
 }
 
 const Add = ({
@@ -46,12 +26,12 @@ const Add = ({
   userList,
   statusList,
   handleSubmit,
-  goToOrder,
+  goToOrder
 }) => {
   const [current, setCurrent] = useState(0)
   const [formData, setFormData] = useState(initialFormData)
   const [formErrors, setFormErrors] = useState({})
-  const [form] = Form.useForm();
+  const [form] = Form.useForm()
   const [customerSelected, setCustomerSelected] = useState({})
   const [userSelected, setUserSelected] = useState({})
 
@@ -72,12 +52,12 @@ const Add = ({
   }
 
   const done = async () => {
-   try {
-    await handleSubmit(formData)
-    message.success('Ordem criada com sucesso!')
-   } catch (error) {
-     message.error('Não foi possível criar ordem!')
-   }
+    try {
+      await handleSubmit(formData)
+      message.success('Ordem criada com sucesso!')
+    } catch (error) {
+      message.error('Não foi possível criar ordem!')
+    }
   }
 
   const ComponentStep = steps[current]
@@ -89,14 +69,12 @@ const Add = ({
     setFormData(formPayload)
 
     if (name === 'userId') {
-      setUserSelected(
-        userList.find(user => user.id === value)
-      )
+      setUserSelected(userList.find((user) => user.id === value))
     }
 
     if (name === 'customerId') {
       setCustomerSelected(
-        customerList.find(customer => customer.id === value)
+        customerList.find((customer) => customer.id === value)
       )
     }
 
@@ -106,52 +84,53 @@ const Add = ({
 
   const handleAddProduct = (values) => {
     let errors = {}
-    const findProduct = (
-      lte(0, length(productList))
-      && find(propEq('id', values.productId), productList)
-    )
+    const findProduct =
+      lte(0, length(productList)) &&
+      find(propEq('id', values.productId), productList)
 
     errors = validatorStep(values)
     setFormErrors(errors)
 
-    const findProductAdded = formData.products.find(product => (
-      product.productId === values.productId
-      && product.analysis === values.analysis
-    ))
+    const findProductAdded = formData.products.find(
+      (product) =>
+        product.productId === values.productId &&
+        product.analysis === values.analysis
+    )
 
     if (findProductAdded) {
-      isEmpty(errors) && setFormData({
-        ...formData,
-        products: formData.products.map(product => (
-          product.productId === values.productId
-          && product.analysis === values.analysis
-            ? ({...product, quantity: product.quantity + values.quantity })
-            : product
-        ))
-      })
+      isEmpty(errors) &&
+        setFormData({
+          ...formData,
+          products: formData.products.map((product) =>
+            product.productId === values.productId &&
+            product.analysis === values.analysis
+              ? { ...product, quantity: product.quantity + values.quantity }
+              : product
+          )
+        })
     } else {
-      isEmpty(errors) && setFormData({
-        ...formData,
-        products: [
-          ...formData.products,
-          {
-            ...values,
-            name: findProduct.name,
-            key: `${values.quantity}-${values.productId}-${values.analysis}`,
-          },
-        ]
-      })
+      isEmpty(errors) &&
+        setFormData({
+          ...formData,
+          products: [
+            ...formData.products,
+            {
+              ...values,
+              name: findProduct.name,
+              key: `${values.quantity}-${values.productId}-${values.analysis}`
+            }
+          ]
+        })
     }
-
 
     return form.resetFields()
   }
 
-  const handleRemoveItem = productRemove => {
-    const notEqual = productItem => {
-      if(
-        productItem.productId === productRemove.productId
-        && productItem.statusProduct === productRemove.statusProduct
+  const handleRemoveItem = (productRemove) => {
+    const notEqual = (productItem) => {
+      if (
+        productItem.productId === productRemove.productId &&
+        productItem.statusProduct === productRemove.statusProduct
       ) {
         return
       }
@@ -169,7 +148,9 @@ const Add = ({
       <Col span={24}>
         <Card bordered={false}>
           <Steps current={current}>
-            {steps.map((_, index) => (<Step key={index} />))}
+            {steps.map((_, index) => (
+              <Step key={index} />
+            ))}
           </Steps>
         </Card>
       </Col>
@@ -195,12 +176,12 @@ const Add = ({
             </Col>
           </Row>
           <Row justify="end">
-            <Col span={12} style={{ textAlign: "left" }}>
+            <Col span={12} style={{ textAlign: 'left' }}>
               <Button type="text" onClick={goToOrder}>
                 Cancelar
               </Button>
             </Col>
-            <Col span={12} style={{ textAlign: "right" }}>
+            <Col span={12} style={{ textAlign: 'right' }}>
               <StepButtons
                 current={current}
                 steps={steps.length}

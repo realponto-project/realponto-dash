@@ -13,15 +13,14 @@ import reducers from './Redux/reducers'
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = createStore(
   persistedReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__
-  && window.__REDUX_DEVTOOLS_EXTENSION__()
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
 const App = () => {
@@ -29,13 +28,12 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}></PersistGate>
       <Switch>
-        <Route path='/login' component={Login} />
-        <Route path='/logged' component={logged} />
+        <Route path="/login" component={Login} />
+        <Route path="/logged" component={logged} />
         <Redirect from="*" to="/login" />
       </Switch>
     </Provider>
   )
 }
-
 
 export default App

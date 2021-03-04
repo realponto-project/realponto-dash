@@ -16,7 +16,6 @@ const getSerialOrderOutputs = async (params = {}) => {
   return await axiosIntance.get('/serials', { params })
 }
 
-
 export {
   getBySerialNumber,
   createSerialNumbers,

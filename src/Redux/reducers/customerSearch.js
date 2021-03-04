@@ -1,10 +1,10 @@
 import {
   SET_CUSTOMER_GLOBAL_SEARCH,
-  CLEAN_CUSTOMER_GLOBAL_SEARCH,
+  CLEAN_CUSTOMER_GLOBAL_SEARCH
 } from '../actions/customerSearch'
 
 const initialState = {
-  search_name_or_document: '',
+  search_name_or_document: ''
 }
 
 const customerSearchReducer = (state = initialState, action) => {

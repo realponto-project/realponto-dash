@@ -1,12 +1,12 @@
 import {
   SET_ORDER_GLOBAL_SEARCH,
-  CLEAN_ORDER_GLOBAL_SEARCH,
+  CLEAN_ORDER_GLOBAL_SEARCH
 } from '../actions/orderSearch'
 
 const initialState = {
   dates: [null, null],
   pendingReview: ['Sim', 'Não'],
-  user_name: '',
+  user_name: ''
 }
 
 const orderSearchReducer = (state = initialState, action) => {
@@ -14,7 +14,7 @@ const orderSearchReducer = (state = initialState, action) => {
     case SET_ORDER_GLOBAL_SEARCH:
       return {
         ...state,
-        ...action.payload,
+        ...action.payload
       }
     case CLEAN_ORDER_GLOBAL_SEARCH:
       return initialState

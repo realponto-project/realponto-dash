@@ -2,38 +2,38 @@ import { anyPass, isEmpty, isNil } from 'ramda'
 
 const orderInfoValidators = {
   customerId: false,
-  userId: false,
+  userId: false
 }
 
 const transactionValidators = {
-  statusId: true,
+  statusId: true
 }
 
 const productValidators = {
-  products: true,
+  products: true
 }
 
 const validatorAddProductSettings = {
   productId: true,
   quantity: true,
-  statusProduct: true,
+  statusProduct: true
 }
 
 const fieldsRequired = [
   transactionValidators,
   orderInfoValidators,
-  productValidators,
+  productValidators
 ]
 
 const isNilOrEmpty = anyPass([isEmpty, isNil])
 
 const validatorForm = (validatorsettings, formValues) => {
   let errors = {}
-  for(let key in formValues) {
-    if(validatorsettings[key] && isNilOrEmpty(formValues[key])) {
+  for (const key in formValues) {
+    if (validatorsettings[key] && isNilOrEmpty(formValues[key])) {
       errors = {
         ...errors,
-        [key]: 'Campo obrigatório!',
+        [key]: 'Campo obrigatório!'
       }
     }
   }

@@ -10,7 +10,7 @@ import {
   HomeOutlined,
   ShrinkOutlined,
   BlockOutlined,
-  TeamOutlined,
+  TeamOutlined
 } from '@ant-design/icons'
 
 const { Sider, Content } = Layout
@@ -23,26 +23,21 @@ const menuItems = [
   {
     icon: <TeamOutlined />,
     label: 'Clientes',
-    key: '/logged/customer/manager',
+    key: '/logged/customer/manager'
   },
   {
     icon: <BlockOutlined />,
     label: 'Produtos',
-    key: '/logged/product/manager',
+    key: '/logged/product/manager'
   },
   {
     icon: <ShrinkOutlined />,
     label: 'Ordens',
-    key: '/logged/order/manager',
-  },
+    key: '/logged/order/manager'
+  }
 ]
 
-const LayoutComponent = ({
-  children,
-  history,
-  location,
-  company,
-}) => {
+const LayoutComponent = ({ children, history, location, company }) => {
   const goTo = ({ key }) => history.push(key)
 
   return (
@@ -52,37 +47,28 @@ const LayoutComponent = ({
         collapsible
         collapsed={false}
         width={256}
-        trigger={null}
-      >
+        trigger={null}>
         <Menu
           theme="ligth"
           mode="inline"
           defaultSelectedKeys={['1']}
-          style={{ width: 256 }}
-        >
-          {menuItems.map(menuItem => (
-            <Menu.Item
-              {...menuItem}
-              onClick={goTo}
-            >
+          style={{ width: 256 }}>
+          {menuItems.map((menuItem) => (
+            <Menu.Item {...menuItem} onClick={goTo}>
               {menuItem.label}
             </Menu.Item>
           ))}
         </Menu>
-        {
-          location.pathname.replace('/logged/', '') !== 'plans'
-          && !company.subscription
-          && <AdSide />
-        }
+        {location.pathname.replace('/logged/', '') !== 'plans' &&
+          !company.subscription && <AdSide />}
       </Sider>
-      <Layout >
+      <Layout>
         <Content
           style={{
             padding: 16,
-            minHeight: '100vh',
-          }}
-        >
-          { children || 'Nenhum conteúdo criado!' }
+            minHeight: '100vh'
+          }}>
+          {children || 'Nenhum conteúdo criado!'}
         </Content>
       </Layout>
     </Layout>
@@ -90,12 +76,9 @@ const LayoutComponent = ({
 }
 
 const mapStateToProps = ({ user, company }) => ({
-  company,
+  company
 })
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter,
-)
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 export default enhanced(LayoutComponent)

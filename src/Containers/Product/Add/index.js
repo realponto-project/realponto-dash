@@ -1,11 +1,7 @@
 import React from 'react'
 import { Modal, Form, Input, InputNumber } from 'antd'
 
-const Add = ({
-  visible,
-  onCreate,
-  onCancel,
-}) => {
+const Add = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm()
   return (
     <Modal
@@ -21,32 +17,25 @@ const Add = ({
       onOk={() => {
         form
           .validateFields()
-          .then(values => {
+          .then((values) => {
             form.resetFields()
             onCreate(values)
           })
-          .catch(info => {
+          .catch((info) => {
             console.log('Validate Failed:', info)
           })
-      }}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-      >
+      }}>
+      <Form form={form} layout="vertical" name="form_in_modal">
         <Form.Item
           name="name"
           label="Descrição"
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
-        >
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input />
         </Form.Item>
         <Form.Item
           name="minQuantity"
           label="Quantidade mínima"
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
-        >
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <InputNumber min={1} style={{ width: '100%' }} />
         </Form.Item>
       </Form>
