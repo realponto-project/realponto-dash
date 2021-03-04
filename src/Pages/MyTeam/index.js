@@ -4,7 +4,10 @@ import { createUser, getAll, updateUser } from '../../Services/User'
 
 const Manager = () => {
   const [users, setUsers] = useState([])
-  const [page, setPage] = useState(1)
+  const [
+    page
+    //  setPage
+  ] = useState(1)
 
   useEffect(() => {
     getAllUsers()

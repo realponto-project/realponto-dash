@@ -7,7 +7,7 @@ import { compose } from 'ramda'
 import AdSide from '../../Components/AdSide'
 
 import {
-  HomeOutlined,
+  // HomeOutlined,
   ShrinkOutlined,
   BlockOutlined,
   TeamOutlined
@@ -53,8 +53,8 @@ const LayoutComponent = ({ children, history, location, company }) => {
           mode="inline"
           defaultSelectedKeys={['1']}
           style={{ width: 256 }}>
-          {menuItems.map((menuItem) => (
-            <Menu.Item {...menuItem} onClick={goTo}>
+          {menuItems.map((menuItem, idx) => (
+            <Menu.Item {...menuItem} key={idx} onClick={goTo}>
               {menuItem.label}
             </Menu.Item>
           ))}

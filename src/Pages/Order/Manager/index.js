@@ -39,6 +39,7 @@ const Manager = ({
   }
 
   const buildOrderSearch = (orderSearch) => {
+    // eslint-disable-next-line camelcase
     const { user_name, dates, pendingReview } = orderSearch
     const checkedPendingReview =
       pendingReview && pendingReview.length < 2 && pendingReview.length !== 0

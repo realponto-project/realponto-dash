@@ -12,7 +12,7 @@ import {
   isEmpty
 } from 'ramda'
 
-const getPending_review = pipe(
+const getPendingReview = pipe(
   prop('products'),
   ifElse(find(propEq('analysis', true)), always(true), always(false))
 )
@@ -42,7 +42,7 @@ const getCustomerId = (values) => {
 }
 
 const buildOrder = applySpec({
-  pendingReview: getPending_review,
+  pendingReview: getPendingReview,
   userId: prop('userId'),
   customerId: getCustomerId,
   statusId: prop('statusId'),
