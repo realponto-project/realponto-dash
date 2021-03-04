@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 
-// import AdSide from '../../Components/AdSide'
+import AdSide from '../../Components/AdSide'
 
 import {
   // HomeOutlined,
@@ -53,14 +53,14 @@ const LayoutComponent = ({ children, history, location, company }) => {
           mode="inline"
           defaultSelectedKeys={['1']}
           style={{ width: 256 }}>
-          {menuItems.map((menuItem, idx) => (
-            <Menu.Item {...menuItem} key={idx} onClick={goTo}>
+          {menuItems.map((menuItem) => (
+            <Menu.Item {...menuItem} key={menuItem.key} onClick={goTo}>
               {menuItem.label}
             </Menu.Item>
           ))}
         </Menu>
-        {/* {location.pathname.replace('/logged/', '') !== 'plans' &&
-          !company.subscription && <AdSide />} */}
+        {location.pathname.replace('/logged/', '') !== 'plans' &&
+          !company.subscription && <AdSide />}
       </Sider>
       <Layout>
         <Content
