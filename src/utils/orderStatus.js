@@ -17,13 +17,28 @@ const orderStatus = [
   { value: 'analysis_return', label: 'Retorno Análise' },
   { value: 'repair_return', label: 'Retorno Conserto' },
   { value: 'booking_return', label: 'Restorno Reserva' },
-  { value: 'borrowing_with_pending_analysis_return', label: 'Retorno Empréstimo e Aguardando Análise' },
-  { value: 'tenancy_with_pending_analysis_return', label: 'Retorno Locação e Aguardando Análise' },
+  {
+    value: 'borrowing_with_pending_analysis_return',
+    label: 'Retorno Empréstimo e Aguardando Análise'
+  },
+  {
+    value: 'tenancy_with_pending_analysis_return',
+    label: 'Retorno Locação e Aguardando Análise'
+  },
   { value: 'technician_return', label: 'Retorno Técnico' },
-  { value: 'technician_with_pending_analysis_return', label: 'Retorno Técnico e Aguardando Análise' },
-  { value: 'ecommerce_with_pending_analysis_return', label: 'Retorno Ecommerce e Aguardando Análise' },
+  {
+    value: 'technician_with_pending_analysis_return',
+    label: 'Retorno Técnico e Aguardando Análise'
+  },
+  {
+    value: 'ecommerce_with_pending_analysis_return',
+    label: 'Retorno Ecommerce e Aguardando Análise'
+  },
   { value: 'free_market_return', label: 'Retorno Mercado Livre' },
-  { value: 'free_market_with_analysis_return', label: 'Retorno Mercado Livre e Aguardando Análise' },
+  {
+    value: 'free_market_with_analysis_return',
+    label: 'Retorno Mercado Livre e Aguardando Análise'
+  }
 ]
 
 const translateStatus = {
@@ -46,13 +61,16 @@ const translateStatus = {
   repair_return: 'Retorno Conserto',
   booking_return: 'Restorno Reserva',
   pending_analysis: 'Aguardando análise',
-  borrowing_with_pending_analysis_return: 'Retorno Empréstimo e Aguardando Análise',
+  borrowing_with_pending_analysis_return:
+    'Retorno Empréstimo e Aguardando Análise',
   tenancy_with_pending_analysis_return: 'Retorno Locação e Aguardando Análise',
   technician_return: 'Retorno Técnico',
-  technician_with_pending_analysis_return: 'Retorno Técnico e Aguardando Análise',
-  ecommerce_with_pending_analysis_return: 'Retorno Ecommerce e Aguardando Análise',
+  technician_with_pending_analysis_return:
+    'Retorno Técnico e Aguardando Análise',
+  ecommerce_with_pending_analysis_return:
+    'Retorno Ecommerce e Aguardando Análise',
   free_market_return: 'Retorno Mercado Livre',
-  free_market_with_analysis_return: 'Retorno Mercado Livre e Aguardando Análise',
+  free_market_with_analysis_return: 'Retorno Mercado Livre e Aguardando Análise'
 }
 
 const statusColors = {
@@ -81,7 +99,7 @@ const statusColors = {
   technician_with_pending_analysis_return: '#0052cc',
   ecommerce_with_pending_analysis_return: '#A5D0A5',
   free_market_return: '#171383',
-  free_market_with_analysis_return: '#5666C8',
+  free_market_with_analysis_return: '#5666C8'
 }
 
 const parseStatusToTypeLable = {
@@ -108,7 +126,7 @@ const parseStatusToTypeLable = {
   technician_with_pending_analysis_return: 'Entrada',
   ecommerce_with_pending_analysis_return: 'Entrada',
   free_market_return: 'Entrada',
-  free_market_with_analysis_return: 'Entrada',
+  free_market_with_analysis_return: 'Entrada'
 }
 
 const ENUM_TRANSACTION = [
@@ -135,7 +153,7 @@ const ENUM_TRANSACTION = [
   'technician_with_pending_analysis_return',
   'ecommerce_with_pending_analysis_return',
   'free_market_return',
-  'free_market_with_analysis_return',
+  'free_market_with_analysis_return'
 ]
 
 const parseStatusToType = {
@@ -162,12 +180,7 @@ const parseStatusToType = {
   technician_with_pending_analysis_return: 'inputs',
   ecommerce_with_pending_analysis_return: 'inputs',
   free_market_return: 'inputs',
-  free_market_with_analysis_return: 'inputs',
+  free_market_with_analysis_return: 'inputs'
 }
 
-export {
-  translateStatus,
-  statusColors,
-  orderStatus,
-  parseStatusToType
-}
+export { translateStatus, statusColors, orderStatus, parseStatusToType }

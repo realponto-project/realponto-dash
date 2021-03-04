@@ -5,7 +5,7 @@ import Edit from '../Edit'
 import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
-const CheckboxGroup = Checkbox.Group;
+const CheckboxGroup = Checkbox.Group
 
 const { Title } = Typography
 const plainOptions = ['Ativo', 'Inativo']
@@ -17,24 +17,24 @@ const Manager = ({
   clearFilters,
   handleOnChange,
   filters,
-  handleGetProductsByFilters,
+  handleGetProductsByFilters
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [productSelected, setProductSelected] = useState({})
 
-  const onSubmitUpdate = values => {
-    handleSubmitUpdate({...values, id: productSelected.id })
+  const onSubmitUpdate = (values) => {
+    handleSubmitUpdate({ ...values, id: productSelected.id })
     setVisibleEdit(false)
     setProductSelected({})
   }
 
-  const onSubmit = values => {
+  const onSubmit = (values) => {
     handleSubmit(values)
     setVisible(false)
   }
 
-  const handleChooseProduct = product => {
+  const handleChooseProduct = (product) => {
     setProductSelected(product)
     setVisibleEdit(true)
   }
@@ -50,14 +50,15 @@ const Manager = ({
         <Card bordered={false}>
           <Row>
             <Col span={12}>
-              <Title style={{ marginBottom: 0 }} level={4}>Crie novos produtos</Title>
-              <p style={{ marginBottom: 0 }}>Crie e gerencie os produtos do estoque</p>
+              <Title style={{ marginBottom: 0 }} level={4}>
+                Crie novos produtos
+              </Title>
+              <p style={{ marginBottom: 0 }}>
+                Crie e gerencie os produtos do estoque
+              </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
-              <Button
-                icon={<PlusOutlined />}
-                onClick={() => setVisible(true)}
-              >
+              <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
                 Adicionar Produto
               </Button>
             </Col>
@@ -68,15 +69,14 @@ const Manager = ({
           onCreate={onSubmit}
           onCancel={() => setVisible(false)}
         />
-          {
-            visibleEdit &&
-            <Edit
-              visible
-              onEdit={onSubmitUpdate}
-              onCancel={handleCloseModalEdit}
-              productSelected={productSelected}
-            />
-          }
+        {visibleEdit && (
+          <Edit
+            visible
+            onEdit={onSubmitUpdate}
+            onCancel={handleCloseModalEdit}
+            productSelected={productSelected}
+          />
+        )}
       </Col>
       <Col span={24}>
         <Card bordered={false}>
@@ -85,7 +85,7 @@ const Manager = ({
               <Input
                 placeholder="Filtre por nome"
                 prefix={<SearchOutlined />}
-                name='name'
+                name="name"
                 value={filters.name}
                 onChange={handleOnChange}
               />
@@ -94,21 +94,17 @@ const Manager = ({
               <CheckboxGroup
                 options={plainOptions}
                 value={filters.activated}
-                onChange={value => handleOnChange({ target: { name: 'activated', value }})}
+                onChange={(value) =>
+                  handleOnChange({ target: { name: 'activated', value } })
+                }
               />
             </Col>
 
             <Col span={5} style={{ textAlign: 'right' }}>
-              <Button
-                style={{ marginRight: '16px' }}
-                onClick={clearFilters}
-              >
+              <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
                 Limpar Filtros
               </Button>
-              <Button
-                type="primary"
-                onClick={handleGetProductsByFilters}
-              >
+              <Button type="primary" onClick={handleGetProductsByFilters}>
                 Filtrar
               </Button>
             </Col>

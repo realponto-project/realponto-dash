@@ -13,5 +13,5 @@ export default combineReducers({
   status: statusReducer,
   customerSearch: customerSearchReducer,
   productSearch: productSearchReducer,
-  orderSearch: orderSearchReducer,
+  orderSearch: orderSearchReducer
 })

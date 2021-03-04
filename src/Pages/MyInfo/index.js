@@ -5,40 +5,30 @@ import { compose } from 'ramda'
 import { updateMyInfo as updateMyInfoService } from '../../Services/User'
 import MyInfoContainer from '../../Containers/MyInfo'
 
-const MyInfo = ({
-  user,
-  loggedUser,
-}) => {
+const MyInfo = ({ user, loggedUser }) => {
   const updateMyInfo = async (values) => {
     try {
       const { data } = await updateMyInfoService(user.id, values)
       loggedUser({
         ...user,
-        ...data,
+        ...data
       })
     } catch (error) {
       console.log(error)
     }
   }
 
-  return (
-    <MyInfoContainer
-      user={user}
-      updateMyInfo={updateMyInfo}
-    />
-  )
+  return <MyInfoContainer user={user} updateMyInfo={updateMyInfo} />
 }
 
 const mapStateToProps = ({ user }) => ({
-  user,
+  user
 })
 
-const mapDispatchToProps = dispatch => ({
-  loggedUser: payload => dispatch({ type: 'USER_LOGGED', payload }),
+const mapDispatchToProps = (dispatch) => ({
+  loggedUser: (payload) => dispatch({ type: 'USER_LOGGED', payload })
 })
 
-const enhanced = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-)
+const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))
 
 export default enhanced(MyInfo)

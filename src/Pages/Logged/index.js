@@ -7,12 +7,7 @@ import rootRoutes from '../../Routes/root'
 import Header from '../../Components/Header'
 import Layout from '../../Components/Layout'
 
-const renderRoute = route => (
-  <ProtectedRoute
-    key={route.path}
-    {...route}
-  />
-)
+const renderRoute = (route) => <ProtectedRoute key={route.path} {...route} />
 
 const Logged = () => (
   <Layout>
@@ -21,9 +16,7 @@ const Logged = () => (
         <Header rootRoutes={rootRoutes} />
       </Col>
       <Col span={24}>
-        <Switch>
-          {rootRoutes.map(renderRoute)}
-        </Switch>
+        <Switch>{rootRoutes.map(renderRoute)}</Switch>
       </Col>
     </Row>
   </Layout>

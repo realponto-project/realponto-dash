@@ -7,32 +7,25 @@ const columns = [
     title: 'Nome do cliente',
     dataIndex: 'name',
     key: 'name',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: 'CPF/CNPJ',
     dataIndex: 'document',
     key: 'document',
     fixed: 'left',
-    render: (text) => text.length > 11 ? cnpj.format(text) : cpf.format(text)
+    render: (text) => (text.length > 11 ? cnpj.format(text) : cpf.format(text))
   },
   {
     title: 'Telefone',
     dataIndex: 'phone',
     key: 'phone',
-    fixed: 'left',
-  },
+    fixed: 'left'
+  }
 ]
 
-const CustomerList = ({
-  datasource,
-}) => {
-  return (
-    <Table
-      columns={columns}
-      dataSource={datasource}
-    />
-  )
+const CustomerList = ({ datasource }) => {
+  return <Table columns={columns} dataSource={datasource} />
 }
 
 export default CustomerList

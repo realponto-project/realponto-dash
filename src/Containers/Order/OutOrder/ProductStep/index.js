@@ -7,54 +7,54 @@ import {
   Select,
   Row,
   Table,
-  Typography,
+  Typography
 } from 'antd'
 
 const { Option } = Select
 const { Title } = Typography
-const requiredRule = [{
-  required: true,
-  message: 'Campo obrigatório!',
-}]
+const requiredRule = [
+  {
+    required: true,
+    message: 'Campo obrigatório!'
+  }
+]
 
-const columns = handleRemoveItem => ([
+const columns = (handleRemoveItem) => [
   {
     title: 'Produto',
     dataIndex: 'name',
     key: 'name',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: 'Quantidade',
     dataIndex: 'quantity',
     key: 'quantity',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: '',
     key: 'operation',
     fixed: 'right',
     render: (_, record) => (
-      <Button
-        type="link"
-        danger
-        onClick={() => handleRemoveItem(record)}
-      >
+      <Button type="link" danger onClick={() => handleRemoveItem(record)}>
         Remover
       </Button>
     )
-  },
-])
+  }
+]
 
 const ProductStep = ({
   formData,
   handleAddProduct,
   handleRemoveItem,
   productList,
-  form,
+  form
 }) => {
   const OptionComponent = ({ id, name, balances }) => (
-    <Option key={id} value={id}>{name} - quantidade: {balances[0].quantity}</Option>
+    <Option key={id} value={id}>
+      {name} - quantidade: {balances[0].quantity}
+    </Option>
   )
 
   return (
@@ -68,13 +68,11 @@ const ProductStep = ({
               name="productId"
               label="Produto"
               style={{ marginBottom: '4px' }}
-              rules={requiredRule}
-            >
+              rules={requiredRule}>
               <Select
                 placeholder="Selecione o produto"
                 notFoundContent="Nenhum produto encontrado!"
-                allowClear
-              >
+                allowClear>
                 {productList.map(OptionComponent)}
               </Select>
             </Form.Item>
@@ -84,12 +82,8 @@ const ProductStep = ({
               label="Quantidade"
               name="quantity"
               style={{ marginBottom: '4px' }}
-              rules={requiredRule}
-            >
-              <InputNumber
-                style={{ width: "100%" }}
-                min={1}
-              />
+              rules={requiredRule}>
+              <InputNumber style={{ width: '100%' }} min={1} />
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -104,11 +98,11 @@ const ProductStep = ({
       <Table
         style={{
           marginTop: 50,
-          marginBottom: 50,
+          marginBottom: 50
         }}
         columns={columns(handleRemoveItem)}
         dataSource={formData.products}
-        locale={{ emptyText: "Nenhum produto adicionado a ordem" }}
+        locale={{ emptyText: 'Nenhum produto adicionado a ordem' }}
         pagination={{ position: 'none' }}
       />
     </>

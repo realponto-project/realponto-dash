@@ -2,9 +2,7 @@ import React from 'react'
 import PlansContainer from '../../Containers/Plans'
 
 const Plans = () => {
-  return (
-    <PlansContainer />
-  )
+  return <PlansContainer />
 }
 
 export default Plans

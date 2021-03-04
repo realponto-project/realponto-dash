@@ -9,7 +9,7 @@ import { getAll } from '../../../Services/Customer'
 const Manager = ({
   customerSearch,
   setCustomerSearch,
-  cleanCustomerSearch,
+  cleanCustomerSearch
 }) => {
   const [source, setSource] = useState([])
 
@@ -23,15 +23,15 @@ const Manager = ({
 
     if (!isEmpty(value)) {
       query = {
-        name: value,
+        name: value
       }
 
       const valueWithReplace = value
-        .replace(/\./g,'')
+        .replace(/\./g, '')
         .replace(/\-/g, '')
         .replace(/\//g, '')
 
-      if(cnpj.isValid(valueWithReplace) || cpf.isValid(valueWithReplace)) {
+      if (cnpj.isValid(valueWithReplace) || cpf.isValid(valueWithReplace)) {
         query = {
           document: valueWithReplace
         }
@@ -41,9 +41,7 @@ const Manager = ({
     try {
       const { data } = await getAll(query)
       setSource(data.source)
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }
 
   const onChangeSearch = ({ target }) => {
@@ -66,16 +64,15 @@ const Manager = ({
 }
 
 const mapStateToProps = ({ customerSearch }) => ({
-  customerSearch,
+  customerSearch
 })
 
-const mapDispatchToProps = dispatch => ({
-  setCustomerSearch: payload => dispatch({ type: 'SET_CUSTOMER_GLOBAL_SEARCH', payload }),
-  cleanCustomerSearch: () => dispatch({ type: 'CLEAN_CUSTOMER_GLOBAL_SEARCH' }),
+const mapDispatchToProps = (dispatch) => ({
+  setCustomerSearch: (payload) =>
+    dispatch({ type: 'SET_CUSTOMER_GLOBAL_SEARCH', payload }),
+  cleanCustomerSearch: () => dispatch({ type: 'CLEAN_CUSTOMER_GLOBAL_SEARCH' })
 })
 
-const enhanced = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-)
+const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))
 
 export default enhanced(Manager)

@@ -3,22 +3,18 @@ import { connect } from 'react-redux'
 import { compose, isEmpty } from 'ramda'
 
 import ManagerContainer from '../../../Containers/Product/Manager'
-import {
-  createProduct,
-  getAll,
-  updateProduct,
-} from '../../../Services/Product'
+import { createProduct, getAll, updateProduct } from '../../../Services/Product'
 
 const initialFilterState = {
   activated: ['Ativo', 'Inativo'],
-  name: '',
+  name: ''
 }
 
 const Manager = ({
   productSearch,
   setProductSearch,
   updateProductSearch,
-  cleanProductSearch,
+  cleanProductSearch
 }) => {
   const [products, setProducts] = useState({})
   const [page, setPage] = useState(1)
@@ -29,24 +25,22 @@ const Manager = ({
 
   const buildProductSearch = (values) => {
     const { name, activated } = values
-    const checkedActivated = (
+    const checkedActivated =
       activated && activated.length < 2 && activated.length !== 0
-       ? {
-          activated: activated[0] === 'Inativo' ? false : true,
-        }
-       : { }
-    )
+        ? {
+            activated: activated[0] !== 'Inativo'
+          }
+        : {}
 
     const checkedName = isEmpty(name) ? {} : { name }
 
-    return ({
+    return {
       ...checkedActivated,
       ...checkedName,
       page,
       limit: 25
-    })
+    }
   }
-
 
   const getAllProducts = async () => {
     try {
@@ -75,16 +69,11 @@ const Manager = ({
     }
   }
 
-
   const handleOnChange = ({ target }) => {
     const { name, value } = target
-    if(name === 'activated') {
+    if (name === 'activated') {
       return setProductSearch({
-        [name]: (
-          value.length === 0
-          ? initialFilterState.activated
-          : value
-        )
+        [name]: value.length === 0 ? initialFilterState.activated : value
       })
     }
 
@@ -109,16 +98,15 @@ const Manager = ({
 }
 
 const mapStateToProps = ({ productSearch }) => ({
-  productSearch,
+  productSearch
 })
 
-const mapDispatchToProps = dispatch => ({
-  setProductSearch: payload => dispatch({ type: 'SET_PRODUCT_GLOBAL_SEARCH', payload }),
-  cleanProductSearch: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' }),
+const mapDispatchToProps = (dispatch) => ({
+  setProductSearch: (payload) =>
+    dispatch({ type: 'SET_PRODUCT_GLOBAL_SEARCH', payload }),
+  cleanProductSearch: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' })
 })
 
-const enhanced = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-)
+const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))
 
 export default enhanced(Manager)

@@ -4,11 +4,11 @@ const baseURL = 'http://localhost:3003/api'
 
 const axiosInstance = axios.create({ baseURL })
 
-axiosInstance.interceptors.request.use(config => ({
+axiosInstance.interceptors.request.use((config) => ({
   ...config,
   headers: {
     ...config.headers,
-    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    Authorization: `Bearer ${localStorage.getItem('token')}`
   }
 }))
 

@@ -12,8 +12,4 @@ const updateProduct = async (values) => {
   return await axiosIntance.put(`/products/${values.id}`, values)
 }
 
-export {
-  getAll,
-  createProduct,
-  updateProduct,
-}
+export { getAll, createProduct, updateProduct }

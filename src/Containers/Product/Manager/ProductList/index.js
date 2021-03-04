@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Tag, Button } from 'antd'
 
-const columns = chooseProduct => ([
+const columns = (chooseProduct) => [
   {
     title: 'Status',
     dataIndex: 'activated',
@@ -9,7 +9,7 @@ const columns = chooseProduct => ([
     fixed: 'left',
     render: (text) => (
       <Tag color={text ? '#65A300' : '#DF285F'}>
-        {text ? 'Ativo' : 'Inativo' }
+        {text ? 'Ativo' : 'Inativo'}
       </Tag>
     )
   },
@@ -17,21 +17,21 @@ const columns = chooseProduct => ([
     title: 'Descrição',
     dataIndex: 'name',
     key: 'name',
-    fixed: 'left',
+    fixed: 'left'
   },
 
   {
     title: 'Quantidade mínima',
     dataIndex: 'minQuantity',
     key: 'minQuantity',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: 'Quantidade estoque',
     dataIndex: 'record.balances[0].quantity',
     key: 'balance',
     fixed: 'left',
-    render: (_, record) => record.balances[0].quantity,
+    render: (_, record) => record.balances[0].quantity
   },
   {
     title: '',
@@ -39,26 +39,15 @@ const columns = chooseProduct => ([
     key: 'id',
     fixed: 'left',
     render: (_, record) => (
-      <Button
-        type="link"
-        onClick={() => chooseProduct(record)}
-      >
+      <Button type="link" onClick={() => chooseProduct(record)}>
         Editar
       </Button>
     )
-  },
-])
+  }
+]
 
-const ProductList = ({
-  datasource,
-  chooseProduct,
-}) => {
-  return (
-    <Table
-      columns={columns(chooseProduct)}
-      dataSource={datasource}
-    />
-  )
+const ProductList = ({ datasource, chooseProduct }) => {
+  return <Table columns={columns(chooseProduct)} dataSource={datasource} />
 }
 
 export default ProductList

@@ -3,12 +3,7 @@ import { Modal, Form, Select } from 'antd'
 
 const { Option } = Select
 
-const AssociateSerialNumber = ({
-  visible,
-  onCreate,
-  onCancel,
-  customers,
-}) => {
+const AssociateSerialNumber = ({ visible, onCreate, onCancel, customers }) => {
   const [form] = Form.useForm()
 
   return (
@@ -25,37 +20,33 @@ const AssociateSerialNumber = ({
       onOk={() => {
         form
           .validateFields()
-          .then(values => {
+          .then((values) => {
             form.resetFields()
             onCreate(values)
           })
           .then(() => onCancel())
-          .catch(info => {
+          .catch((info) => {
             console.log('Validate Failed:', info)
           })
-      }}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-      >
+      }}>
+      <Form form={form} layout="vertical" name="form_in_modal">
         <Form.Item
           name="customerId"
           label="Selecione o cliente da ordem"
           hasFeedback
           style={{ marginBottom: '4px' }}
           required
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
-        >
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Select
             placeholder="Selecione o cliente"
             // onChange={changeFormValue('statusId')}
-            notFoundContent="Nenhum usuário encontrado!"
-          >
-            {customers && customers.map(({ name, id }) => (
-              <Option key={id} value={id}>{name}</Option>
-            ))}
+            notFoundContent="Nenhum usuário encontrado!">
+            {customers &&
+              customers.map(({ name, id }) => (
+                <Option key={id} value={id}>
+                  {name}
+                </Option>
+              ))}
           </Select>
         </Form.Item>
       </Form>

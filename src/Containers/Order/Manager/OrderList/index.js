@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Table, Tag } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
 
-const columns = goToOrderDetail => ([
+const columns = (goToOrderDetail) => [
   {
     title: 'Status',
     dataIndex: 'status',
@@ -37,7 +37,7 @@ const columns = goToOrderDetail => ([
     title: 'Revisar?',
     dataIndex: 'pendingReview',
     fixed: 'left',
-    render: (text) => text ? 'Sim' : 'Não'
+    render: (text) => (text ? 'Sim' : 'Não')
   },
   {
     title: '',
@@ -45,20 +45,12 @@ const columns = goToOrderDetail => ([
     key: 'id',
     fixed: 'right',
     render: (_, record) => (
-      <Button
-        onClick={() => goToOrderDetail(record.id)}
-      >
-        Ver detalhes
-      </Button>
-    ),
-  },
-])
+      <Button onClick={() => goToOrderDetail(record.id)}>Ver detalhes</Button>
+    )
+  }
+]
 
-const OrderList = ({
-  datasource,
-  goToOrderDetail,
-  handlePagination,
-}) => {
+const OrderList = ({ datasource, goToOrderDetail, handlePagination }) => {
   return (
     <Table
       columns={columns(goToOrderDetail)}

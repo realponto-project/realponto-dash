@@ -4,28 +4,30 @@ import { connect } from 'react-redux'
 import { compose, pathOr } from 'ramda'
 
 import DetailContainer from '../../../Containers/Order/Detail'
-import { getOrderById, updateOrder, finished, customerAssocite } from '../../../Services/Order'
+import {
+  getOrderById,
+  updateOrder,
+  finished,
+  customerAssocite
+} from '../../../Services/Order'
 import { getAll } from '../../../Services/User'
-import { getAll as getAllCustomers} from '../../../Services/Customer'
+import { getAll as getAllCustomers } from '../../../Services/Customer'
 
 import {
   getBySerialNumber,
   createSerialNumbers,
   associateSerialNumber,
-  getSerialOrderOutputs,
+  getSerialOrderOutputs
 } from '../../../Services/SerialNumber'
 
-const Detail = ({
-  match,
-  status,
-}) => {
+const Detail = ({ match, status }) => {
   const [order, setOrder] = useState({
     user: {
       name: ''
     },
     status: {
       color: '',
-      value: '',
+      value: ''
     },
     customer: {
       name: '',
@@ -37,7 +39,7 @@ const Detail = ({
         zipcode: '',
         city: '',
         state: '',
-        neighborhood: '',
+        neighborhood: ''
       }
     }
   })
@@ -51,20 +53,22 @@ const Detail = ({
     getAllCustomerPage()
   }, [])
 
-
   const getAllCustomerPage = async () => {
     try {
-      const { data: { source } } = await getAllCustomers({ limit: 9999 })
+      const {
+        data: { source }
+      } = await getAllCustomers({ limit: 9999 })
       setCustomers(source)
     } catch (error) {
       console.log(error)
     }
   }
 
-
   const getAllUsers = async () => {
     try {
-      const { data: { source } } = await getAll({})
+      const {
+        data: { source }
+      } = await getAll({})
       setUsers(source)
     } catch (error) {
       console.log(error)
@@ -76,7 +80,10 @@ const Detail = ({
       const { data } = await getOrderById(match.params.id)
       setOrder(data)
       if (order.status.type === 'outputs') {
-        const { data } = await getSerialOrderOutputs({ transactionOutId: match.params.id, limit: 9999 })
+        const { data } = await getSerialOrderOutputs({
+          transactionOutId: match.params.id,
+          limit: 9999
+        })
         setSerialNumbersOuts(data)
       }
     } catch (error) {
@@ -93,7 +100,6 @@ const Detail = ({
     }
   }
 
-
   const serialNumberExistOrActivated = async (serialNumber) => {
     const response = await getBySerialNumber({ activated: true, serialNumber })
     return response
@@ -109,7 +115,10 @@ const Detail = ({
   }
 
   const addSerialNumbers = async (values) => {
-    const response = await createSerialNumbers({ ...values, orderId: match.params.id })
+    const response = await createSerialNumbers({
+      ...values,
+      orderId: match.params.id
+    })
     getOrder()
     return response
   }
@@ -142,14 +151,11 @@ const Detail = ({
 
 const mapStateToProps = (state) => {
   const status = pathOr([], ['status', 'source'], state)
-  return ({
-    status,
-  })
+  return {
+    status
+  }
 }
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter,
-)
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 export default enhanced(Detail)
