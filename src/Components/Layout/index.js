@@ -53,8 +53,8 @@ const LayoutComponent = ({ children, history, location, company }) => {
           mode="inline"
           defaultSelectedKeys={['1']}
           style={{ width: 256 }}>
-          {menuItems.map((menuItem, idx) => (
-            <Menu.Item {...menuItem} key={idx} onClick={goTo}>
+          {menuItems.map((menuItem) => (
+            <Menu.Item {...menuItem} key={menuItem.key} onClick={goTo}>
               {menuItem.label}
             </Menu.Item>
           ))}

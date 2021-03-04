@@ -40,7 +40,7 @@ const Manager = ({
 
     try {
       const { data } = await getAll(query)
-      setSource(data.source)
+      setSource(data.source) // precisamos adicionar uma key
     } catch (error) {}
   }
 
