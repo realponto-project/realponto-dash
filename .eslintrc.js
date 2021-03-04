@@ -17,5 +17,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['prettier', 'react'],
-  rules: {}
+  rules: {
+    'react/prop-types': [0],
+    'react/display-name': [0]
+  }
 }

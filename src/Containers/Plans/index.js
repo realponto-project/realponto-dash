@@ -1,6 +1,6 @@
 import React from 'react'
 import { prop } from 'ramda'
-import { Row, Col, Typography, Card, Button, Image } from 'antd'
+import { Row, Col, Typography, Card, Button } from 'antd'
 import Goals from './goals.svg'
 import Completed from './completed.svg'
 import ButtonIcon from './button.svg'

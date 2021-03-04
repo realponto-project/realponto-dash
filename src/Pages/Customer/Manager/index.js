@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
 import { connect } from 'react-redux'
 import { compose, isEmpty } from 'ramda'
@@ -28,7 +28,7 @@ const Manager = ({
 
       const valueWithReplace = value
         .replace(/\./g, '')
-        .replace(/\-/g, '')
+        .replace(/-/g, '')
         .replace(/\//g, '')
 
       if (cnpj.isValid(valueWithReplace) || cpf.isValid(valueWithReplace)) {

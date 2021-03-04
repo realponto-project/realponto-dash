@@ -2,10 +2,10 @@ import React from 'react'
 import { Modal, Form, InputNumber, Select } from 'antd'
 const { Option } = Select
 
-const deparaStatus = {
-  pending_analysis: 'in_analysis',
-  in_analysis: 'analysis_return'
-}
+// const deparaStatus = {
+//   pending_analysis: 'in_analysis',
+//   in_analysis: 'analysis_return'
+// }
 
 const AddEvent = ({
   visible,
@@ -18,7 +18,7 @@ const AddEvent = ({
 }) => {
   const [form] = Form.useForm()
   let statusForm = []
-  const quantityMax = productSelected.quantity
+  // const quantityMax = productSelected.quantity
   const countTotalStatus = productTransaction.reduce((curr, prev) => {
     if (curr[prev.status.label]) {
       curr = {

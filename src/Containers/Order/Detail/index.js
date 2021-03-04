@@ -68,8 +68,8 @@ const columns = (
             </Button>
           )}
         </>
-        )
-      }
+      )
+    }
   }
 ]
 
@@ -218,8 +218,11 @@ const Detail = ({
                         }
 
                         return items
-                          .filter(serialNumber => serialNumber.product.id === record.productId)
-                          .map(serialNumber => (
+                          .filter(
+                            (serialNumber) =>
+                              serialNumber.product.id === record.productId
+                          )
+                          .map((serialNumber) => (
                             <Row
                               gutter={[8, 8]}
                               key={serialNumber.serialNumber}>
@@ -325,12 +328,7 @@ const Detail = ({
             <Col span={24}>
               <Steps direction="vertical">
                 {productMovimentation.map(
-                  id,
-                  status,
-                  product,
-                  createdAt,
-                  quantity
-                }) => (
+                  ({ id, status, product, createdAt, quantity }) => (
                     <Step
                       status="finish"
                       key={id}
