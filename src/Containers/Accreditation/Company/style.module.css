@@ -1,0 +1,18 @@
+
+.contentPublicity {
+  position: relative;
+  font-family: 'Lato', sans-serif;
+  font-style: normal;
+}
+
+.contentPublicity h1{
+  font-weight: 800;
+  font-size: 31px;
+  line-height: 41px;
+}
+
+.contentPublicity h4{
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 41px;
+}
