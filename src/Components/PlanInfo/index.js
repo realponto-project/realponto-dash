@@ -28,7 +28,7 @@ const PlanInfo = () => {
             position: 'relative',
             top: '5px'
           }}>
-          <Image width={300} src={Box} />
+          <Image width={300} src={Box} preview={false} />
         </Col>
       </Row>
     </div>

@@ -15,6 +15,7 @@ const AdSide = ({ history }) => {
           position: 'relative',
           top: '-37px'
         }}
+        preview={false}
         width={220}
         src={Deliveries}
       />

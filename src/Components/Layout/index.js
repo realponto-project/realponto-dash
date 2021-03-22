@@ -47,7 +47,13 @@ const LayoutComponent = ({ children, history, location, company }) => {
         collapsible
         collapsed={false}
         width={256}
-        trigger={null}>
+        trigger={null}
+        style={{
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          left: 0
+        }}>
         <Menu
           theme="ligth"
           mode="inline"
@@ -65,6 +71,7 @@ const LayoutComponent = ({ children, history, location, company }) => {
       <Layout>
         <Content
           style={{
+            marginLeft: '256px',
             padding: 16,
             minHeight: '100vh'
           }}>

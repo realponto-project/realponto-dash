@@ -21,7 +21,7 @@ const Login = ({ authentication }) => {
           alignItems: 'center',
           overflow: 'hidden'
         }}>
-        <Image width="100%" height="auto" src={MeetsImage} />
+        <Image width="100%" height="auto" src={MeetsImage} preview={false} />
       </Col>
       <Col
         span={18}
