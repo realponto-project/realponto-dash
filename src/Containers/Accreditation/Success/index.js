@@ -1,15 +1,14 @@
 import React from 'react'
-import { Col, Image, Row, Typography } from 'antd'
+import { Button, Col, Image, Row, Typography } from 'antd'
 
 import logo from '../../../Assets/logo.svg'
-// trocar nome (congratulation)
-import asArveresSomosNozes from '../../../Assets/asArveresSomosNozes.svg'
+import congratulation from '../../../Assets/asArveresSomosNozes.svg'
 import styles from './style.module.css'
 
 const { Link } = Typography
 
-const Sucess = () => (
-  <Row style={{ height: '100vh' }}>
+const Sucess = ({ goToLogin }) => (
+  <Row style={{ padding: '44px' }}>
     <Col span={10}>
       <div className={styles.contentText}>
         <Image src={logo} preview={false} />
@@ -29,11 +28,21 @@ const Sucess = () => (
             compartilhar!
           </Link>
         </p>
+
+        <br />
+
+        <Button
+          onClick={goToLogin}
+          style={{ width: '100%' }}
+          type="primary"
+          size="large">
+          Ir para o login
+        </Button>
       </div>
     </Col>
     <Col offset={2} span={12}>
-      <Row style={{ height: '100vh' }} align="middle">
-        <Image src={asArveresSomosNozes} preview={false} />
+      <Row style={{ height: '100%' }} align="middle">
+        <Image src={congratulation} preview={false} />
       </Row>
     </Col>
   </Row>
