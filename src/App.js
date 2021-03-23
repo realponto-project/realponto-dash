@@ -8,6 +8,8 @@ import { PersistGate } from 'redux-persist/integration/react'
 import storage from 'redux-persist/lib/storage'
 
 import Login from './Pages/Login'
+import Register from './Pages/Accreditation/Register'
+import Success from './Pages/Accreditation/Register/Success'
 import logged from './Pages/Logged'
 import reducers from './Redux/reducers'
 
@@ -29,6 +31,8 @@ const App = () => {
       <PersistGate loading={null} persistor={persistStore(store)}></PersistGate>
       <Switch>
         <Route path="/login" component={Login} />
+        <Route exact path="/register/sucess" component={Success} />
+        <Route path="/register" component={Register} />
         <Route path="/logged" component={logged} />
         <Redirect from="*" to="/login" />
       </Switch>
