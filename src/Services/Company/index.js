@@ -1,7 +1,12 @@
-import axiosIntance from '../../utils/axiosInstance'
+import axios from 'axios'
 
-const getCompanyById = async (companyId) => {
+import axiosIntance from '../../utils/axiosInstance'
+const baseUrl = `${process.env.REACT_APP_API_URL}/register`
+
+export const getCompanyById = async (companyId) => {
   return await axiosIntance.get(`/companies/${companyId}`)
 }
 
-export default getCompanyById
+export const createCompany = async (values) => {
+  return await axios.post(baseUrl, values)
+}
