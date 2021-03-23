@@ -1,70 +1,80 @@
 import React from 'react'
-import { Row, Col, Form, Input, Button, Image, Typography } from 'antd'
-import MeetsImage from './meets.svg'
+import { Button, Col, Form, Image, Input, Row, Typography } from 'antd'
+import { Link } from 'react-router-dom'
 
-const { Title } = Typography
+import onlineResume from '../../Assets/onlineResume.svg'
+import logo from '../../Assets/logo.svg'
+import styles from './style.module.css'
 
-const Login = ({ authentication }) => {
+const { Paragraph } = Typography
+const rules = [{ required: true, message: 'Campo obrigatório!' }]
+
+const Login = ({ registerPath, authentication }) => {
   const onFinish = (values) => {
     authentication(values)
   }
 
   return (
-    <Row style={{ minHeight: '100vh' }}>
-      <Col
-        span={6}
-        style={{
-          background: '#f4f4f4',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          overflow: 'hidden'
-        }}>
-        <Image width="100%" height="auto" src={MeetsImage} preview={false} />
+    <Row gutter={10} style={{ height: '100vh', margin: 0 }} align="middle">
+      <Col span={16}>
+        <div className={styles.contentPublicity}>
+          <Row style={{ height: '100%' }} align="middle">
+            <Col>
+              <Row justify="center" gutter={[0, 80]}>
+                <Image width={362} src={onlineResume} preview={false} />
+              </Row>
+              <Row justify="center">
+                <h1 className={styles.title}>Conheça o alxa dashboard!</h1>
+              </Row>
+              <Row justify="center">
+                <Col span={16}>
+                  <Paragraph style={{ textAlign: 'center' }}>
+                    Gestão de verdade para o seu négocio, fácil, rápido e preço
+                    justo, com o alxa, você tem ao seu alcance, gestão de
+                    clientes, produtos, pedidos e muito mais!
+                  </Paragraph>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </div>
       </Col>
-      <Col
-        span={18}
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-        <Title leve={5} style={{ fontSize: '22px', marginBottom: '4px' }}>
-          Nova Dashboard RP!
-        </Title>
-        <p style={{ textAlign: 'center', marginBottom: '14px' }}>
-          A nova dashboard chegou para facilitar ainda mais a sua vida, <br />{' '}
-          com ela você visualiza métricas da sua operação <br />e muito mais.
-        </p>
-        <Form
-          style={{
-            width: '340px'
-          }}
-          name="login_form"
-          onFinish={onFinish}
-          layout="vertical">
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: 'Campo obrigatório!' }]}>
-            <Input />
-          </Form.Item>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: 'Campo obrigatório!' }]}>
-            <Input.Password />
-          </Form.Item>
+      <Col span={8}>
+        <Row justify="center" gutter={[0, 87]}>
+          <Image src={logo} preview={false} />
+        </Row>
 
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Logar
-            </Button>
-          </Form.Item>
-        </Form>
+        <Row justify="center">
+          <Col span={20}>
+            <Form layout="vertical" onFinish={onFinish}>
+              <Form.Item label="E-mail" name="email" rules={rules}>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Senha" name="password" rules={rules}>
+                <Input.Password />
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  size="large"
+                  style={{ width: '100%', marginTop: 35 }}>
+                  Acessar
+                </Button>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
+        <Row justify="center">
+          <Paragraph style={{ textAlign: 'center' }}>
+            Ainda não possui conta no alxa?
+          </Paragraph>
+        </Row>
+
+        <Row justify="center">
+          <Link to={registerPath}>Cadastre-se agora</Link>
+        </Row>
       </Col>
     </Row>
   )

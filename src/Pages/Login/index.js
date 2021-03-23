@@ -5,7 +5,7 @@ import { compose } from 'ramda'
 
 import LoginContainer from '../../Containers/Login'
 import Auth from '../../Services/Auth'
-import getCompanyById from '../../Services/Company'
+import { getCompanyById } from '../../Services/Company'
 import getAllStatus from '../../Services/Status'
 
 const Login = ({ history, loggedUser, setCompany, setStatus }) => {
@@ -25,7 +25,9 @@ const Login = ({ history, loggedUser, setCompany, setStatus }) => {
       .catch((err) => console.log(err))
   }
 
-  return <LoginContainer authentication={authentication} />
+  return (
+    <LoginContainer authentication={authentication} registerPath="register" />
+  )
 }
 
 const mapDispatchToProps = (dispatch) => ({
