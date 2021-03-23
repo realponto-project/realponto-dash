@@ -15,12 +15,13 @@ import { CheckOutlined } from '@ant-design/icons'
 import logo from '../../../Assets/logo.svg'
 import allTheData from '../../../Assets/allTheData.svg'
 import styles from './style.module.css'
+import { validateCNPJ, validateEmail } from '../../../utils/validators'
 
 const { Title, Text, Paragraph } = Typography
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
 const Register = ({ handleClickContinue }) => (
-  <Row align="middle">
+  <Row>
     <Col span={12}>
       <div className={styles.contentPublicity}>
         <Image src={logo} preview={false} />
@@ -65,6 +66,7 @@ const Register = ({ handleClickContinue }) => (
               <Title level={2}>Dados da Empresa</Title>
             </Row>
             <Form
+              validateTrigger="onBlur"
               layout="vertical"
               onFinish={(formData) => handleClickContinue(formData)}>
               <Card>
@@ -75,7 +77,13 @@ const Register = ({ handleClickContinue }) => (
                   label="Nome da empresa">
                   <Input />
                 </Form.Item>
-                <Form.Item rules={rules} name="cnpj" label="CPNJ">
+                <Form.Item
+                  rules={[
+                    ...rules,
+                    { validator: (_, value) => validateCNPJ(value) }
+                  ]}
+                  name="cnpj"
+                  label="CPNJ">
                   <Input />
                 </Form.Item>
                 <br />
@@ -83,7 +91,13 @@ const Register = ({ handleClickContinue }) => (
                 <Form.Item rules={rules} name="responsible" label="Responsável">
                   <Input />
                 </Form.Item>
-                <Form.Item rules={rules} name="email" label="E-mail">
+                <Form.Item
+                  rules={[
+                    ...rules,
+                    { validator: (_, value) => validateEmail(value) }
+                  ]}
+                  name="email"
+                  label="E-mail">
                   <Input />
                 </Form.Item>
                 <Form.Item rules={rules} name="password" label="Senha">

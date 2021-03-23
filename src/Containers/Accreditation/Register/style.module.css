@@ -10,13 +10,15 @@
 }
 
 .contentPublicity > div > img {
-  margin-bottom: 50px
+  margin-top: 50px;
+  margin-bottom: 100px
 }
 
 .contentPublicity h1{
   font-size: 31px;
   font-weight: 800;
   line-height: 41px;
+  margin-bottom: 50px
 }
 
 .contentPublicity h4{
