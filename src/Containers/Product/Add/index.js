@@ -1,11 +1,11 @@
 import React from 'react'
-import { Modal, Form, Input, InputNumber } from 'antd'
+import { Modal, Form, Input, InputNumber, Row, Col } from 'antd'
 
 const Add = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm()
   return (
     <Modal
-      width={350}
+      width={450}
       visible={visible}
       title="CRIA UM PRODUTO"
       okText="Criar Produto"
@@ -32,12 +32,56 @@ const Add = ({ visible, onCreate, onCancel }) => {
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input />
         </Form.Item>
+        <Row align="space-between">
+          <Col span={12}>
+            <Form.Item
+              name="balance"
+              label="Qtd atual"
+              rules={[
+                { required: true, message: 'Este campo é obrigatório!' }
+              ]}>
+              <InputNumber min={1} style={{ width: '98%' }} />
+            </Form.Item>
+          </Col>
+          <Col span={11}>
+            <Form.Item
+              name="minQuantity"
+              label="Qtd mínima"
+              rules={[
+                { required: true, message: 'Este campo é obrigatório!' }
+              ]}>
+              <InputNumber min={1} style={{ width: '98%' }} />
+            </Form.Item>
+          </Col>
+        </Row>
         <Form.Item
-          name="minQuantity"
-          label="Quantidade mínima"
+          name="barCode"
+          label="Código de barras"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
-          <InputNumber min={1} style={{ width: '100%' }} />
+          <Input />
         </Form.Item>
+        <Row align="space-between">
+          <Col span={12}>
+            <Form.Item
+              name="buyPrice"
+              label="Preço custo"
+              rules={[
+                { required: true, message: 'Este campo é obrigatório!' }
+              ]}>
+              <InputNumber min={1} style={{ width: '98%' }} />
+            </Form.Item>
+          </Col>
+          <Col span={11}>
+            <Form.Item
+              name="salePrice"
+              label="Preço venda"
+              rules={[
+                { required: true, message: 'Este campo é obrigatório!' }
+              ]}>
+              <InputNumber min={1} style={{ width: '98%' }} />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   )
