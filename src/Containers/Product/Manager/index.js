@@ -81,7 +81,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
-            <Col span={15}>
+            <Col span={14}>
               <Input
                 placeholder="Filtre por nome"
                 prefix={<SearchOutlined />}
@@ -90,7 +90,7 @@ const Manager = ({
                 onChange={handleOnChange}
               />
             </Col>
-            <Col span={4} style={{ paddingTop: '5px' }}>
+            <Col span={3} style={{ paddingTop: '5px' }}>
               <CheckboxGroup
                 options={plainOptions}
                 value={filters.activated}
@@ -100,7 +100,7 @@ const Manager = ({
               />
             </Col>
 
-            <Col span={5} style={{ textAlign: 'right' }}>
+            <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
                 Limpar Filtros
               </Button>
