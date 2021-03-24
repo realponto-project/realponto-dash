@@ -7,7 +7,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
     <Modal
       width={450}
       visible={visible}
-      title="CRIA UM PRODUTO"
+      title="CRIAR UM PRODUTO"
       okText="Criar Produto"
       cancelText="Cancelar"
       onCancel={() => {
@@ -36,7 +36,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
           <Col span={12}>
             <Form.Item
               name="balance"
-              label="Qtd atual"
+              label="Qtd estoque"
               rules={[
                 { required: true, message: 'Este campo é obrigatório!' }
               ]}>

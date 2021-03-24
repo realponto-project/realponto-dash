@@ -41,7 +41,7 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
           <Col span={12}>
             <Form.Item
               name="balance"
-              label="Qtd atual"
+              label="Qtd estoque"
               rules={[
                 { required: true, message: 'Este campo é obrigatório!' }
               ]}>
