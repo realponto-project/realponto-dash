@@ -1,162 +1,411 @@
-import React from 'react'
-import { prop } from 'ramda'
-import { Row, Col, Typography, Card, Button } from 'antd'
-import Goals from './goals.svg'
-import Completed from './completed.svg'
-import ButtonIcon from './button.svg'
-import PlanInfo from '../../Components/PlanInfo'
+import React, { useState, useEffect } from 'react'
+import {
+  applySpec,
+  pathOr,
+  find,
+  map,
+  pipe,
+  replace,
+  propEq,
+  multiply,
+  prop,
+  keys
+} from 'ramda'
+import moment from 'moment'
+import {
+  Row,
+  Col,
+  Image,
+  Typography,
+  Divider,
+  Modal,
+  Input,
+  Form,
+  Button
+} from 'antd'
+import { CheckOutlined } from '@ant-design/icons'
+// import { client } from 'pagarme'
+import styles from './style.module.css'
+import { getAll } from '../../Services/Plans'
+import createSubscription from '../../Services/Subscription'
+// import { encryption_key } from '../../config/api_keys'
 
-import { PAGARME_ENCRYPTION_KEY, PAGARME_POSTBACK_URL } from '../../utils/env'
+import Logo from './alxa.svg'
+import Visa from './visa.svg'
+import MasterCard from './mastercard.svg'
 
 const { Title } = Typography
+const { Paragraph } = Typography
 
-const plans = [
-  {
-    description: 'Mensal',
-    amount: '9,99',
-    discount: null,
-    color: 'transparent',
-    image: Goals
-  },
-  {
-    description: 'Semestral',
-    amount: '42,99',
-    discount: '15%',
-    color: 'rgb(255 0 9 / 70%)',
-    image: Completed
-  },
-  {
-    description: 'Anual',
-    amount: '81,90',
-    discount: '25%',
-    color: 'rgb(41 181 41 / 70%)',
-    image: ButtonIcon
+const buildPlan = applySpec({
+  activated: pathOr('', ['activated']),
+  key: pathOr('', ['id']),
+  amount: pipe(
+    pathOr('', ['amount']),
+    String,
+    replace(/(\d)(\d{2})$/, '$1,$2')
+  ),
+  description: pathOr('', ['description']),
+  discount: pathOr('', ['discount']),
+  text: pathOr('Pagamento mensal', ['text']),
+  quantityProduct: pathOr('', ['quantityProduct'])
+})
+
+const Plan = ({ isVisible, handleCancel }) => {
+  const [planId, setPlanId] = useState('')
+  const [plans, setPlans] = useState([])
+  const [form] = Form.useForm()
+
+  const selectPlan = (id) => {
+    setPlanId(id)
   }
-]
 
-const Plan = () => {
-  const handleSuccess = (amount, subscriptionType) => (data) => {
-    const payload = {
-      amount: amount.toString(),
-      checkoutToken: prop('token', data),
-      encryptionKey: PAGARME_ENCRYPTION_KEY,
-      subscriptionType
+  useEffect(() => {
+    const getAllPlans = () => {
+      getAll({ activated: true }).then(({ data: { source } }) => {
+        const sourceFormated = map(buildPlan, source)
+        setPlans(sourceFormated)
+        setPlanId(
+          prop('key', find(propEq('description', 'Anual'), sourceFormated))
+        )
+      })
     }
-    console.log(payload)
+
+    getAllPlans()
+  }, [])
+
+  const quantityProductPlan = prop(
+    'quantityProduct',
+    find(propEq('key', planId), plans)
+  )
+
+  const amount =
+    plans &&
+    planId &&
+    pipe(
+      find(propEq('key', planId)),
+      applySpec({
+        description: prop('description'),
+        amount: pipe(prop('amount'), replace(',', '.'), Number)
+      }),
+      ({ amount }) => multiply(12)(amount).toFixed(2)
+    )(plans)
+
+  const inicioAssinatura = moment().format('L')
+  const terminoAssinatura = moment().add(12, 'months').format('L')
+
+  const mask = (value, pattern) => {
+    let i = 0
+    const v = value.toString().replace(pattern[1], '')
+    return pattern[0]
+      .replace(/#/g, () => v[i++] || '')
+      .replace(/(\s{0,3}|\/)$/g, '')
+      .toUpperCase()
   }
 
-  const handleError = (data) => {
-    console.log('Error', data)
+  const patterns = {
+    card_holder_name: [new Array(45).fill('#').join(''), /\W/g],
+    card_number: ['#### #### #### ####', /\D/g],
+    card_expiration_date: ['##/##', /\D/g],
+    card_cvv: ['###', /\D/g]
   }
 
-  const handleCheckout = (amount, title) => () => {
-    const checkout = new window.PagarMeCheckout.Checkout({
-      encryption_key: PAGARME_ENCRYPTION_KEY,
-      success: handleSuccess(amount, title),
-      error: handleError
-    })
+  const maskTest = (e) => (key) => {
+    return { [key]: mask(e[key], patterns[key]) }
+  }
 
-    checkout.open({
-      amount: Number(amount.replace(',', '')),
-      maxInstallments: 1,
-      defaultInstallment: 1,
-      customerData: 'false',
-      createToken: 'true',
-      paymentMethods: 'credit_card',
-      postback_url: PAGARME_POSTBACK_URL,
-      items: [
-        {
-          id: `subscription-${title}`,
-          title,
-          unit_price: Number(amount.replace(',', '')),
-          quantity: 1,
-          tangible: false
-        }
-      ]
+  const addSubscription = async (values) => {
+    const response = await createSubscription({
+      ...values,
+      planId
+      // companyId:
     })
+    return response
   }
 
   return (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
-        <PlanInfo />
-      </Col>
-      {plans.map(({ description, amount, discount, color, image }) => (
-        <Col span={8} key={description} style={{ marginTop: '30px' }}>
-          <Card bordered={false}>
-            <Row>
-              <Col span={24} style={{ textAlign: 'center' }}>
-                <Title level={4}>{description}</Title>
-                <span
-                  style={{
-                    borderBottom: '2px solid   #1890FF',
-                    display: 'block',
-                    width: '20px',
-                    margin: 'auto'
-                  }}
-                />
-              </Col>
-              {/* <Col span={24} style={{ height: 160, textAlign: 'center', padding: '16px'}}>
-              <Image src={image} alt="plans" width={150} />
-             </Col> */}
-              <Col span={24} style={{ textAlign: 'center', height: '164px' }}>
-                <h1
-                  style={{
-                    color: '#1890FF',
-                    fontSize: '40px',
-                    fontWeight: '600',
-                    padding: '40px 0 0 0',
-                    margin: '0'
-                  }}>
-                  <span
-                    style={{
-                      fontWeight: 'normal',
-                      fontSize: '22px'
-                    }}>
-                    R${' '}
-                  </span>
-                  {amount}
-                </h1>
-                {discount && (
-                  <span
-                    style={{
-                      background: color,
-                      width: '80px',
-                      display: 'block',
-                      borderRadius: '10px',
-                      color: '#fff',
-                      fontWeight: 'bold',
-                      margin: 'auto',
-                      marginBottom: '40px'
-                    }}>
-                    {discount}
-                  </span>
-                )}
-                {!discount && (
-                  <span
-                    style={{
-                      background: color,
-                      width: '80px',
-                      display: 'block',
-                      borderRadius: '10px',
-                      color: '#fff',
-                      fontWeight: 'bold',
-                      margin: 'auto',
-                      marginBottom: '40px'
-                    }}
-                  />
-                )}
-              </Col>
-              <Col span={24} style={{ textAlign: 'center' }}>
-                <Button onClick={handleCheckout(amount, description)} block>
-                  Assinar!
-                </Button>
-              </Col>
+    <Modal
+      visible={isVisible}
+      width={'90%'}
+      footer={null}
+      closable={false}
+      centered={true}>
+      <Row gutter={[16, 16]}>
+        <Col
+          style={{
+            background: 'white',
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+          span={24}>
+          <Col span={11}>
+            <Image
+              style={{
+                position: 'relative',
+                width: '150px',
+                height: '79px'
+              }}
+              preview={false}
+              width={220}
+              src={Logo}
+            />
+
+            <Title level={2} style={{ marginTop: '20px' }}>
+              Tenha mais controle na sua empresa com o alxa PLUS!
+            </Title>
+
+            <Paragraph className={styles.fontSize16}>
+              Aproveite todas as nossas funcionalidades:
+            </Paragraph>
+
+            <Paragraph>
+              <CheckOutlined className={styles.checkOutlinedIcon} />
+              Gestão de estoque
+            </Paragraph>
+            <Paragraph>
+              <CheckOutlined className={styles.checkOutlinedIcon} />
+              <strong>Controle de vendas</strong>
+            </Paragraph>
+            <Paragraph>
+              <CheckOutlined className={styles.checkOutlinedIcon} />
+              Ponto de venda
+            </Paragraph>
+            <Paragraph>
+              <CheckOutlined className={styles.checkOutlinedIcon} />
+              <strong>Controle de cliente</strong>
+            </Paragraph>
+            <Paragraph>
+              <CheckOutlined className={styles.checkOutlinedIcon} />
+              Cupom não fiscal
+            </Paragraph>
+
+            <Paragraph className={styles.fontWeightBold}>
+              <CheckOutlined className={styles.checkOutlinedIcon} />
+              Até {quantityProductPlan} produtos
+            </Paragraph>
+
+            <Divider />
+
+            <Paragraph
+              style={{
+                margin: '0 0 40px 10px'
+              }}>
+              Você pode cancelar a qualquer momento, sem nenhum custo ou taxa de
+              cancelamento, lincença paga de forma <strong>anual</strong>.
+            </Paragraph>
+
+            <Paragraph className={styles.fontWeightBold}>
+              Assine o plano anual e ganhe + 1 mês totalmente GRÁTIS!
+            </Paragraph>
+          </Col>
+          <Col span={12}>
+            <Paragraph className={styles.textSelectPlan}>
+              Selecione o plano que mais combina com a sua empresa. Cancele
+              quando quiser!
+            </Paragraph>
+            <Paragraph className={styles.textMostPopular}>
+              Mais popular
+            </Paragraph>
+            <Row justify="center">
+              {plans.map(
+                ({
+                  key,
+                  description,
+                  amount,
+                  month,
+                  quantityProduct,
+                  text
+                }) => (
+                  <Col span={8} key={key}>
+                    <div
+                      className={styles.cardPlans}
+                      onClick={() => selectPlan(key)}
+                      style={
+                        key === planId ? { border: '2px solid #7BDAAA' } : {}
+                      }>
+                      <Col span={24} style={{ textAlign: 'center' }}>
+                        <h1 className={styles.textDescription}>
+                          {description}
+                        </h1>
+                      </Col>
+                      <Col span={24} style={{ textAlign: 'center' }}>
+                        <h1 className={styles.textAmount}>
+                          <span className={styles.textSimbol}>R$ </span>
+                          {amount}
+                          {month}
+                        </h1>
+                        <h4 className={styles.text}>{text}</h4>
+                        {quantityProduct && (
+                          <span
+                            className={styles.textDiscount}
+                            style={key === planId ? { color: '#7BDAAA' } : {}}>
+                            {quantityProduct} produtos
+                          </span>
+                        )}
+                        {!quantityProduct && (
+                          <span className={styles.textNoDiscount} />
+                        )}
+                      </Col>
+                    </div>
+                  </Col>
+                )
+              )}
             </Row>
-          </Card>
+            <Paragraph className={styles.textCardData}>
+              Preencha os dados do cartão
+            </Paragraph>
+            <Row>
+              <Image
+                className={styles.imageVisa}
+                preview={false}
+                width={48}
+                src={Visa}
+              />
+              <Image
+                className={styles.imageMasterCard}
+                preview={false}
+                width={28}
+                src={MasterCard}
+              />
+            </Row>
+            <Form
+              onFinish={addSubscription}
+              layout={'vertical'}
+              onValuesChange={(e) =>
+                // console.log(pipe(keys, (tes) => tes[0], maskTest(e))(e))
+                form.setFieldsValue(pipe(keys, (tes) => tes[0], maskTest(e))(e))
+              }
+              form={form}
+              // onFinish={handleOk}
+            >
+              <Form.Item
+                label={
+                  <label
+                    style={{
+                      color: '#333',
+                      fontWeight: 'bold',
+                      fontSize: '11px',
+                      margin: '10px 0 0 0'
+                    }}>
+                    Nome titular
+                  </label>
+                }
+                name="card_holder_name">
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                label={
+                  <label
+                    style={{
+                      color: '#333',
+                      fontWeight: 'bold',
+                      fontSize: '11px',
+                      margin: '0 0 0 0'
+                    }}>
+                    Número do cartão
+                  </label>
+                }
+                name="card_number">
+                <Input />
+              </Form.Item>
+              <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Form.Item
+                  style={{ width: '50%' }}
+                  label={
+                    <label
+                      style={{
+                        color: '#333',
+                        fontWeight: 'bold',
+                        fontSize: '11px',
+                        margin: '0 0 0 0'
+                      }}>
+                      Data validade
+                    </label>
+                  }
+                  name="card_expiration_date">
+                  <Input />
+                </Form.Item>
+
+                <Form.Item
+                  style={{ width: '45%' }}
+                  label={
+                    <label
+                      style={{
+                        color: '#333',
+                        fontWeight: 'bold',
+                        fontSize: '11px',
+                        margin: '0 0 0 0'
+                      }}>
+                      CVV
+                    </label>
+                  }
+                  name="card_cvv">
+                  <Input />
+                </Form.Item>
+              </Row>
+
+              <Row align="center">
+                <Paragraph className={styles.textDetailsSignature}>
+                  Detalhes da assinatura
+                </Paragraph>
+              </Row>
+
+              <Row span={24}>
+                <Col span={12}>
+                  <Paragraph className={styles.textSignature}>
+                    Valor total
+                  </Paragraph>
+
+                  <Paragraph className={styles.textSignature}>
+                    Duração
+                  </Paragraph>
+
+                  <Paragraph className={styles.textSignature}>
+                    Início da assinatura
+                  </Paragraph>
+
+                  <Paragraph className={styles.textSignature}>
+                    Término da assinatura
+                  </Paragraph>
+                </Col>
+                <Col span={12} style={{ textAlign: 'right' }}>
+                  <Paragraph className={styles.textSignature}>
+                    <strong>R$ {amount}</strong>
+                  </Paragraph>
+
+                  <Paragraph className={styles.textSignature}>
+                    <strong>12 meses + 1 mês GRÁTIS</strong>
+                  </Paragraph>
+
+                  <Paragraph className={styles.textSignature}>
+                    <strong>{inicioAssinatura}</strong>
+                  </Paragraph>
+
+                  <Paragraph className={styles.textSignature}>
+                    <strong>{terminoAssinatura}</strong>
+                  </Paragraph>
+                </Col>
+              </Row>
+
+              <Form.Item>
+                <Button
+                  className={styles.buttonBuy}
+                  type="primary"
+                  htmlType="submit">
+                  Finalizar compra
+                </Button>
+              </Form.Item>
+            </Form>
+            <Row align="center">
+              <Paragraph onClick={handleCancel} className={styles.textNoThanks}>
+                Não, obrigado.
+              </Paragraph>
+            </Row>
+          </Col>
         </Col>
-      ))}
-    </Row>
+      </Row>
+    </Modal>
   )
 }
 
