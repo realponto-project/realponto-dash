@@ -6,7 +6,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 
-import AdBanner from '../../Components/AdBanner'
+// import AdBanner from '../../Components/AdBanner'
 
 const Header = ({
   rootRoutes,
@@ -86,10 +86,10 @@ const Header = ({
           </Button>
         </Dropdown>
       </Col>
-      <Col span={24}>
+      {/* <Col span={24}>
         {location.pathname.replace('/logged/', '') !== 'plans' &&
           !company.subscription && <AdBanner />}
-      </Col>
+      </Col> */}
     </Row>
   )
 
