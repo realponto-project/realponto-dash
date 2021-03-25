@@ -1,6 +1,6 @@
 import React from 'react'
 
-import LoginContainer from '../../../Containers/Accreditation/Login'
+import LoginContainer from '../../../Containers/Login'
 
 export default {
   title: 'Pages',
