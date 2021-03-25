@@ -21,17 +21,17 @@ const columns = (chooseProduct) => [
   },
 
   {
-    title: 'Quantidade mínima',
+    title: 'Qtd mínima',
     dataIndex: 'minQuantity',
     key: 'minQuantity',
     fixed: 'left'
   },
   {
-    title: 'Quantidade estoque',
-    dataIndex: 'record.balances[0].quantity',
+    title: 'Qtd estoque',
+    dataIndex: 'record.balance',
     key: 'balance',
     fixed: 'left',
-    render: (_, record) => record.balances[0].quantity
+    render: (_, record) => record.balance
   },
   {
     title: '',

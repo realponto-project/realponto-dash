@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, Typography, Button } from 'antd'
 import { withRouter } from 'react-router-dom'
 import styles from './style.module.css'
+import Plan from '../../Containers/Plans'
 
 import Deliveries from './deliveries.svg'
 
 const { Title } = Typography
-const AdSide = ({ history }) => {
-  const gotoPlan = () => history.push('/logged/plans')
+const AdSide = () => {
+  const [isVisible, setIsVisible] = useState(false)
+
+  const handleCancel = () => {
+    setIsVisible(false)
+  }
+
   return (
     <div className={styles.adSideContainer}>
+      <Plan
+        isVisible={isVisible}
+        handleCancel={handleCancel}
+        handleOk={console.log}
+      />
       <Image
         style={{
           position: 'relative',
@@ -26,7 +37,7 @@ const AdSide = ({ history }) => {
         Acesso completo e ilimitado, gerencie seu <b>estoque</b> e suas{' '}
         <b>manutenções</b>
       </p>
-      <Button onClick={gotoPlan} type="primary" block>
+      <Button onClick={() => setIsVisible(true)} type="primary" block>
         Assine Agora <b> R$9,99/mês</b>
       </Button>
     </div>
