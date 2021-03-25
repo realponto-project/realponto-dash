@@ -28,10 +28,10 @@ const columns = (chooseProduct) => [
   },
   {
     title: 'Qtd estoque',
-    dataIndex: 'record.balances[0].quantity',
+    dataIndex: 'record.balance',
     key: 'balance',
-    fixed: 'left'
-    // render: (_, record) => record.balances[0].quantity
+    fixed: 'left',
+    render: (_, record) => record.balance
   },
   {
     title: '',
