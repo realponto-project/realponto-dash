@@ -12,4 +12,8 @@ const updateProduct = async (values) => {
   return await axiosIntance.put(`/products/${values.id}`, values)
 }
 
-export { getAll, createProduct, updateProduct }
+const getProductByBarCode = async (barCode) => {
+  return await axiosIntance.get(`/products/getByBarCode/${barCode}`)
+}
+
+export { getAll, createProduct, updateProduct, getProductByBarCode }
