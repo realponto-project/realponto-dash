@@ -1,21 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
   Button,
   Col,
   Divider,
   Form,
   Input,
+  InputNumber,
   Radio,
   Row,
   Select,
   Typography
 } from 'antd'
-import { map } from 'ramda'
-import { BarcodeOutlined, DeleteOutlined } from '@ant-design/icons'
+import {
+  addIndex,
+  length,
+  map
+  //  replace
+} from 'ramda'
+import {
+  BarcodeOutlined,
+  DeleteOutlined,
+  DownOutlined,
+  UpOutlined
+} from '@ant-design/icons'
 
 import styles from './style.module.css'
 import ModalSearchBarCode from './ModalSearchBarCode'
-import ModalNoFindedProduct from './ModalNoFindedProduct'
+import ModalNotFoundProduct from './ModalNotFoundProduct'
 
 const { Text, Title } = Typography
 const { Option } = Select
@@ -26,113 +37,215 @@ const listaTipoPagamento = [
   { value: 'cardDM', children: 'Cartão débito Master' },
   { value: 'cardDV', children: 'Cartão débito Visa' },
   { value: 'cardCM', children: 'Cartão crédito Master' },
-  { value: 'cardCM', children: 'Cartão crédito Visa' }
+  { value: 'cardCV', children: 'Cartão crédito Visa' }
 ]
 
-const PDV = ({ list, productList }) => {
-  const [isVisibleSearchBarCode, setIsVisibleSearchBarCode] = useState(false)
+const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
-  const handleClickSearchBarCode = () => setIsVisibleSearchBarCode(true)
-  const handleCancelSearchBarCode = () => setIsVisibleSearchBarCode(false)
-
+const PDV = ({
+  form,
+  productList,
+  handleChangeSelect,
+  handleClickClear,
+  handleClickDown,
+  handleClickUp,
+  handleClickDelete,
+  handleSearchBarCode,
+  subTotal,
+  handleClickSearchBarCode,
+  handleCancelSearchBarCode,
+  isVisibleNotFoundProduct,
+  handleCancelNotFountProduct,
+  handleClickTryAgain,
+  searchValue,
+  handleChangeSearchValue,
+  isVisibleSearchBarCode,
+  onValuesChange
+}) => {
+  // const [desconto, setDesconto] = useState(0)
   return (
-    <Row
-      style={{
-        overflow: 'hidden',
-        backgroundColor: '#fff',
-        heigth: '100vh'
-      }}>
-      <Col className={styles.content} span={16}>
-        <Title level={3}>Pedido de venda</Title>
+    <Form
+      form={form}
+      onFinish={(formData) => console.log(formData)}
+      layout="vertical"
+      onValuesChange={onValuesChange}>
+      <Row>
+        <Col className={styles.content} span={16}>
+          <Title level={3}>Pedido de venda</Title>
 
-        <Row justify="space-between" align="bottom" gutter={[18, 26]}>
-          <Col flex="auto">
-            <Text>Buscar produto</Text>
-            <Select style={{ width: '100%' }}>
-              {map(
-                ({ value, children }) => (
-                  <Option value={value}>{children}</Option>
-                ),
-                productList
-              )}
-            </Select>
-          </Col>
-          <Col>
-            <Button
-              type="primary"
-              icon={<BarcodeOutlined />}
-              onClick={handleClickSearchBarCode}>
-              Buscar cód. barras
-            </Button>
-          </Col>
-        </Row>
+          <Form.List name="productsSelcts">
+            {(fields, { add, remove }, { errors }) => {
+              // console.log(fields)
+              return (
+                <>
+                  <Row justify="space-between" align="bottom" gutter={[18, 26]}>
+                    <Col flex="auto">
+                      <Text>Buscar produto</Text>
+                      <Select
+                        value={null}
+                        style={{ width: '100%' }}
+                        onChange={(_, { item }) => {
+                          handleChangeSelect(item, add)
+                        }}>
+                        {map(
+                          (item) => (
+                            <Option key={item.id} value={item.id} item={item}>
+                              {item.name}
+                            </Option>
+                          ),
+                          productList
+                        )}
+                      </Select>
+                    </Col>
+                    <Col>
+                      <Button
+                        type="primary"
+                        icon={<BarcodeOutlined />}
+                        onClick={handleClickSearchBarCode}>
+                        Buscar cód. barras
+                      </Button>
+                    </Col>
+                  </Row>
 
-        <Row justify="end">
-          <Text>
-            Total de Itens <Text style={{ color: '#1890FF' }}>4</Text>
-          </Text>
-        </Row>
+                  <Form.Item noStyle shouldUpdate>
+                    {({ getFieldValue }) => {
+                      const productsSelcts =
+                        getFieldValue('productsSelcts') || []
+                      // console.log('>>>', getFieldValue('productsSelcts'))
 
-        <Divider />
+                      return (
+                        <>
+                          <Row justify="end">
+                            <Text>
+                              Total de Itens{' '}
+                              <Text style={{ color: '#1890FF' }}>
+                                {length(productsSelcts)}
+                              </Text>
+                            </Text>
+                          </Row>
 
-        <div className={styles.wrapperProducts}>
-          {map(
-            ({ amount, barCode, productName, price }) => (
-              <Row justify="space-between" align="middle">
-                <Col>
-                  <Row>{productName}</Row>
-                  <Row>{barCode}</Row>
-                </Col>
-                <Col>
-                  <Row>{amount}</Row>
-                </Col>
-                <Col>
-                  <Row>{price}</Row>
-                </Col>
-                <Col>
-                  <DeleteOutlined />
-                </Col>
-                <Divider />
-              </Row>
-            ),
-            list
-          )}
-        </div>
-      </Col>
+                          <Divider />
 
-      <Col className={styles.resumo} span={8}>
-        <div>
-          <Title level={4}>Tipo de venda</Title>
-          <Form layout="vertical">
-            <Form.Item name="radio-group">
+                          <div className={styles.wrapperProducts}>
+                            {addIndex(map)(
+                              (
+                                { id, amount, barCode, name, salePrice },
+                                index
+                              ) => {
+                                return (
+                                  <Row
+                                    key={id}
+                                    align="middle"
+                                    className={styles.wrapperProduct}
+                                    gutter={10}>
+                                    <Col span={10}>
+                                      <Row>
+                                        <label className={styles.productName}>
+                                          {name}
+                                        </label>
+                                      </Row>
+                                      <Row>
+                                        <label
+                                          className={styles.productBarCode}>
+                                          {barCode}
+                                        </label>
+                                      </Row>
+                                    </Col>
+                                    <Col span={4}>
+                                      <Row
+                                        className={styles.productAmount}
+                                        justify="center"
+                                        align="middle"
+                                        gutter={10}>
+                                        <Col>
+                                          <DownOutlined
+                                            onClick={() => handleClickDown(id)}
+                                          />
+                                        </Col>
+                                        <Col>
+                                          <Row>
+                                            <label>{amount}</label>
+                                          </Row>
+                                        </Col>
+                                        <Col>
+                                          <UpOutlined
+                                            onClick={() => handleClickUp(id)}
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                    <Col span={8}>
+                                      <Row justify="end">
+                                        <label
+                                          className={styles.productPriceUnit}>
+                                          x {salePrice}
+                                        </label>
+                                      </Row>
+                                      <Row justify="end">
+                                        <label
+                                          className={styles.productPriceTotal}>
+                                          {amount * salePrice}
+                                        </label>
+                                      </Row>
+                                    </Col>
+                                    <Col span={2}>
+                                      <Row justify="end">
+                                        <DeleteOutlined
+                                          onClick={() => remove(index)}
+                                          className={styles.delete}
+                                        />
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                )
+                              },
+                              productsSelcts
+                            )}
+                          </div>
+                        </>
+                      )
+                    }}
+                  </Form.Item>
+                </>
+              )
+            }}
+          </Form.List>
+        </Col>
+
+        <Col className={styles.resumo} span={8}>
+          <div>
+            <Title level={4}>Resumo</Title>
+
+            <Form.Item rules={rules} name="type" label="Tipo de venda">
               <Radio.Group style={{ width: '100%' }}>
                 <Row justify="space-between">
-                  <Radio value="b">Venda rápida</Radio>
-                  <Radio value="c">Venda com entrega</Radio>
+                  <Radio value="fast">Venda rápida</Radio>
+                  <Radio value="delivery">Venda com entrega</Radio>
                 </Row>
               </Radio.Group>
             </Form.Item>
 
-            <Form.Item>
-              <span>Nome do cliente</span>
+            <span>Nome do cliente</span>
+            <Form.Item name="name">
               <Input />
             </Form.Item>
 
-            <Form.Item>
-              <span>Telefone</span>
+            <span>Telefone</span>
+            <Form.Item name="telphone">
               <Input />
             </Form.Item>
 
-            <Form.Item>
-              <span>Endereço completo</span>
+            <span>Endereço completo</span>
+            <Form.Item name="address">
               <Input />
             </Form.Item>
 
             <Divider />
 
-            <Text>Forma de Pagamento</Text>
-
-            <Form.Item name="pagamento">
+            <Form.Item
+              label="Forma de Pagamento"
+              rules={rules}
+              name="pagamento">
               <Radio.Group style={{ width: '100%' }}>
                 <Row>
                   {map(
@@ -151,12 +264,20 @@ const PDV = ({ list, productList }) => {
 
             <Row justify="space-between">
               <Text>Subtotal</Text>
-              <Text>R$ xxxx,xx</Text>
+              <Text>R$ {subTotal}</Text>
             </Row>
             <Row justify="space-between">
               <Text>Desconto</Text>
-              <Form.Item>
-                <Input />
+              <Form.Item name="discount">
+                <InputNumber
+                  className={styles.productDiscount}
+                  formatter={(value) =>
+                    `-R$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  }
+                  parser={(value) => value.replace(/-R\$\s?|(,*)/g, '')}
+                  min={0}
+                  max={subTotal}
+                />
               </Form.Item>
             </Row>
 
@@ -165,32 +286,62 @@ const PDV = ({ list, productList }) => {
                 <Title>Total</Title>
               </Col>
               <Col>
-                <Title style={{ color: '#1890FF' }}>R$ xxxx,xx</Title>
+                <Form.Item
+                  shouldUpdate={(prevValues, curValues) => {
+                    console.log(!isNaN(Number(curValues.discount)))
+                    return false
+                    // return (
+                    //   // prevValues.discount !== curValues.discount &&
+                    //   !isNaN(Number(curValues.discount))
+                    // )
+                  }}>
+                  {({ getFieldValue }) => {
+                    console.log('updated')
+                    return (
+                      <Title style={{ color: '#1890FF' }}>
+                        R$ {subTotal - getFieldValue('discount')}
+                      </Title>
+                    )
+                  }}
+                </Form.Item>
               </Col>
             </Row>
 
             <Row justify="space-between" gutter={12}>
               <Col span={12}>
-                <Button style={{ width: '100%' }} danger>
+                <Button
+                  style={{ width: '100%' }}
+                  onClick={handleClickClear}
+                  danger>
                   Limpar pedido
                 </Button>
               </Col>
               <Col span={12}>
-                <Button style={{ width: '100%' }} type="primary">
+                <Button
+                  htmlType="submit"
+                  style={{ width: '100%' }}
+                  type="primary">
                   Salvar
                 </Button>
               </Col>
             </Row>
-          </Form>
-        </div>
-      </Col>
+          </div>
+        </Col>
 
-      <ModalSearchBarCode
-        isVisible={isVisibleSearchBarCode}
-        handleCancel={handleCancelSearchBarCode}
-      />
-      <ModalNoFindedProduct isVisible={false} />
-    </Row>
+        <ModalSearchBarCode
+          isVisible={isVisibleSearchBarCode}
+          handleCancel={handleCancelSearchBarCode}
+          handleSearch={handleSearchBarCode}
+          searchValue={searchValue}
+          handleChangeSearchValue={handleChangeSearchValue}
+        />
+        <ModalNotFoundProduct
+          handleCancel={handleCancelNotFountProduct}
+          isVisible={isVisibleNotFoundProduct}
+          handleClickTryAgain={handleClickTryAgain}
+        />
+      </Row>
+    </Form>
   )
 }
 

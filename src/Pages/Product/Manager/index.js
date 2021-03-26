@@ -56,7 +56,7 @@ const Manager = ({
 
   const handleSubmit = async (values) => {
     try {
-      await createProduct(values)
+      await createProduct({ ...values, activated: true })
       getAllProducts()
     } catch (error) {
       console.log('error', error)

@@ -5,9 +5,13 @@ import warninig from '../../Assets/warninig.svg'
 
 const { Text } = Typography
 
-const ModalNoFindedProduct = ({ isVisible }) => {
+const ModalNotFoundProduct = ({
+  isVisible,
+  handleCancel,
+  handleClickTryAgain
+}) => {
   return (
-    <Modal visible={isVisible} footer={null}>
+    <Modal visible={isVisible} footer={null} onCancel={handleCancel}>
       <Row justify="center" gutter={[0, 20]}>
         <Col>
           <Image src={warninig} alt="warninig" preview={false} />
@@ -21,7 +25,10 @@ const ModalNoFindedProduct = ({ isVisible }) => {
           </Text>
         </Col>
         <Col span={24}>
-          <Button style={{ width: '100%' }} type="primary">
+          <Button
+            onClick={handleClickTryAgain}
+            style={{ width: '100%' }}
+            type="primary">
             Tenta novamente
           </Button>
         </Col>
@@ -30,4 +37,4 @@ const ModalNoFindedProduct = ({ isVisible }) => {
   )
 }
 
-export default ModalNoFindedProduct
+export default ModalNotFoundProduct

@@ -5,8 +5,15 @@ import { ScanOutlined } from '@ant-design/icons'
 import barCodeScanner from '../../Assets/barCodeScanner.svg'
 
 const { Text } = Typography
+const { Search } = Input
 
-const ModalSearchBarCode = ({ isVisible, handleCancel }) => {
+const ModalSearchBarCode = ({
+  searchValue,
+  isVisible,
+  handleCancel,
+  handleSearch,
+  handleChangeSearchValue
+}) => {
   return (
     <Modal visible={isVisible} footer={null} onCancel={handleCancel}>
       <Row justify="center" gutter={[0, 20]}>
@@ -21,7 +28,12 @@ const ModalSearchBarCode = ({ isVisible, handleCancel }) => {
         </Col>
         <Col span={24}>
           <Text>Scannear código de barra</Text>
-          <Input.Search enterButton={<ScanOutlined />} />
+          <Search
+            value={searchValue}
+            onChange={handleChangeSearchValue}
+            enterButton={<ScanOutlined />}
+            onSearch={handleSearch}
+          />
         </Col>
       </Row>
     </Modal>
