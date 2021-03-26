@@ -89,8 +89,6 @@ const Manager = ({
                 value={filters.label}
                 onChange={handleOnChange}
               />
-
-              {console.log(filters)}
             </Col>
             <Col span={3} style={{ paddingTop: '5px' }}>
               <CheckboxGroup
