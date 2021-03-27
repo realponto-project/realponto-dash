@@ -6,17 +6,13 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 
-import AdBanner from '../../Components/AdBanner'
-
 const Header = ({
   rootRoutes,
   history,
-  location,
   loggoutUser,
   unSetCompany,
   unSetStatus,
   user,
-  company,
   cleanCustomer,
   cleanOrder,
   cleanProduct
@@ -87,10 +83,6 @@ const Header = ({
           </Button>
         </Dropdown>
       </Col>
-      <Col span={24}>
-        {location.pathname.replace('/logged/', '') !== 'plans' &&
-          !company.subscription && <AdBanner />}
-      </Col>
     </Row>
   )
 
@@ -105,9 +97,8 @@ const Header = ({
   )
 }
 
-const mapStateToProps = ({ user, company }) => ({
-  user,
-  company
+const mapStateToProps = ({ user }) => ({
+  user
 })
 
 const mapDispatchToProps = (dispatch) => ({

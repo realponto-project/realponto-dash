@@ -11,6 +11,7 @@ import UpdateMyPassword from '../Pages/UpdateMyPassword'
 import MyTeam from '../Pages/MyTeam'
 import MyInfo from '../Pages/MyInfo'
 import PDV from '../Pages/PDV'
+import Home from '../Pages/Home'
 
 const RootRoutes = [
   {
@@ -101,6 +102,13 @@ const RootRoutes = [
     component: PDV,
     title: 'PONTO DE VENDA',
     path: '/logged/pdv',
+    exact: true,
+    goBack: true
+  },
+  {
+    component: Home,
+    title: 'Dashboard',
+    path: '/logged/dashboard',
     exact: true,
     goBack: true
   }

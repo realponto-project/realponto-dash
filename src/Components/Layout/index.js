@@ -1,25 +1,26 @@
 import React from 'react'
-import { Menu, Layout } from 'antd'
+import { Image, Menu, Layout } from 'antd'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { compose } from 'ramda'
-
+import { compose, pathOr } from 'ramda'
+import Logo from '../../Assets/logo.svg'
 import AdSide from '../../Components/AdSide'
 
 import {
-  // HomeOutlined,
+  DotChartOutlined,
   ShrinkOutlined,
   BlockOutlined,
+  CalculatorOutlined,
   TeamOutlined
 } from '@ant-design/icons'
 
 const { Sider, Content } = Layout
 const menuItems = [
-  // {
-  //   icon: <HomeOutlined />,
-  //   label: 'Resumo',
-  //   key: '/logged/dashboard',
-  // },
+  {
+    icon: <DotChartOutlined />,
+    label: 'Resumo',
+    key: '/logged/dashboard'
+  },
   {
     icon: <TeamOutlined />,
     label: 'Clientes',
@@ -31,6 +32,11 @@ const menuItems = [
     key: '/logged/product/manager'
   },
   {
+    icon: <CalculatorOutlined />,
+    label: 'Ponto de venda',
+    key: '/logged/pdv'
+  },
+  {
     icon: <ShrinkOutlined />,
     label: 'Ordens',
     key: '/logged/order/manager'
@@ -39,6 +45,8 @@ const menuItems = [
 
 const LayoutComponent = ({ children, history, location, company }) => {
   const goTo = ({ key }) => history.push(key)
+  const companyName = pathOr('', ['name'], company)
+  const parseCompanyName = companyName.length > 18 ? `${companyName.substr(0, 18)}...` : companyName
 
   return (
     <Layout>
@@ -54,6 +62,33 @@ const LayoutComponent = ({ children, history, location, company }) => {
           position: 'fixed',
           left: 0
         }}>
+        <div
+          style={{
+            padding: '24px 0 24px 24px',
+            margin: 'auto'
+          }}
+        >
+          <Image
+            style={{
+              position: 'relative',
+              width: '150px',
+              height: '79px',
+              margin: 'auto'
+            }}
+            preview={false}
+            width={220}
+            src={Logo}
+          />
+          <p
+            style={{
+              color: '#454550',
+              fontSize: '16px'
+            }}
+            title={parseCompanyName}
+          >
+            {parseCompanyName}
+          </p>
+        </div>
         <Menu
           theme="ligth"
           mode="inline"
@@ -82,7 +117,7 @@ const LayoutComponent = ({ children, history, location, company }) => {
   )
 }
 
-const mapStateToProps = ({ user, company }) => ({
+const mapStateToProps = ({ company }) => ({
   company
 })
 
