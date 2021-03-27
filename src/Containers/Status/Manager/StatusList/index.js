@@ -15,8 +15,8 @@ const columns = (chooseStatus) => [
   },
   {
     title: 'Descrição',
-    dataIndex: 'label',
-    key: 'label',
+    dataIndex: 'value',
+    key: 'value',
     fixed: 'left'
   },
 
@@ -25,9 +25,9 @@ const columns = (chooseStatus) => [
     dataIndex: 'typeLabel',
     key: 'typeLabel',
     fixed: 'left',
-    render: (text) => (
-      <Tag color={text ? '#18c923' : '#c91818'}>
-        {text ? 'Entrada' : 'Saída'}
+    render: (_, record) => (
+      <Tag color={record.color}>
+        {record.typeLabel}
       </Tag>
     )
   },
@@ -37,9 +37,11 @@ const columns = (chooseStatus) => [
     key: 'id',
     fixed: 'left',
     render: (_, record) => (
-      <Button type="link" onClick={() => chooseStatus(record)}>
-        Editar
-      </Button>
+      record.label !== 'initial_balance' && record.label !== 'sales' && (
+        <Button type="link" onClick={() => chooseStatus(record)}>
+          Editar
+        </Button>
+      )
     )
   }
 ]

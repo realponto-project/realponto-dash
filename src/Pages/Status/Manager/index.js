@@ -56,7 +56,8 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
       await createStatus({
         ...values,
         typeLabel: values.type === 'outputs' ? 'Saída' : 'Entrada',
-        value: values.label
+        value: values.label,
+        activated: true
       })
       getAllStatuses()
     } catch (error) {

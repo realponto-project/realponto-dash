@@ -92,7 +92,7 @@ const Plan = ({ isVisible, handleCancel }) => {
     )(plans)
 
   const inicioAssinatura = moment().format('L')
-  const terminoAssinatura = moment().add(12, 'months').format('L')
+  const terminoAssinatura = moment().add(13, 'months').format('L')
 
   const mask = (value, pattern) => {
     let i = 0
