@@ -6,7 +6,7 @@ import { compose } from 'ramda'
 import LoginContainer from '../../Containers/Login'
 import Auth from '../../Services/Auth'
 import { getCompanyById } from '../../Services/Company'
-import getAllStatus from '../../Services/Status'
+import { getAllStatus } from '../../Services/Status'
 
 const Login = ({ history, loggedUser, setCompany, setStatus }) => {
   const authentication = (values) => {
