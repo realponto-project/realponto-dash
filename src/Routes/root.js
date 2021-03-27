@@ -6,6 +6,7 @@ import CustomerAdd from '../Pages/Customer/Add'
 import CustomerDetail from '../Pages/Customer/Detail'
 import CustomerManager from '../Pages/Customer/Manager'
 import ProductManager from '../Pages/Product/Manager'
+import StatusManager from '../Pages/Status/Manager'
 import UpdateMyPassword from '../Pages/UpdateMyPassword'
 import MyTeam from '../Pages/MyTeam'
 import MyInfo from '../Pages/MyInfo'
@@ -23,6 +24,13 @@ const RootRoutes = [
     component: MyInfo,
     title: 'MINHA CONTA',
     path: '/logged/account-myinfo',
+    exact: true,
+    goBack: true
+  },
+  {
+    component: StatusManager,
+    title: 'STATUS',
+    path: '/logged/config/status',
     exact: true,
     goBack: true
   },
