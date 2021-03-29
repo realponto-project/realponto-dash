@@ -29,9 +29,9 @@ const PieChartHome = ({
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip labelFormatter={() => 'Vendas'} cursor={{ fillOpacity: 0.3 }} />
           </PieChart>
         </ResponsiveContainer>
+        <h1 className={styles.totalValueSales}>856</h1>
       </Col>
       <Col span={24}>
         <div className={styles.pieChartLegends}>
