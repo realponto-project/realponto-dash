@@ -4,6 +4,10 @@ const getAll = async (params = {}) => {
   return await axiosIntance.get('/customers', { params })
 }
 
+const getCusmtomerById = async (id) => {
+  return await axiosIntance.get(`/customers/${id}`)
+}
+
 const createCustomer = async (values) => {
   return await axiosIntance.post('/customers', values)
 }
@@ -12,4 +16,4 @@ const updateCustomer = async (values) => {
   return await axiosIntance.put(`/customers/${values.id}`, values)
 }
 
-export { getAll, createCustomer, updateCustomer }
+export { getAll, getCusmtomerById, createCustomer, updateCustomer }

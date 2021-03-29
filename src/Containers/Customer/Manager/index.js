@@ -13,6 +13,7 @@ const Manager = ({
   expand,
   filters,
   formAdd,
+  handleClickEdit,
   handleClickExpand,
   handleFilter,
   handleSubmitAdd,
@@ -67,7 +68,7 @@ const Manager = ({
     </Col>
     <Col span={24}>
       <Card bordered={false}>
-        <CustomerList datasource={source} />
+        <CustomerList datasource={source} handleClickEdit={handleClickEdit} />
       </Card>
     </Col>
 

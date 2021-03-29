@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
 import { connect } from 'react-redux'
-import { compose, isEmpty } from 'ramda'
+import { compose, isEmpty, isNil, pathOr } from 'ramda'
 import { Form } from 'antd'
 
 import ManagerContainer from '../../../Containers/Customer/Manager'
-import { getAll, createCustomer } from '../../../Services/Customer'
-import { buildAddCustomer } from '../../../utils/Specs/Customer'
+import {
+  getAll,
+  getCusmtomerById,
+  createCustomer,
+  updateCustomer
+} from '../../../Services/Customer'
+import {
+  buildAddCustomer,
+  buildFormValuesCustomer
+} from '../../../utils/Specs/Customer'
 
 const Manager = ({
   cleanCustomerSearch,
@@ -68,12 +76,30 @@ const Manager = ({
   const handleSubmitAdd = async (formData) => {
     const customerValues = buildAddCustomer(expand)(formData)
     try {
-      await createCustomer(customerValues)
+      if (isNil(customerValues.id)) {
+        await createCustomer(customerValues)
+      } else {
+        await updateCustomer(customerValues)
+      }
 
       getAllCustomers()
       closeModalAdd()
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  const handleClickEdit = async (id) => {
+    try {
+      const { status, data } = await getCusmtomerById(id)
+
+      if (status !== 200) throw new Error('Customer not found')
+
+      setExpand(!isNil(pathOr(null, ['address'], data)))
+      setVisibleModalAdd(true)
+      formAdd.setFieldsValue(buildFormValuesCustomer(data))
+    } catch (err) {
+      console.error(err)
     }
   }
 
@@ -84,6 +110,7 @@ const Manager = ({
       expand={expand}
       filters={customerSearch}
       formAdd={formAdd}
+      handleClickEdit={handleClickEdit}
       handleClickExpand={handleClickExpand}
       handleFilter={getAllCustomers}
       handleSubmitAdd={handleSubmitAdd}

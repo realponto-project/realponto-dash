@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Input, Modal, Row } from 'antd'
 import { map } from 'ramda'
-import { DownOutlined, UpOutlined } from '@ant-design/icons'
+import { MinusOutlined, PlusOutlined } from '@ant-design/icons'
 
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
@@ -49,11 +49,13 @@ const Add = ({
         wrapperCol={{ span: 18 }}
         form={form}
         onFinish={handleSubmit}>
+        <Form.Item name="id" noStyle />
+
         {map(renderFormItems, customerFormItemsList)}
 
         <Row justify="end">
           <a onClick={handleClickExpand}>
-            {expand ? <UpOutlined /> : <DownOutlined />} Endereço
+            {expand ? <MinusOutlined /> : <PlusOutlined />} Endereço
           </a>
         </Row>
 

@@ -1,4 +1,4 @@
-import { always, applySpec, ifElse, prop } from 'ramda'
+import { always, applySpec, ifElse, pathOr, prop } from 'ramda'
 
 export const buildAddCustomer = (expand) =>
   applySpec({
@@ -17,7 +17,24 @@ export const buildAddCustomer = (expand) =>
       always(null)
     ),
     document: prop('document'),
+    id: prop('id'),
     name: prop('name'),
     phone: prop('phone'),
     socialName: prop('socialName')
   })
+
+export const buildFormValuesCustomer = applySpec({
+  city: pathOr('', ['address', 'city']),
+  complementary: pathOr('', ['address', 'complementary']),
+  document: prop('document'),
+  id: prop('id'),
+  name: prop('name'),
+  neighborhood: pathOr('', ['address', 'neighborhood']),
+  phone: prop('phone'),
+  reference: pathOr('', ['address', 'reference']),
+  socialName: prop('socialName'),
+  states: pathOr('', ['address', 'states']),
+  street: pathOr('', ['address', 'street']),
+  streetNumber: pathOr('', ['address', 'streetNumber']),
+  zipcode: pathOr('', ['address', 'zipcode'])
+})
