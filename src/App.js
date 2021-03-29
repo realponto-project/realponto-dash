@@ -28,14 +28,15 @@ const store = createStore(
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistStore(store)}></PersistGate>
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route exact path="/register/sucess" component={Success} />
-        <Route path="/register" component={Register} />
-        <Route path="/logged" component={logged} />
-        <Redirect from="*" to="/login" />
-      </Switch>
+      <PersistGate loading={null} persistor={persistStore(store)}>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route exact path="/register/sucess" component={Success} />
+          <Route path="/register" component={Register} />
+          <Route path="/logged" component={logged} />
+          <Redirect from="*" to="/login" />
+        </Switch>
+      </PersistGate>
     </Provider>
   )
 }
