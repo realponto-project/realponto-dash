@@ -2,7 +2,6 @@ import OrderAdd from '../Pages/Order/Add'
 import OutOrder from '../Pages/Order/OutOrder'
 import OrderDetail from '../Pages/Order/Detail'
 import OrderManager from '../Pages/Order/Manager'
-import CustomerAdd from '../Pages/Customer/Add'
 import CustomerDetail from '../Pages/Customer/Detail'
 import CustomerManager from '../Pages/Customer/Manager'
 import ProductManager from '../Pages/Product/Manager'
@@ -83,13 +82,6 @@ const RootRoutes = [
     path: '/logged/customer/manager',
     exact: true,
     goBack: false
-  },
-  {
-    component: CustomerAdd,
-    title: 'ADICIONAR CLIENTE',
-    path: '/logged/customer/add',
-    exact: true,
-    goBack: true
   },
   {
     component: CustomerDetail,
