@@ -21,12 +21,15 @@ const Login = ({ history, loggedUser, setCompany, setStatus }) => {
       .then(({ data }) => setCompany(data))
       .then(() => getAllStatus({ limit: 9999 }))
       .then(({ data }) => setStatus(data))
-      .then(() => history.push('/logged/order/manager'))
+      .then(() => history.push('/logged/dashboard'))
       .catch((err) => console.log(err))
   }
 
   return (
-    <LoginContainer authentication={authentication} registerPath="register" />
+    <LoginContainer 
+      authentication={authentication}
+      registerPath="register"
+    />
   )
 }
 
