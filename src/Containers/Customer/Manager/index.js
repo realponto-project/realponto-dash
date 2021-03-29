@@ -1,16 +1,25 @@
 import React from 'react'
-import { Button, Card, Input, Row, Col, Typography } from 'antd'
-import CustomerList from './CustomerList'
+import { Button, Card, Col, Input, Row, Typography } from 'antd'
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+
+import ModalAdd from '../Add'
+import CustomerList from './CustomerList'
 
 const { Title } = Typography
 
 const Manager = ({
-  source,
-  onChangeSearch,
+  clearFilters,
+  closeModalAdd,
+  expand,
   filters,
+  formAdd,
+  handleClickExpand,
   handleFilter,
-  clearFilters
+  handleSubmitAdd,
+  onChangeSearch,
+  openModalAdd,
+  source,
+  visibleModalAdd
 }) => (
   <Row gutter={[8, 16]}>
     <Col span={24}>
@@ -24,7 +33,7 @@ const Manager = ({
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button
-              onClick={console.log}
+              onClick={openModalAdd}
               style={{ marginRight: '16px' }}
               icon={<PlusOutlined />}>
               Adicionar Cliente
@@ -61,6 +70,15 @@ const Manager = ({
         <CustomerList datasource={source} />
       </Card>
     </Col>
+
+    <ModalAdd
+      expand={expand}
+      form={formAdd}
+      handleCancel={closeModalAdd}
+      handleClickExpand={handleClickExpand}
+      handleSubmit={handleSubmitAdd}
+      visible={visibleModalAdd}
+    />
   </Row>
 )
 

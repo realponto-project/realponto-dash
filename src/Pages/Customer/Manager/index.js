@@ -2,16 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
 import { connect } from 'react-redux'
 import { compose, isEmpty } from 'ramda'
+import { Form } from 'antd'
 
 import ManagerContainer from '../../../Containers/Customer/Manager'
-import { getAll } from '../../../Services/Customer'
+import { getAll, createCustomer } from '../../../Services/Customer'
+import { buildAddCustomer } from '../../../utils/Specs/Customer'
 
 const Manager = ({
+  cleanCustomerSearch,
   customerSearch,
-  setCustomerSearch,
-  cleanCustomerSearch
+  setCustomerSearch
 }) => {
+  const [expand, setExpand] = useState(false)
+  const [formAdd] = Form.useForm()
   const [source, setSource] = useState([])
+  const [visibleModalAdd, setVisibleModalAdd] = useState(false)
 
   useEffect(() => {
     getAllCustomers()
@@ -52,13 +57,40 @@ const Manager = ({
     cleanCustomerSearch()
   }
 
+  const closeModalAdd = () => {
+    setExpand(false)
+    setVisibleModalAdd(false)
+    formAdd.resetFields()
+  }
+
+  const handleClickExpand = () => setExpand(!expand)
+
+  const handleSubmitAdd = async (formData) => {
+    const customerValues = buildAddCustomer(expand)(formData)
+    try {
+      await createCustomer(customerValues)
+
+      getAllCustomers()
+      closeModalAdd()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <ManagerContainer
-      source={source}
-      handleFilter={getAllCustomers}
-      onChangeSearch={onChangeSearch}
-      filters={customerSearch}
       clearFilters={clearFilters}
+      closeModalAdd={closeModalAdd}
+      expand={expand}
+      filters={customerSearch}
+      formAdd={formAdd}
+      handleClickExpand={handleClickExpand}
+      handleFilter={getAllCustomers}
+      handleSubmitAdd={handleSubmitAdd}
+      onChangeSearch={onChangeSearch}
+      openModalAdd={() => setVisibleModalAdd(true)}
+      source={source}
+      visibleModalAdd={visibleModalAdd}
     />
   )
 }
