@@ -1,77 +1,65 @@
-import React, { useState } from 'react'
-import { Button, Card, Col, Row, Steps } from 'antd'
-import { length } from 'ramda'
+import React from 'react'
+import { Form, Input, Modal, Row } from 'antd'
+import { map } from 'ramda'
+import { DownOutlined, UpOutlined } from '@ant-design/icons'
 
-import StepButtons from './StepButtons'
-import DataStep from './DataStep'
-import AddressStep from './AddressStep'
-import ContactStep from './ContactStep'
+const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
-const { Step } = Steps
+const customerFormItemsList = [
+  { label: 'Nome', name: 'name', rules },
+  { label: 'Razão Social', name: 'socialName', rules },
+  { label: 'CNPJ/CPF', name: 'document', rules },
+  { label: 'Telefone', name: 'phone', rules }
+]
+const addressFormItemsList = [
+  { label: 'CEP', name: 'zipcode', rules },
+  { label: 'UF', name: 'states', rules },
+  { label: 'Cidade', name: 'city', rules },
+  { label: 'Bairro', name: 'neighborhood', rules },
+  { label: 'Logradouro', name: 'street', rules },
+  { label: 'Número', name: 'streetNumber', rules },
+  { label: 'Complemento', name: 'complementary' },
+  { label: 'Referência', name: 'reference' }
+]
 
-const steps = [DataStep, AddressStep, ContactStep]
-
-const Add = ({ goToManager }) => {
-  const [current, setCurrent] = useState(0)
-
-  const next = () => setCurrent(current + 1)
-  const prev = () => setCurrent(current - 1)
-  const done = () => console.log('finish')
-
-  const ComponentStep = steps[current]
-
+const renderFormItems = ({ label, name, rules }) => {
   return (
-    <Row gutter={[8, 8]}>
-      <Col span={24}>
-        <Card bordered={false}>
-          <Steps current={current}>
-            {steps.map((_, index) => (
-              <Step key={index} />
-            ))}
-          </Steps>
-        </Card>
-      </Col>
-      <Col span={24}>
-        <Card bordered={false}>
-          <Row gutter={[8, 16]}>
-            <Col span={24}>
-              <ComponentStep
-              // form
-              // formData={formData}
-              // handleOnChange={handleOnChange}
-              // handleAddProduct={handleAddProduct}
-              // customerList={customerList}
-              // userList={userList}
-              // productList={productList}
-              // formErrors={formErrors}
-              // handleRemoveItem={handleRemoveItem}
-              // form={form}
-              // customerSelected={customerSelected}
-              // statusList={statusList}
-              // userSelected={userSelected}
-              // navigationStep={navigationStep}
-              />
-            </Col>
-          </Row>
-          <Row justify="end">
-            <Col span={12} style={{ textAlign: 'left' }}>
-              <Button type="text" onClick={goToManager}>
-                Cancelar
-              </Button>
-            </Col>
-            <Col span={12} style={{ textAlign: 'right' }}>
-              <StepButtons
-                current={current}
-                steps={length(steps)}
-                next={next}
-                prev={prev}
-                done={done}
-              />
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-    </Row>
+    <Form.Item key={name} label={label} name={name} rules={rules}>
+      <Input />
+    </Form.Item>
+  )
+}
+
+const Add = ({
+  expand,
+  form,
+  handleCancel,
+  handleClickExpand,
+  handleSubmit,
+  visible
+}) => {
+  return (
+    <Modal
+      onCancel={handleCancel}
+      onOk={() => form.submit()}
+      title="Cadastro cliente"
+      visible={visible}>
+      <Form
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 18 }}
+        form={form}
+        onFinish={handleSubmit}>
+        {map(renderFormItems, customerFormItemsList)}
+
+        <Row justify="end">
+          <a onClick={handleClickExpand}>
+            {expand ? <UpOutlined /> : <DownOutlined />} Endereço
+          </a>
+        </Row>
+
+        {expand ? map(renderFormItems, addressFormItemsList) : null}
+      </Form>
+    </Modal>
   )
 }
 
