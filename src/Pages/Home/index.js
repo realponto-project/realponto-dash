@@ -81,7 +81,12 @@ const dataBarChart = [
 ]
 
 const Home = () => (
-  <HomeContainer dataBarChart={dataBarChart} dataPieChart={dataPieChart} />
+  <HomeContainer
+    dataBarChart={dataBarChart}
+    dataPieChart={dataPieChart}
+    customers={{ value: 200 }}
+    orders={{ value: 800 }}
+  />
 )
 
 export default Home

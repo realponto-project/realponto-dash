@@ -17,7 +17,8 @@
 .cardPremiumAd,
 .cardTotalValues,
 .cardBarChart,
-.cardPieChart {
+.cardPieChart,
+.cardEmptyState {
   background: #FFFFFF;
   border-radius: 3px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
@@ -75,4 +76,29 @@
 
 .cardPieChart {
   min-height: 300px;
+}
+
+.cardEmptyState {
+  display: flex;
+  padding: 50px;
+  box-sizing: border-box;
+  justify-content: space-around;
+}
+
+.cardEmptyStateInfo {
+  color: #4A4A4A;
+}
+
+.cardEmptyStateTitle {
+  font-size: 29px;
+  font-weight: bold;
+}
+
+.cardEmptyStateTitleSpan {
+  color: #1890FF;
+}
+
+.cardEmptyStateSubtitle {
+  font-size: 16px;
+  width: 400px;
 }

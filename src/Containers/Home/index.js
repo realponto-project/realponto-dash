@@ -9,11 +9,16 @@ import BarChart from './BarChart'
 import OrdersSvg from './orders.svg'
 import CustomersSvg from './customers.svg'
 import PersonAd from './personAd.png'
+import EmptyStateSvg from './empty-state.svg'
+import EmptyStateOrderSvg from './empty-state-order.svg'
+import EmptyStateCustomersSvg from './empty-state-customers.svg'
 import styles from './style.module.css'
 
 const Home = ({
   dataBarChart,
-  dataPieChart
+  dataPieChart,
+  customers,
+  orders,
 }) => {
   return (
     <Row gutter={[18, 18]}>
@@ -34,30 +39,50 @@ const Home = ({
         <div className={styles.cardTotalValues}>
           <div>
             <h1 className={styles.cardTotalTitle}>Total de Pedidos</h1>
-            <h1 className={styles.cardTotalValue}>872</h1>
+            <h1 className={styles.cardTotalValue}>{orders ? orders.value : '-' }</h1>
           </div>
-          <Image preview={false} src={OrdersSvg} alt="orders" />
+          <Image preview={false} src={orders ? OrdersSvg : EmptyStateOrderSvg} alt="orders" />
         </div>
       </Col>
       <Col span={6}>
         <div className={styles.cardTotalValues}>
           <div>
             <h1 className={styles.cardTotalTitle}>Total de Clientes</h1>
-            <h1 className={styles.cardTotalValue}>872</h1>
+            <h1 className={styles.cardTotalValue}>{customers ? customers.value : '-' }</h1>
           </div>
-          <Image src={CustomersSvg} preview={false} alt="customers" />
+          <Image src={orders ? CustomersSvg : EmptyStateCustomersSvg } preview={false} alt="customers" />
         </div>
       </Col>
-      <Col span={18}>
-        <div className={styles.cardBarChart}>
-          <BarChart data={dataBarChart} />
-        </div>
-      </Col>
-      <Col span={6}>
-        <div className={styles.cardPieChart}>
-          <PieChart data={dataPieChart} />
-        </div>
-      </Col>
+      {
+        dataBarChart.length > 0 ? (
+          <>
+            <Col span={18}>
+              <div className={styles.cardBarChart}>
+                <BarChart data={dataBarChart} />
+              </div>
+            </Col>
+            <Col span={6}>
+              <div className={styles.cardPieChart}>
+                <PieChart data={dataPieChart} />
+              </div>
+            </Col>
+          </>
+          )
+        : (
+          <Col span={24}>
+            <div className={styles.cardEmptyState}>
+              <div className={styles.cardEmptyStateInfo}>
+                <h1 className={styles.cardEmptyStateTitle}>Não encontramos nenhuma
+                  <span className={styles.cardEmptyStateTitleSpan}> Venda</span>!
+                </h1>
+                <p className={styles.cardEmptyStateSubtitle}>Você ainda não possue nenhuma venda para calcularmos as suas métricas</p>
+                <p className={styles.cardEmptyStateSubtitle}>Cadastre um <b>produto</b>, acesse o <b>ponto de venda</b> e comece a utilizar o <b>alxa</b>!</p>
+              </div>
+              <Image src={EmptyStateSvg} preview={false} alt="empty state" />
+            </div>
+          </Col>
+        )
+      }
     </Row>
   )
 }
