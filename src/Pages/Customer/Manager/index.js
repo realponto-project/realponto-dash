@@ -1,17 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
 import { connect } from 'react-redux'
-import { compose, isEmpty } from 'ramda'
+import { compose, isEmpty, isNil, pathOr } from 'ramda'
+import { Form } from 'antd'
 
 import ManagerContainer from '../../../Containers/Customer/Manager'
-import { getAll } from '../../../Services/Customer'
+import {
+  getAll,
+  getCusmtomerById,
+  createCustomer,
+  updateCustomer
+} from '../../../Services/Customer'
+import {
+  buildAddCustomer,
+  buildFormValuesCustomer
+} from '../../../utils/Specs/Customer'
 
 const Manager = ({
+  cleanCustomerSearch,
   customerSearch,
-  setCustomerSearch,
-  cleanCustomerSearch
+  setCustomerSearch
 }) => {
+  const [expand, setExpand] = useState(false)
+  const [formAdd] = Form.useForm()
   const [source, setSource] = useState([])
+  const [visibleModalAdd, setVisibleModalAdd] = useState(false)
 
   useEffect(() => {
     getAllCustomers()
@@ -52,13 +65,59 @@ const Manager = ({
     cleanCustomerSearch()
   }
 
+  const closeModalAdd = () => {
+    setExpand(false)
+    setVisibleModalAdd(false)
+    formAdd.resetFields()
+  }
+
+  const handleClickExpand = () => setExpand(!expand)
+
+  const handleSubmitAdd = async (formData) => {
+    const customerValues = buildAddCustomer(expand)(formData)
+    try {
+      if (isNil(customerValues.id)) {
+        await createCustomer(customerValues)
+      } else {
+        await updateCustomer(customerValues)
+      }
+
+      getAllCustomers()
+      closeModalAdd()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const handleClickEdit = async (id) => {
+    try {
+      const { status, data } = await getCusmtomerById(id)
+
+      if (status !== 200) throw new Error('Customer not found')
+
+      setExpand(!isNil(pathOr(null, ['address'], data)))
+      setVisibleModalAdd(true)
+      formAdd.setFieldsValue(buildFormValuesCustomer(data))
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <ManagerContainer
-      source={source}
-      handleFilter={getAllCustomers}
-      onChangeSearch={onChangeSearch}
-      filters={customerSearch}
       clearFilters={clearFilters}
+      closeModalAdd={closeModalAdd}
+      expand={expand}
+      filters={customerSearch}
+      formAdd={formAdd}
+      handleClickEdit={handleClickEdit}
+      handleClickExpand={handleClickExpand}
+      handleFilter={getAllCustomers}
+      handleSubmitAdd={handleSubmitAdd}
+      onChangeSearch={onChangeSearch}
+      openModalAdd={() => setVisibleModalAdd(true)}
+      source={source}
+      visibleModalAdd={visibleModalAdd}
     />
   )
 }
