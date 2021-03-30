@@ -81,14 +81,16 @@ const Formulario = ({ onEdit }) => {
           <Form.Item label="Número crachá" name="badget">
             <Input placeholder="Digite o número do crachá" />
           </Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.buttonLetsGo}>
-            Continuar
-          </Button>
         </Form>
       </Card>
+      <Button
+        form="form_onboarding" 
+        key="submit" 
+        htmlType="submit"
+        type="primary"
+        className={styles.buttonLetsGo}>
+        Continuar
+          </Button>
     </>
   )
 }

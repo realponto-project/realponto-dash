@@ -14,7 +14,7 @@ const Login = ({ history, loggedUser, setCompany, setStatus }) => {
     Auth(values)
       .then(({ data }) => {
         loggedUser(data)
-        if (!data.firstAccess) {
+        if (data.firstAccess) {
           redirectPage = '/user/onboarding'
         }
         localStorage.setItem('token', data.token)
@@ -22,12 +22,14 @@ const Login = ({ history, loggedUser, setCompany, setStatus }) => {
         return data
       })
       .then((data) => {
-        getCompanyById(data.companyId)
+        return getCompanyById(data.companyId)
       })
       .then(({ data }) => setCompany(data))
       .then(() => getAllStatus({ limit: 9999 }))
       .then(({ data }) => setStatus(data))
-      .then(() => history.push(redirectPage))
+      .then(() => {
+        history.push(redirectPage)
+      })
       .catch((err) => console.log(err))
   }
 

@@ -9,27 +9,27 @@ const { Paragraph } = Typography
 const UpdatePass = ({ onEdit }) => {
   const [form] = Form.useForm()
 
-  // const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
-  //   getFieldValue
-  // }) => {
-  //   const validator = (rule, value) => {
-  //     if (shouldBeEqual) {
-  //       if (!value || getFieldValue(passwordPropName) === value) {
-  //         return Promise.resolve()
-  //       }
-  //       return Promise.reject('Senhas não coincidem!')
-  //     }
+  const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
+    getFieldValue
+  }) => {
+    const validator = (rule, value) => {
+      if (shouldBeEqual) {
+        if (!value || getFieldValue(passwordPropName) === value) {
+          return Promise.resolve()
+        }
+        return Promise.reject('Senhas não coincidem!')
+      }
 
-  //     if (value && getFieldValue(passwordPropName) === value) {
-  //       return Promise.reject(
-  //         'A sua nova senha deve ser diferente da sua senha antiga!'
-  //       )
-  //     }
-  //     return Promise.resolve()
-  //   }
+      if (value && getFieldValue(passwordPropName) === value) {
+        return Promise.reject(
+          'A sua nova senha deve ser diferente da sua senha antiga!'
+        )
+      }
+      return Promise.resolve()
+    }
 
-  //   return { validator }
-  // }
+    return { validator }
+  }
 
   return (
     <>
@@ -57,7 +57,6 @@ const UpdatePass = ({ onEdit }) => {
               .then((values) => {
                 form.resetFields()
                 onEdit(values)
-                console.log('valuesssssssssss edit', values)
               })
               .catch((info) => {
                 console.log('Validate Failed:', info)
@@ -74,7 +73,7 @@ const UpdatePass = ({ onEdit }) => {
             label="Nova senha"
             name="newPassword"
             rules={[
-              // validatorPassword('password', false),
+              validatorPassword('password', false),
               { required: true, message: 'Campo obrigatório!' }
             ]}>
             <Input />
@@ -84,19 +83,21 @@ const UpdatePass = ({ onEdit }) => {
             label="Confirmar senha"
             name="confirmPassword"
             rules={[
-              // validatorPassword('newPassword', true),
+              validatorPassword('newPassword', true),
               { required: true, message: 'Campo obrigatório!' }
             ]}>
             <Input />
           </Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className={styles.buttonLetsGo}>
-            Concluir
-          </Button>
         </Form>
       </Card>
+      <Button
+        form="form_update_password_onboarding"
+        key="submit"
+        htmlType="submit"
+        type="primary"
+        className={styles.buttonLetsGo}>
+        Concluir
+      </Button>
     </>
   )
 }

@@ -61,12 +61,12 @@ const Onboarding = ({ user, updateMyInfo, handleSubmit }) => {
           <Paragraph className={styles.textWelcome}>
             Bem vindo, {user.name}
           </Paragraph>
-          {isWelcomeVisible ? <Welcome /> : null}
+          {isWelcomeVisible ? <> <Welcome /> <Button className={styles.buttonLetsGo} type="primary" onClick={next}>
+            Vamos lá!
+          </Button> </>: null}
           {isFormVisible ? <Formulario onEdit={onSubmitUpdateInfo} /> : null}
           {isUpdateVisible ? <UpdatePass onEdit={onSubmitUpdatePass} /> : null}
-          <Button className={styles.buttonLetsGo} type="primary" onClick={next}>
-            Vamos lá!
-          </Button>
+          
         </Card>
       </Col>
     </Row>
