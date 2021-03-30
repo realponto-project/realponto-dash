@@ -8,6 +8,7 @@ import ProductManager from '../Pages/Product/Manager'
 import StatusManager from '../Pages/Status/Manager'
 import UpdateMyPassword from '../Pages/UpdateMyPassword'
 import MyTeam from '../Pages/MyTeam'
+import Onboarding from '../Pages/Onboarding'
 import MyInfo from '../Pages/MyInfo'
 import PDV from '../Pages/PDV'
 import Home from '../Pages/Home'
@@ -17,6 +18,12 @@ const RootRoutes = [
     component: OrderAdd,
     title: 'ADICIONAR ORDEM DE ENTRADA',
     path: '/logged/order-inputs',
+    exact: true,
+    goBack: true
+  },
+  {
+    component: Onboarding,
+    path: '/logged/onboarding',
     exact: true,
     goBack: true
   },
