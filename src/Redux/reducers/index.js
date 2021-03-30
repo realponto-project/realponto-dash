@@ -7,6 +7,7 @@ import customerSearchReducer from './customerSearch'
 import productSearchReducer from './productSearch'
 import statusSearchReducer from './statusSearch'
 import orderSearchReducer from './orderSearch'
+import formPdvReducer from './formPdv'
 
 export default combineReducers({
   user: userReducer,
@@ -14,6 +15,7 @@ export default combineReducers({
   status: statusReducer,
   customerSearch: customerSearchReducer,
   productSearch: productSearchReducer,
+  formPdv: formPdvReducer,
   statusSearch: statusSearchReducer,
   orderSearch: orderSearchReducer
 })

@@ -9,16 +9,20 @@ import Layout from '../../Components/Layout'
 
 const renderRoute = (route) => <ProtectedRoute key={route.path} {...route} />
 
+export const LoggedWithoutLayout = () => (
+  <Row gutter={[8, 8]}>
+    <Col span={24}>
+      <Header rootRoutes={rootRoutes} />
+    </Col>
+    <Col span={24}>
+      <Switch>{rootRoutes.map(renderRoute)}</Switch>
+    </Col>
+  </Row>
+)
+
 const Logged = () => (
   <Layout>
-    <Row gutter={[8, 8]}>
-      <Col span={24}>
-        <Header rootRoutes={rootRoutes} />
-      </Col>
-      <Col span={24}>
-        <Switch>{rootRoutes.map(renderRoute)}</Switch>
-      </Col>
-    </Row>
+    <LoggedWithoutLayout />
   </Layout>
 )
 
