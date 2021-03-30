@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const baseURL = `${process.env.REACT_APP_API_URL}/api`
+const baseURL = `https://alxa-core-staging.herokuapp.com/api`
 
 const axiosInstance = axios.create({ baseURL })
 

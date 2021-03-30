@@ -1,0 +1,9 @@
+.checkoutInfo {
+  height: 800px;
+  width: 510px;
+  position: fixed;
+  background: #F2F2F3;
+  border-radius: 3px;
+  padding: 16px;
+  box-sizing: border-box;
+}
