@@ -1,8 +1,9 @@
 import React from 'react'
 import { Table } from 'antd'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
+import { EditOutlined } from '@ant-design/icons'
 
-const columns = [
+const columns = ({ handleClickEdit }) => [
   {
     title: 'Nome do cliente',
     dataIndex: 'name',
@@ -21,11 +22,18 @@ const columns = [
     dataIndex: 'phone',
     key: 'phone',
     fixed: 'left'
+  },
+  {
+    title: ' ',
+    dataIndex: 'id',
+    render: (id) => <EditOutlined onClick={() => handleClickEdit(id)} />
   }
 ]
 
-const CustomerList = ({ datasource }) => {
-  return <Table columns={columns} dataSource={datasource} />
+const CustomerList = ({ datasource, handleClickEdit }) => {
+  return (
+    <Table columns={columns({ handleClickEdit })} dataSource={datasource} />
+  )
 }
 
 export default CustomerList

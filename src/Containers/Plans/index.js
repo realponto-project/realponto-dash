@@ -28,7 +28,7 @@ import { CheckOutlined } from '@ant-design/icons'
 import styles from './style.module.css'
 import { getAll } from '../../Services/Plans'
 import createSubscription from '../../Services/Subscription'
-// import { encryption_key } from '../../config/api_keys'
+import { createCardHash } from '../../Services/pagarme'
 
 import Logo from './alxa.svg'
 import Visa from './visa.svg'
@@ -115,12 +115,23 @@ const Plan = ({ isVisible, handleCancel }) => {
   }
 
   const addSubscription = async (values) => {
-    const response = await createSubscription({
-      ...values,
-      planId
-      // companyId:
-    })
-    return response
+    try {
+      const cardHash = await createCardHash(values)
+      const response = await createSubscription({
+        ...values,
+        planId,
+        cardHash,
+        card_holder_name: values.card_holder_name.replace(/\W/g),
+        card_number: values.card_number.replace(/\D/g),
+        card_expiration_date: values.card_expiration_date.replace(/\D/g),
+        card_cvv: values.card_cvv.replace(/\D/g),
+        activated: true,
+        amount: Number(amount) * 100
+      })
+      return response
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -272,12 +283,9 @@ const Plan = ({ isVisible, handleCancel }) => {
               onFinish={addSubscription}
               layout={'vertical'}
               onValuesChange={(e) =>
-                // console.log(pipe(keys, (tes) => tes[0], maskTest(e))(e))
                 form.setFieldsValue(pipe(keys, (tes) => tes[0], maskTest(e))(e))
               }
-              form={form}
-              // onFinish={handleOk}
-            >
+              form={form}>
               <Form.Item
                 label={
                   <label
