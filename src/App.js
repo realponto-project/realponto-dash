@@ -12,6 +12,7 @@ import Register from './Pages/Accreditation/Register'
 import Success from './Pages/Accreditation/Register/Success'
 import logged, { LoggedWithoutLayout } from './Pages/Logged'
 import reducers from './Redux/reducers'
+import Onboarding from './Pages/Onboarding'
 
 const persistConfig = {
   key: 'root',
@@ -28,16 +29,16 @@ const store = createStore(
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistStore(store)}>
-        <Switch>
-          <Route path="/login" component={Login} />
-          <Route exact path="/register/sucess" component={Success} />
-          <Route path="/register" component={Register} />
-          <Route path="/logged" component={logged} />
+      <PersistGate loading={null} persistor={persistStore(store)}></PersistGate>
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route exact path="/register/sucess" component={Success} />
+        <Route path="/register" component={Register} />
+        <Route path="/logged" component={logged} />
           <Route path="/logged/pdv" component={LoggedWithoutLayout} />
-          <Redirect from="*" to="/login" />
-        </Switch>
-      </PersistGate>
+        <Route exact path="/user/onboarding" component={Onboarding} />
+        <Redirect from="*" to="/login" />
+      </Switch>
     </Provider>
   )
 }

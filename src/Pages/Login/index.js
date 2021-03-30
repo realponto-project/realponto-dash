@@ -10,18 +10,24 @@ import { getAllStatus } from '../../Services/Status'
 
 const Login = ({ history, loggedUser, setCompany, setStatus }) => {
   const authentication = (values) => {
+    let redirectPage = '/logged/dashboard'
     Auth(values)
       .then(({ data }) => {
         loggedUser(data)
+        if (!data.firstAccess) {
+          redirectPage = '/user/onboarding'
+        }
         localStorage.setItem('token', data.token)
         localStorage.setItem('user.name', data.name)
-        return data.companyId
+        return data
       })
-      .then((companyId) => getCompanyById(companyId))
+      .then((data) => {
+        getCompanyById(data.companyId)
+      })
       .then(({ data }) => setCompany(data))
       .then(() => getAllStatus({ limit: 9999 }))
       .then(({ data }) => setStatus(data))
-      .then(() => history.push('/logged/dashboard'))
+      .then(() => history.push(redirectPage))
       .catch((err) => console.log(err))
   }
 

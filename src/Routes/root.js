@@ -23,7 +23,7 @@ const RootRoutes = [
   },
   {
     component: Onboarding,
-    path: '/logged/onboarding',
+    path: '/user/onboarding',
     exact: true,
     goBack: true
   },

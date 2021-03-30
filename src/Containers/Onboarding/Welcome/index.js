@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '../style.module.css'
-import { Row, Col, Card, Image, Typography, Button } from 'antd'
+import { Row, Col, Card, Image, Typography } from 'antd'
 
 import Mira from './mira.svg'
 import Security from './security.svg'
@@ -80,9 +80,6 @@ const Welcome = () => {
           </Paragraph>
         </Col>
       </Row>
-      <Button className={styles.buttonLetsGo} type="primary">
-        Vamos lá!
-      </Button>
     </Card>
   )
 }

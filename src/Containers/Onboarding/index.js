@@ -1,16 +1,35 @@
 import React, { useState } from 'react'
-import { Row, Col, Card, Image, Typography } from 'antd'
+import { Row, Col, Card, Image, Typography, Button } from 'antd'
 import styles from './style.module.css'
 import Welcome from './Welcome'
-// import Formulario from './Form'
+import Formulario from './Form'
+import UpdatePass from './UpdatePassword'
 
 import ImageOnboarding from './onboarding.svg'
 import Logo from './alxa.svg'
 
 const { Paragraph } = Typography
 
-const Onboarding = () => {
-  const [isWelcomeVisible] = useState('true')
+const Onboarding = ({ user, updateMyInfo, handleSubmit }) => {
+  const [isWelcomeVisible, setWelcomeVisible] = useState(true)
+  const [isFormVisible, setFormVisible] = useState(false)
+  const [isUpdateVisible, setUpdateVisible] = useState(false)
+
+  const onSubmitUpdateInfo = (values) => {
+    updateMyInfo(user.id, { ...values, firstAccess: false })
+    setFormVisible(false)
+    setUpdateVisible(true)
+  }
+
+  const onSubmitUpdatePass = (values) => {
+    console.log('valuesssss container', values)
+    handleSubmit(values)
+  }
+
+  const next = () => {
+    setWelcomeVisible(false)
+    setFormVisible(true)
+  }
 
   return (
     <Row>
@@ -40,10 +59,14 @@ const Onboarding = () => {
             padding: '50px 10px 0 20px'
           }}>
           <Paragraph className={styles.textWelcome}>
-            Bem vindo, ALEXANDRE
+            Bem vindo, {user.name}
           </Paragraph>
-          <Welcome visible={isWelcomeVisible} />
-          {/* <Formulario /> */}
+          {isWelcomeVisible ? <Welcome /> : null}
+          {isFormVisible ? <Formulario onEdit={onSubmitUpdateInfo} /> : null}
+          {isUpdateVisible ? <UpdatePass onEdit={onSubmitUpdatePass} /> : null}
+          <Button className={styles.buttonLetsGo} type="primary" onClick={next}>
+            Vamos lá!
+          </Button>
         </Card>
       </Col>
     </Row>
