@@ -37,7 +37,7 @@ const Manager = ({
               onClick={openModalAdd}
               style={{ marginRight: '16px' }}
               icon={<PlusOutlined />}>
-              Adicionar Cliente
+              Adicionar cliente
             </Button>
           </Col>
         </Row>
@@ -46,7 +46,7 @@ const Manager = ({
     <Col span={24}>
       <Card bordered={false}>
         <Row gutter={[8, 8]}>
-          <Col span={20}>
+          <Col span={16}>
             <Input
               name="search_name_or_document"
               placeholder="Filtre por nome ou documento."
@@ -55,9 +55,9 @@ const Manager = ({
               onChange={onChangeSearch}
             />
           </Col>
-          <Col span={4} style={{ textAlign: 'right' }}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-              Limpar Filtros
+              Limpar filtros
             </Button>
             <Button type="primary" onClick={handleFilter}>
               Filtrar

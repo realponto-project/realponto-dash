@@ -2,7 +2,6 @@ import OrderAdd from '../Pages/Order/Add'
 import OutOrder from '../Pages/Order/OutOrder'
 import OrderDetail from '../Pages/Order/Detail'
 import OrderManager from '../Pages/Order/Manager'
-import CustomerDetail from '../Pages/Customer/Detail'
 import CustomerManager from '../Pages/Customer/Manager'
 import ProductManager from '../Pages/Product/Manager'
 import StatusManager from '../Pages/Status/Manager'
@@ -89,13 +88,6 @@ const RootRoutes = [
     path: '/logged/customer/manager',
     exact: true,
     goBack: false
-  },
-  {
-    component: CustomerDetail,
-    title: 'DETALHES DO CLIENTE',
-    path: '/logged/customer/detail/:id',
-    exact: true,
-    goBack: true
   },
   {
     component: PDV,

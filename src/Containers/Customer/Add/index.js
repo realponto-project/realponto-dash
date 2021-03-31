@@ -7,9 +7,9 @@ const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
 const customerFormItemsList = [
   { label: 'Nome', name: 'name', rules },
-  { label: 'Razão Social', name: 'socialName', rules },
-  { label: 'CNPJ/CPF', name: 'document', rules },
-  { label: 'Telefone', name: 'phone', rules }
+  { label: 'Razão Social', name: 'socialName' },
+  { label: 'CNPJ/CPF', name: 'document' },
+  { label: 'Telefone', name: 'phone' }
 ]
 const addressFormItemsList = [
   { label: 'CEP', name: 'zipcode', rules },
@@ -42,6 +42,7 @@ const Add = ({
     <Modal
       onCancel={handleCancel}
       onOk={() => form.submit()}
+      okText='Cadastrar'
       title="Cadastro cliente"
       visible={visible}>
       <Form

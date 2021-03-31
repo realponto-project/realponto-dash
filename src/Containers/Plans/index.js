@@ -9,7 +9,8 @@ import {
   propEq,
   multiply,
   prop,
-  keys
+  keys,
+  compose
 } from 'ramda'
 import moment from 'moment'
 import {
@@ -23,11 +24,11 @@ import {
   Form,
   Button
 } from 'antd'
+import { connect } from 'react-redux'
 import { CheckOutlined } from '@ant-design/icons'
-// import { client } from 'pagarme'
 import styles from './style.module.css'
 import { getAll } from '../../Services/Plans'
-import createSubscription from '../../Services/Subscription'
+import { createSubscription } from '../../Services/Subscription'
 import { createCardHash } from '../../Services/pagarme'
 
 import Logo from './alxa.svg'
@@ -51,7 +52,7 @@ const buildPlan = applySpec({
   quantityProduct: pathOr('', ['quantityProduct'])
 })
 
-const Plan = ({ isVisible, handleCancel }) => {
+const Plan = ({ isVisible, handleCancel, setSubscription }) => {
   const [planId, setPlanId] = useState('')
   const [plans, setPlans] = useState([])
   const [form] = Form.useForm()
@@ -99,12 +100,12 @@ const Plan = ({ isVisible, handleCancel }) => {
     const v = value.toString().replace(pattern[1], '')
     return pattern[0]
       .replace(/#/g, () => v[i++] || '')
-      .replace(/(\s{0,3}|\/)$/g, '')
+      .replace(pattern[2], '')
       .toUpperCase()
   }
 
   const patterns = {
-    card_holder_name: [new Array(45).fill('#').join(''), /\W/g],
+    card_holder_name: [new Array(45).fill('#').join(''), /([^a-zA-Z|\s])/g],
     card_number: ['#### #### #### ####', /\D/g],
     card_expiration_date: ['##/##', /\D/g],
     card_cvv: ['###', /\D/g]
@@ -115,19 +116,21 @@ const Plan = ({ isVisible, handleCancel }) => {
   }
 
   const addSubscription = async (values) => {
+    const cardUser = {
+      card_holder_name: values.card_holder_name,
+      card_number: values.card_number.replace(/\D/g, ''),
+      card_expiration_date: values.card_expiration_date.replace(/\D/g, ''),
+      card_cvv: values.card_cvv.replace(/\D/g, ''),
+    }
     try {
-      const cardHash = await createCardHash(values)
-      const response = await createSubscription({
-        ...values,
+      const cardHash = await createCardHash(cardUser)
+      const { data } = await createSubscription({
         planId,
         cardHash,
-        card_holder_name: values.card_holder_name.replace(/\W/g),
-        card_number: values.card_number.replace(/\D/g),
-        card_expiration_date: values.card_expiration_date.replace(/\D/g),
-        card_cvv: values.card_cvv.replace(/\D/g),
         activated: true,
         amount: Number(amount) * 100
       })
+      setSubscription(data)
       return response
     } catch (error) {
       console.log(error)
@@ -417,4 +420,10 @@ const Plan = ({ isVisible, handleCancel }) => {
   )
 }
 
-export default Plan
+const mapDispatchToProps = (dispatch) => ({
+  setSubscription: (payload) => dispatch({ type: 'SET_SUBSCRIPTION', payload})
+})
+
+const enhanced = compose(connect(null, mapDispatchToProps))
+
+export default enhanced(Plan)

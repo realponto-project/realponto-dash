@@ -19,15 +19,20 @@ const columns = (chooseStatus) => [
     key: 'label',
     fixed: 'left'
   },
-
   {
     title: 'Tipo',
     dataIndex: 'typeLabel',
     key: 'typeLabel',
     fixed: 'left',
-    render: (text) => (
-      <Tag color={text ? '#18c923' : '#c91818'}>
-        {text ? 'Entrada' : 'Saída'}
+  },
+  {
+    title: 'Cor ',
+    dataIndex: 'typeLabel',
+    key: 'typeLabel',
+    fixed: 'left',
+    render: (_, record) => (
+      <Tag color={record.color}>
+        {record.color}
       </Tag>
     )
   },

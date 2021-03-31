@@ -22,7 +22,6 @@ const Onboarding = ({ user, updateMyInfo, handleSubmit }) => {
   }
 
   const onSubmitUpdatePass = (values) => {
-    console.log('valuesssss container', values)
     handleSubmit(values)
   }
 

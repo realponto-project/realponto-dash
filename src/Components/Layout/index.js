@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose, pathOr } from 'ramda'
 import Logo from '../../Assets/logo.svg'
+import LogoPlus from '../../Assets/alxa-plus.svg'
 import AdSide from '../../Components/AdSide'
 
 import {
@@ -43,7 +44,7 @@ const menuItems = [
   }
 ]
 
-const LayoutComponent = ({ children, history, location, company }) => {
+const LayoutComponent = ({ children, history, location, company, subscription }) => {
   const goTo = ({ key }) => history.push(key)
   const companyName = pathOr('', ['name'], company)
   const parseCompanyName = companyName.length > 18 ? `${companyName.substr(0, 18)}...` : companyName
@@ -77,7 +78,7 @@ const LayoutComponent = ({ children, history, location, company }) => {
             }}
             preview={false}
             width={220}
-            src={Logo}
+            src={subscription.status === 'free' ? Logo : LogoPlus }
           />
           <p
             style={{
@@ -101,7 +102,7 @@ const LayoutComponent = ({ children, history, location, company }) => {
           ))}
         </Menu>
         {location.pathname.replace('/logged/', '') !== 'plans' &&
-          !company.subscription && <AdSide />}
+          subscription && subscription.status === 'free' && <AdSide />}
       </Sider>
       <Layout>
         <Content
@@ -117,8 +118,9 @@ const LayoutComponent = ({ children, history, location, company }) => {
   )
 }
 
-const mapStateToProps = ({ company }) => ({
-  company
+const mapStateToProps = ({ company, subscription }) => ({
+  company,
+  subscription,
 })
 
 const enhanced = compose(connect(mapStateToProps), withRouter)

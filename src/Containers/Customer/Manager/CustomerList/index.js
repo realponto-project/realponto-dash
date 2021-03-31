@@ -1,11 +1,10 @@
 import React from 'react'
-import { Table } from 'antd'
+import { Table, Button } from 'antd'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
-import { EditOutlined } from '@ant-design/icons'
 
 const columns = ({ handleClickEdit }) => [
   {
-    title: 'Nome do cliente',
+    title: 'Nome',
     dataIndex: 'name',
     key: 'name',
     fixed: 'left'
@@ -15,7 +14,7 @@ const columns = ({ handleClickEdit }) => [
     dataIndex: 'document',
     key: 'document',
     fixed: 'left',
-    render: (text) => (text.length > 11 ? cnpj.format(text) : cpf.format(text))
+    render: (text) => (text && text.length > 11 ? cnpj.format(text) : cpf.format(text))
   },
   {
     title: 'Telefone',
@@ -26,7 +25,9 @@ const columns = ({ handleClickEdit }) => [
   {
     title: ' ',
     dataIndex: 'id',
-    render: (id) => <EditOutlined onClick={() => handleClickEdit(id)} />
+    render: (id) =>  <Button type="link" onClick={() => handleClickEdit(id)}>
+      Editar
+    </Button>
   }
 ]
 
