@@ -37,9 +37,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
             <Form.Item
               name="balance"
               label="Qtd estoque"
-              rules={[
-                { required: true, message: 'Este campo é obrigatório!' }
-              ]}>
+              >
               <InputNumber min={1} style={{ width: '98%' }} />
             </Form.Item>
           </Col>
@@ -56,28 +54,21 @@ const Add = ({ visible, onCreate, onCancel }) => {
         </Row>
         <Form.Item
           name="barCode"
-          label="Código de barras"
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
+          label="Código de barras">
           <Input />
         </Form.Item>
         <Row align="space-between">
           <Col span={12}>
             <Form.Item
               name="buyPrice"
-              label="Preço custo"
-              rules={[
-                { required: true, message: 'Este campo é obrigatório!' }
-              ]}>
+              label="Preço custo">
               <InputNumber min={1} style={{ width: '98%' }} />
             </Form.Item>
           </Col>
           <Col span={11}>
             <Form.Item
               name="salePrice"
-              label="Preço venda"
-              rules={[
-                { required: true, message: 'Este campo é obrigatório!' }
-              ]}>
+              label="Preço venda">
               <InputNumber min={1} style={{ width: '98%' }} />
             </Form.Item>
           </Col>

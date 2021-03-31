@@ -7,8 +7,9 @@ import LoginContainer from '../../Containers/Login'
 import Auth from '../../Services/Auth'
 import { getCompanyById } from '../../Services/Company'
 import { getAllStatus } from '../../Services/Status'
+import { getSubscriptionActivated } from '../../Services/Subscription'
 
-const Login = ({ history, loggedUser, setCompany, setStatus }) => {
+const Login = ({ history, loggedUser, setCompany, setStatus, setSubscription }) => {
   const authentication = (values) => {
     let redirectPage = '/logged/dashboard'
     Auth(values)
@@ -27,9 +28,9 @@ const Login = ({ history, loggedUser, setCompany, setStatus }) => {
       .then(({ data }) => setCompany(data))
       .then(() => getAllStatus({ limit: 9999 }))
       .then(({ data }) => setStatus(data))
-      .then(() => {
-        history.push(redirectPage)
-      })
+      .then(() => getSubscriptionActivated())
+      .then(({ data }) => setSubscription(data))
+      .then(() =>  history.push(redirectPage))
       .catch((err) => console.log(err))
   }
 
@@ -44,7 +45,8 @@ const Login = ({ history, loggedUser, setCompany, setStatus }) => {
 const mapDispatchToProps = (dispatch) => ({
   loggedUser: (payload) => dispatch({ type: 'USER_LOGGED', payload }),
   setCompany: (payload) => dispatch({ type: 'SET_COMPANY', payload }),
-  setStatus: (payload) => dispatch({ type: 'SET_STATUS', payload })
+  setStatus: (payload) => dispatch({ type: 'SET_STATUS', payload }),
+  setSubscription: (payload) => dispatch({ type: 'SET_SUBSCRIPTION', payload})
 })
 
 const enhanced = compose(connect(null, mapDispatchToProps), withRouter)
