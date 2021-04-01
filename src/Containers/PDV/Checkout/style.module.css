@@ -1,9 +1,68 @@
 .checkoutInfo {
-  height: 800px;
+  height: 80vh;
+  /* height: 800px; */
   width: 510px;
   position: fixed;
   background: #F2F2F3;
   border-radius: 3px;
   padding: 16px;
   box-sizing: border-box;
+
+  width: 350px;
+  right: 10px;
+  /* top: 0; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  
+  font-family: Lato;
+  font-weight: normal;
+
+  overflow: auto;
+}
+
+.checkoutSubtitle{
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+}
+
+.checkoutLabelInputs{
+  font-size: 0.61rem;
+  line-height: 0.875rem;
+}
+
+.checkoutLabelSubTotal{
+  font-size: 1rem;
+  line-height: 0.875rem;
+}
+
+.checkoutValueSubTotal{
+  font-size: 1rem;
+  line-height: 0.875rem;
+  font-weight: bold;
+}
+
+.checkoutDiscount{
+  color: red;
+  width: 112px
+}
+
+.checkoutDiscount input {
+  text-align: right;
+  padding: 0 25px
+}
+
+.checkoutLabelTotal{
+  font-weight: bold;
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
+.checkoutValueTotal{
+  font-weight: bold;
+  font-size: 2rem;
+  line-height: 0.875rem;
+  color: #1890FF;
 }

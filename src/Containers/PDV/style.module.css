@@ -1,4 +1,6 @@
 .checkoutContainer {
   background-color: #fff;
   padding: 16px;
+
+  min-height: 85vh;
 }

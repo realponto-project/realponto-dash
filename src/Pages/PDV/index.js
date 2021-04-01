@@ -7,11 +7,15 @@ import {
   applySpec,
   compose,
   dec,
+  equals,
+  filter,
   findIndex,
   inc,
   insert,
   map,
   max,
+  merge,
+  min,
   multiply,
   pathOr,
   pipe,
@@ -23,32 +27,22 @@ import {
 import { Form } from 'antd'
 
 import PDVContainer from '../../Containers/PDV'
-import { getAll, getProductByBarCode } from '../../Services/Product'
+import {
+  getAll,
+  getProductByBarCode,
+  getProductById
+} from '../../Services/Product'
+import { getAll as getAllCustomersService } from '../../Services/Customer'
 
 const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
-  const [productList, setProductList] = useState([])
-  const [searchValue, setSearchValue] = useState('')
-  const [isVisibleSearchBarCode, setIsVisibleSearchBarCode] = useState(false)
+  const [form] = Form.useForm()
+  const [isSaved, setIsSaved] = useState(false)
   const [isVisibleNotFoundProduct, setIsVisibleNotFoundProduct] = useState(
     false
   )
-  const [form] = Form.useForm()
-
-  const getAllProduct = useCallback(async () => {
-    const {
-      data: { source }
-    } = await getAll()
-
-    setProductList(source)
-  }, [])
-
-  useEffect(() => {
-    getAllProduct()
-  }, [])
-
-  useEffect(() => {
-    form.setFieldsValue(formPdv)
-  }, [formPdv])
+  const [isVisibleSearchBarCode, setIsVisibleSearchBarCode] = useState(false)
+  const [options, setOptions] = useState([])
+  const [optionsCustomer, setOptionsCustomer] = useState([])
 
   const updateAmount = (id, callback) => {
     const productsSelcts = pathOr([], ['productsSelcts'], formPdv)
@@ -58,24 +52,195 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
 
     return adjust(
       index,
-      applySpec({
-        id: prop('id'),
-        amount: pipe(prop('amount'), Number, callback, max(1)),
-        barCode: prop('barCode'),
-        name: prop('name'),
-        salePrice: prop('salePrice')
-      }),
+      (productsSelct) =>
+        applySpec({
+          id: prop('id'),
+          amount: pipe(
+            prop('amount'),
+            Number,
+            callback,
+            max(1),
+            min(prop('balance')(productsSelct))
+          ),
+          balance: prop('balance'),
+          barCode: prop('barCode'),
+          name: prop('name'),
+          salePrice: prop('salePrice')
+        })(productsSelct),
       productsSelcts
     )
   }
 
-  const handleClickDown = (id) => {
-    setFormPdv({ productsSelcts: updateAmount(id, dec) })
+  const handleCancelNotFountProduct = () => setIsVisibleNotFoundProduct(false)
+
+  const handleCancelSearchBarCode = () => setIsVisibleSearchBarCode(false)
+
+  const handleClickClear = () => {
+    clearFormPdv()
+    form.resetFields()
+    setIsSaved(false)
   }
 
-  const handleClickUp = (id) => {
-    setFormPdv({ productsSelcts: updateAmount(id, inc) })
+  const handleClickDown = (id) =>
+    setFormPdv({ productsSelcts: updateAmount(id, dec) })
+
+  const handleClickDeleteProduct = (productId) => {
+    const productsSelcts = filter(
+      ({ id }) => id !== productId,
+      pathOr([], ['productsSelcts'], formPdv)
+    )
+
+    setFormPdv({ productsSelcts })
   }
+
+  const handleClickSearchBarCode = () => setIsVisibleSearchBarCode(true)
+
+  const handleClickTryAgain = () => {
+    handleCancelNotFountProduct()
+    handleClickSearchBarCode()
+  }
+
+  const handleClickUp = (id) =>
+    setFormPdv({ productsSelcts: updateAmount(id, inc) })
+
+  const handleSearchBarCode = async (barCode) => {
+    handleCancelSearchBarCode()
+    try {
+      const { data } = await getProductByBarCode(barCode)
+      const productsSelcts = pathOr([], ['productsSelcts'], formPdv)
+
+      const index = findIndex(
+        propEq('id', data.id),
+        pathOr([], ['productsSelcts'], formPdv)
+      )
+
+      if (index !== -1) return
+      // if (index !== -1) throw new Error('Product already scannered')
+
+      pipe(
+        insert(0, __, productsSelcts),
+        (productsSelcts) => ({ productsSelcts }),
+        setFormPdv
+      )(merge(data, { amount: 1 }))
+    } catch (error) {
+      console.error(error)
+      setIsVisibleNotFoundProduct(true)
+    }
+  }
+
+  const handleSubmit = (formData) => {
+    const buildPdv = applySpec({
+      customerId: prop('customerId'),
+      discount: prop('discount'),
+      payment: prop('payment'),
+      type: prop('type'),
+      products: pipe(
+        prop('productsSelcts'),
+        map(
+          applySpec({
+            id: prop('id'),
+            amount: prop('amount')
+          })
+        )
+      )
+    })
+    console.log(buildPdv(merge(formPdv, formData)))
+    setIsSaved(true)
+  }
+
+  const getAllCustomers = async (name) => {
+    try {
+      const resp = await getAllCustomersService({
+        name
+      })
+      setOptionsCustomer(
+        map(
+          applySpec({
+            value: prop('id'),
+            label: prop('name')
+          }),
+          resp.data.source
+        )
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const onSearch = async (name) => {
+    try {
+      const resp = await getAll({
+        activated: true,
+        name
+      })
+      setOptions(
+        map(
+          applySpec({
+            value: prop('id'),
+            label: prop('name')
+          }),
+          resp.data.source
+        )
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const onSelect = async (productId) => {
+    try {
+      const { data } = await getProductById(productId)
+      const productsSelcts = pathOr([], ['productsSelcts'], formPdv)
+
+      const index = findIndex(
+        propEq('id', data.id),
+        pathOr([], ['productsSelcts'], formPdv)
+      )
+
+      if (index !== -1) return
+
+      pipe(
+        insert(0, __, productsSelcts),
+        (productsSelcts) => ({ productsSelcts }),
+        setFormPdv
+      )(merge(data, { amount: 1 }))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const onValuesChange = (dataChanged) => {
+    if (pipe(pathOr(false, ['type']), equals('fast'))(dataChanged)) {
+      setFormPdv({ name: '' })
+    }
+
+    setFormPdv(dataChanged)
+  }
+
+  const getAllProduct = useCallback(async () => {
+    const {
+      data: { source }
+    } = await getAll()
+
+    setOptions(
+      map(
+        applySpec({
+          label: prop('name'),
+          value: prop('id')
+        }),
+        source
+      )
+    )
+  }, [])
+
+  useEffect(() => {
+    getAllProduct()
+    getAllCustomers()
+  }, [])
+
+  useEffect(() => {
+    form.setFieldsValue(formPdv)
+  }, [formPdv])
 
   const subTotal = reduce(
     add,
@@ -86,74 +251,30 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
     )
   )
 
-  const handleChangeSelect = (item, add) => {
-    const index = findIndex(
-      propEq('id', item.id),
-      pathOr([], ['productsSelcts'], formPdv)
-    )
-
-    if (index !== -1) return
-
-    add({ ...item, amount: 1 })
-  }
-
-  const handleSearchBarCode = async (barCode) => {
-    handleCancelSearchBarCode()
-    try {
-      const { data } = await getProductByBarCode(barCode)
-      console.log(data)
-      const productsSelcts = form.getFieldValue('productsSelcts')
-      // console.log(form.getInternalHooks)
-      handleChangeSelect(
-        data,
-        pipe(
-          insert(0, __, productsSelcts),
-          (productsSelcts) => ({ productsSelcts }),
-          setFormPdv
-        )
-      )
-    } catch (error) {
-      // console.error(error)
-      setIsVisibleNotFoundProduct(true)
-    }
-  }
-
-  const handleClickSearchBarCode = () => setIsVisibleSearchBarCode(true)
-  const handleCancelSearchBarCode = () => {
-    setIsVisibleSearchBarCode(false)
-    setSearchValue('')
-  }
-  const handleCancelNotFountProduct = () => setIsVisibleNotFoundProduct(false)
-
-  const handleClickTryAgain = () => {
-    handleCancelNotFountProduct()
-    handleClickSearchBarCode()
-  }
-
-  const handleClickClear = () => {
-    clearFormPdv()
-    form.resetFields()
-  }
-
   return (
     <PDVContainer
       form={form}
       handleCancelNotFountProduct={handleCancelNotFountProduct}
-      isVisibleSearchBarCode={isVisibleSearchBarCode}
-      isVisibleNotFoundProduct={isVisibleNotFoundProduct}
-      handleClickSearchBarCode={handleClickSearchBarCode}
       handleCancelSearchBarCode={handleCancelSearchBarCode}
-      productList={productList}
-      handleChangeSelect={handleChangeSelect}
       handleClickClear={handleClickClear}
       handleClickDown={handleClickDown}
-      handleClickUp={handleClickUp}
-      subTotal={subTotal}
-      handleSearchBarCode={handleSearchBarCode}
+      handleClickDeleteProduct={handleClickDeleteProduct}
+      handleClickSearchBarCode={handleClickSearchBarCode}
       handleClickTryAgain={handleClickTryAgain}
-      searchValue={searchValue}
-      handleChangeSearchValue={({ target }) => setSearchValue(target.value)}
-      onValuesChange={setFormPdv}
+      handleClickUp={handleClickUp}
+      handleSearchBarCode={handleSearchBarCode}
+      handleSubmit={handleSubmit}
+      isSaved={isSaved}
+      isVisibleNotFoundProduct={isVisibleNotFoundProduct}
+      isVisibleSearchBarCode={isVisibleSearchBarCode}
+      onSearchCustomer={getAllCustomers}
+      onSearch={onSearch}
+      onSelect={onSelect}
+      onValuesChange={onValuesChange}
+      options={options}
+      optionsCustomer={optionsCustomer}
+      products={formPdv.productsSelcts}
+      subTotal={subTotal}
     />
   )
 }
