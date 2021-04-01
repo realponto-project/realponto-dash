@@ -39,6 +39,7 @@ const PDV = ({
           handleClickDown={handleClickDown}
           handleClickSearchBarCode={handleClickSearchBarCode}
           handleClickUp={handleClickUp}
+          isSaved={isSaved}
           onSearch={onSearch}
           onSelect={onSelect}
           options={options}

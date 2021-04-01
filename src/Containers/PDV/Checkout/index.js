@@ -46,7 +46,7 @@ const Checkout = ({
         <h2 className={styles.checkoutSubtitle}>Checkout</h2>
 
         <Form.Item label="Tipo de venda" name="type" rules={[ruleRequired]}>
-          <Radio.Group style={{ width: '100%' }}>
+          <Radio.Group style={{ width: '100%' }} disabled={isSaved}>
             <Row justify="space-between">
               <Radio value="fast">Venda rápida</Radio>
               <Radio value="delivery">Venda com entrega</Radio>
@@ -62,9 +62,13 @@ const Checkout = ({
           {({ getFieldValue }) => (
             <>
               <span className={styles.checkoutLabelInputs}>Buscar cliente</span>
-              <Form.Item name="customerId">
+              <Form.Item
+                name="customerId"
+                rules={
+                  getFieldValue('type') === 'delivery' ? [ruleRequired] : []
+                }>
                 <Select
-                  disabled={getFieldValue('type') !== 'delivery'}
+                  disabled={isSaved || getFieldValue('type') !== 'delivery'}
                   onSearch={onSearch}
                   showSearch>
                   {map(
@@ -86,7 +90,7 @@ const Checkout = ({
         <h2 className={styles.checkoutSubtitle}>Forma de Pagamento</h2>
 
         <Form.Item name="payment" rules={[ruleRequired]}>
-          <Radio.Group style={{ width: '100%' }}>
+          <Radio.Group style={{ width: '100%' }} disabled={isSaved}>
             <Row>
               {map(
                 ({ value, label }) => (
@@ -114,6 +118,7 @@ const Checkout = ({
           <Form.Item name="discount">
             <InputNumber
               className={styles.checkoutDiscount}
+              disabled={isSaved}
               formatter={
                 (value) => `-R$ ${value}`
                 // `-R$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')

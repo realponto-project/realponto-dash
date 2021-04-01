@@ -33,10 +33,10 @@ import {
   getProductById
 } from '../../Services/Product'
 import { getAll as getAllCustomersService } from '../../Services/Customer'
+import { createPdv } from '../../Services/Order'
 
 const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
   const [form] = Form.useForm()
-  const [isSaved, setIsSaved] = useState(false)
   const [isVisibleNotFoundProduct, setIsVisibleNotFoundProduct] = useState(
     false
   )
@@ -78,7 +78,6 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
   const handleClickClear = () => {
     clearFormPdv()
     form.resetFields()
-    setIsSaved(false)
   }
 
   const handleClickDown = (id) =>
@@ -128,7 +127,7 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
     }
   }
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = async (formData) => {
     const buildPdv = applySpec({
       customerId: prop('customerId'),
       discount: prop('discount'),
@@ -138,14 +137,24 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
         prop('productsSelcts'),
         map(
           applySpec({
-            id: prop('id'),
-            amount: prop('amount')
+            productId: prop('id'),
+            quantity: prop('amount')
           })
         )
       )
     })
-    console.log(buildPdv(merge(formPdv, formData)))
-    setIsSaved(true)
+
+    try {
+      const resp = await createPdv(buildPdv(merge(formPdv, formData)))
+      console.log(buildPdv(merge(formPdv, formData)))
+      console.log(resp)
+
+      if (resp.status === 201) {
+        setFormPdv({ isSaved: true })
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   const getAllCustomers = async (name) => {
@@ -211,7 +220,7 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
 
   const onValuesChange = (dataChanged) => {
     if (pipe(pathOr(false, ['type']), equals('fast'))(dataChanged)) {
-      setFormPdv({ name: '' })
+      setFormPdv({ customerId: undefined })
     }
 
     setFormPdv(dataChanged)
@@ -264,7 +273,7 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
       handleClickUp={handleClickUp}
       handleSearchBarCode={handleSearchBarCode}
       handleSubmit={handleSubmit}
-      isSaved={isSaved}
+      isSaved={formPdv.isSaved}
       isVisibleNotFoundProduct={isVisibleNotFoundProduct}
       isVisibleSearchBarCode={isVisibleSearchBarCode}
       onSearchCustomer={getAllCustomers}

@@ -4,7 +4,8 @@ import { SET_FORM_PDV, CLEAR_FORM_PDV } from '../actions/formPdv'
 
 const initialState = {
   discount: 0,
-  productsSelcts: []
+  productsSelcts: [],
+  isSaved: false
 }
 
 const formPdvReducer = (state = initialState, action) => {

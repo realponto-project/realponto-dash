@@ -56,6 +56,7 @@ const ProductList = ({
   handleClickDown,
   handleClickSearchBarCode,
   handleClickUp,
+  isSaved,
   onSearch,
   onSelect,
   options,
@@ -72,6 +73,7 @@ const ProductList = ({
           </Col>
           <Col span={20}>
             <AutoComplete
+              disabled={isSaved}
               onChange={setProduct}
               onSearch={onSearch}
               onSelect={(productId) => {
@@ -86,6 +88,7 @@ const ProductList = ({
           </Col>
           <Col>
             <Button
+              disabled={isSaved}
               icon={<BarcodeOutlined />}
               onClick={handleClickSearchBarCode}
               type="primary">
