@@ -10,14 +10,16 @@ import Layout from '../../Components/Layout'
 const renderRoute = (route) => <ProtectedRoute key={route.path} {...route} />
 
 export const LoggedWithoutLayout = () => (
-  <Row gutter={[8, 8]}>
-    <Col span={24}>
-      <Header rootRoutes={rootRoutes} />
-    </Col>
-    <Col span={24}>
-      <Switch>{rootRoutes.map(renderRoute)}</Switch>
-    </Col>
-  </Row>
+  <div style={{ width: '100vw', overflow: 'hidden' }}>
+    <Row gutter={[8, 8]}>
+      <Col span={24}>
+        <Header rootRoutes={rootRoutes} />
+      </Col>
+      <Col span={24}>
+        <Switch>{rootRoutes.map(renderRoute)}</Switch>
+      </Col>
+    </Row>
+  </div>
 )
 
 const Logged = () => (

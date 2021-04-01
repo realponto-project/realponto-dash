@@ -1,14 +1,18 @@
 import React from 'react'
-import { Row, Col } from 'antd'
+import { Col, Row, Modal } from 'antd'
 
 import styles from './style.module.css'
 import Checkout from './Checkout'
 import ProductList from './ProductList'
 import ModalSearchBarCode from './ModalSearchBarCode'
 import ModalNotFoundProduct from './ModalNotFoundProduct'
+import Cupom from '../../Components/Cupom'
 
 const PDV = ({
+  company,
+  customer,
   form,
+  handleCancelCupom,
   handleCancelNotFountProduct,
   handleCancelSearchBarCode,
   handleClickClear,
@@ -20,6 +24,7 @@ const PDV = ({
   handleSearchBarCode,
   handleSubmit,
   isSaved,
+  isVisibleCupom,
   isVisibleNotFoundProduct,
   isVisibleSearchBarCode,
   onSearchCustomer,
@@ -70,6 +75,19 @@ const PDV = ({
         handleClickTryAgain={handleClickTryAgain}
         isVisible={isVisibleNotFoundProduct}
       />
+
+      <Modal
+        visible={isVisibleCupom}
+        onCancel={handleCancelCupom}
+        footer={null}>
+        <Cupom
+          company={company}
+          customer={customer}
+          discount={form.getFieldValue('discount')}
+          items={products}
+          payment={form.getFieldValue('payment')}
+        />
+      </Modal>
     </Row>
   )
 }

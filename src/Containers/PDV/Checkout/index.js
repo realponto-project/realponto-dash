@@ -162,10 +162,7 @@ const Checkout = ({
             </Button>
           </Col>
           <Col span={12}>
-            <Button
-              htmlType={!isSaved ? 'submit' : undefined}
-              style={{ width: '100%' }}
-              type="primary">
+            <Button htmlType="submit" style={{ width: '100%' }} type="primary">
               {isSaved ? 'Imprimir' : 'Salvar'}
             </Button>
           </Col>

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
+import print from 'print-js'
 import {
   add,
   adjust,
@@ -24,6 +23,8 @@ import {
   reduce,
   __
 } from 'ramda'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
 
 import PDVContainer from '../../Containers/PDV'
@@ -32,11 +33,16 @@ import {
   getProductByBarCode,
   getProductById
 } from '../../Services/Product'
-import { getAll as getAllCustomersService } from '../../Services/Customer'
+import {
+  getAll as getAllCustomersService,
+  getCusmtomerById
+} from '../../Services/Customer'
 import { createPdv } from '../../Services/Order'
 
-const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
+const PDV = ({ company, history, formPdv, setFormPdv, clearFormPdv }) => {
+  const [customer, setCustomer] = useState(null)
   const [form] = Form.useForm()
+  const [isVisibleCupom, setIsVisibleCupom] = useState(false)
   const [isVisibleNotFoundProduct, setIsVisibleNotFoundProduct] = useState(
     false
   )
@@ -145,12 +151,17 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
     })
 
     try {
-      const resp = await createPdv(buildPdv(merge(formPdv, formData)))
-      console.log(buildPdv(merge(formPdv, formData)))
-      console.log(resp)
+      if (formPdv.isSaved) {
+        const { data: customer } = await getCusmtomerById(formPdv.customerId)
 
-      if (resp.status === 201) {
-        setFormPdv({ isSaved: true })
+        setCustomer(customer)
+        setIsVisibleCupom(true)
+      } else {
+        const { status } = await createPdv(buildPdv(merge(formPdv, formData)))
+
+        if (status === 201) {
+          setFormPdv({ isSaved: true })
+        }
       }
     } catch (err) {
       console.error(err)
@@ -248,6 +259,16 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
   }, [])
 
   useEffect(() => {
+    if (isVisibleCupom) {
+      print({
+        printable: 'cupom-content',
+        type: 'html'
+        // style: '#cupom-content { color: red; }'
+      })
+    }
+  }, [isVisibleCupom])
+
+  useEffect(() => {
     form.setFieldsValue(formPdv)
   }, [formPdv])
 
@@ -262,7 +283,10 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
 
   return (
     <PDVContainer
+      customer={customer}
+      company={company}
       form={form}
+      handleCancelCupom={() => setIsVisibleCupom(false)}
       handleCancelNotFountProduct={handleCancelNotFountProduct}
       handleCancelSearchBarCode={handleCancelSearchBarCode}
       handleClickClear={handleClickClear}
@@ -274,6 +298,7 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
       handleSearchBarCode={handleSearchBarCode}
       handleSubmit={handleSubmit}
       isSaved={formPdv.isSaved}
+      isVisibleCupom={isVisibleCupom}
       isVisibleNotFoundProduct={isVisibleNotFoundProduct}
       isVisibleSearchBarCode={isVisibleSearchBarCode}
       onSearchCustomer={getAllCustomers}
@@ -287,8 +312,9 @@ const PDV = ({ history, formPdv, setFormPdv, clearFormPdv }) => {
     />
   )
 }
-const mapStateToProps = ({ formPdv }) => ({
-  formPdv
+const mapStateToProps = ({ formPdv, company }) => ({
+  formPdv,
+  company
 })
 
 const mapDispatchToProps = (dispatch) => ({
