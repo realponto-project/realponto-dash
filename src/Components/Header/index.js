@@ -10,23 +10,13 @@ const Header = ({
   rootRoutes,
   history,
   loggoutUser,
-  unSetCompany,
-  unSetStatus,
   user,
-  cleanCustomer,
-  cleanOrder,
-  cleanProduct
 }) => {
   const handleNavegator = ({ key }) => {
     if (key === 'loggout') {
       localStorage.removeItem('token')
       localStorage.removeItem('user.name')
       loggoutUser()
-      unSetCompany()
-      unSetStatus()
-      cleanCustomer()
-      cleanOrder()
-      cleanProduct()
       history.push('/login')
     }
 
@@ -103,11 +93,6 @@ const mapStateToProps = ({ user }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loggoutUser: () => dispatch({ type: 'USER_LOGOUT' }),
-  unSetCompany: () => dispatch({ type: 'UNSET_COMPANY' }),
-  unSetStatus: () => dispatch({ type: 'UNSET_STATUS' }),
-  cleanCustomer: () => dispatch({ type: 'CLEAN_CUSTOMER_GLOBAL_SEARCH' }),
-  cleanOrder: () => dispatch({ type: 'CLEAN_ORDER_GLOBAL_SEARCH' }),
-  cleanProduct: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' })
 })
 
 const enhanced = compose(
