@@ -34,8 +34,8 @@ const App = () => {
         <Route path="/login" component={Login} />
         <Route exact path="/register/sucess" component={Success} />
         <Route path="/register" component={Register} />
+        <Route path="/logged/pdv" component={LoggedWithoutLayout} />
         <Route path="/logged" component={logged} />
-          <Route path="/logged/pdv" component={LoggedWithoutLayout} />
         <Route exact path="/user/onboarding" component={Onboarding} />
         <Redirect from="*" to="/login" />
       </Switch>

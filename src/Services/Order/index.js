@@ -16,6 +16,10 @@ const createOrder = (values) => {
   return axiosIntance.post('/orders', values)
 }
 
+const createPdv = (values) => {
+  return axiosIntance.post('/orders-pdv', values)
+}
+
 const updateOrder = (orderId, values) => {
   return axiosIntance.put(`/orders/${orderId}`, values)
 }
@@ -30,6 +34,7 @@ const customerAssocite = (orderId, values) => {
 
 export {
   createOrder,
+  createPdv,
   getAllOrder,
   getAllOrderSummary,
   getOrderById,

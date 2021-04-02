@@ -10,7 +10,7 @@ import orderSearchReducer from './orderSearch'
 import formPdvReducer from './formPdv'
 import SubscriptionReducer from './subscription'
 
-export default combineReducers({
+const appReducer =  combineReducers({
   user: userReducer,
   company: companyReducer,
   status: statusReducer,
@@ -21,3 +21,14 @@ export default combineReducers({
   orderSearch: orderSearchReducer,
   subscription: SubscriptionReducer
 })
+
+
+const rootReducer = (state, action) => {
+  if (action.type === 'USER_LOGOUT') {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
+
+export default rootReducer

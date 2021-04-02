@@ -1,26 +1,24 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Image, Input, Modal, Row, Typography } from 'antd'
-import { ScanOutlined } from '@ant-design/icons'
 
 import barCodeScanner from '../../Assets/barCodeScanner.svg'
 
 const { Text } = Typography
-const { Search } = Input
 
-const ModalSearchBarCode = ({
-  searchValue,
-  isVisible,
-  handleCancel,
-  handleSearch,
-  handleChangeSearchValue
-}) => {
+const ModalSearchBarCode = ({ handleCancel, handleSearch, isVisible }) => {
+  const [searchValue, setSearchValue] = useState('')
+
+  useEffect(() => {
+    setSearchValue('')
+  }, [isVisible])
+
   return (
-    <Modal visible={isVisible} footer={null} onCancel={handleCancel}>
-      <Row justify="center" gutter={[0, 20]}>
+    <Modal footer={null} onCancel={handleCancel} visible={isVisible}>
+      <Row gutter={[0, 20]} justify="center">
         <Col>
-          <Image src={barCodeScanner} alt="bar code scanner" preview={false} />
+          <Image alt="bar code scanner" preview={false} src={barCodeScanner} />
         </Col>
-        <Col span={24}>
+        <Col span={24} style={{ textAlign: 'center' }}>
           <Text>
             Para utilizar a leitura por código de barras o cursor do mouse
             precisa estar dentro do campo abaixo!
@@ -28,11 +26,11 @@ const ModalSearchBarCode = ({
         </Col>
         <Col span={24}>
           <Text>Scannear código de barra</Text>
-          <Search
+          <Input
+            allowClear
+            onChange={({ target }) => setSearchValue(target.value)}
+            onPressEnter={({ target }) => handleSearch(target.value)}
             value={searchValue}
-            onChange={handleChangeSearchValue}
-            enterButton={<ScanOutlined />}
-            onSearch={handleSearch}
           />
         </Col>
       </Row>

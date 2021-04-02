@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true
   },
-  extends: [],
+  extends: [
+    // 'prettier',
+    // 'prettier-standard',
+    // 'plugin:react/recommended',
+    // 'standard'
+  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -12,6 +17,7 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
+    // 'prettier',
     'react'
   ],
   rules: {
