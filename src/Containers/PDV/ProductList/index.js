@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { AutoComplete, Button, Col, Row } from 'antd'
 import {
   BarcodeOutlined,
@@ -7,16 +7,17 @@ import {
   UpOutlined
 } from '@ant-design/icons'
 import { length, map } from 'ramda'
+import ClassNames from 'classnames'
 
 import styles from './style.module.css'
 import { formatPrice } from '../../../utils'
 
-const productItem = ({
+const productItem = (
   handleClickDelete,
-  handleClickDown,
   handleClickUp,
+  handleClickDown,
   isSaved
-}) => ({ id, name, barCode, amount, salePrice }) => {
+) => ({ id, name, barCode, quantity, salePrice, balance }) => {
   return (
     <li key={id} className={styles.productItem}>
       <Row>
@@ -25,22 +26,22 @@ const productItem = ({
           <p className={styles.productListSubtitle}>{barCode}</p>
         </Col>
         <Col span={4}>
-          { !isSaved && <DownOutlined onClick={() => handleClickDown(id)} /> }
-          <span className={styles.productListQuantity}>{amount}</span>
-         { !isSaved && <UpOutlined onClick={() => handleClickUp(id)} /> }
+          { <DownOutlined onClick={() => handleClickDown(id)} /> }
+          <span className={styles.productListQuantity}>{quantity}</span>
+         { <UpOutlined onClick={() => quantity < balance ? handleClickUp(id) : null } /> }
         </Col>
-        <Col span={6}>
+        <Col span={6} style={{ textAlign: 'center' }}>
           <p className={styles.productListSubtitle}>
             x R$ {formatPrice(salePrice)}
           </p>
           <h1 className={styles.productListDescription}>
-            R$ {formatPrice(amount * salePrice)}
+            R$ {formatPrice(quantity * salePrice)}
           </h1>
         </Col>
         <Col span={4}>
           <Row justify="center">
             <Col>
-             { !isSaved && (
+             {(
                 <DeleteOutlined
                   onClick={() => handleClickDelete(id)}
                   className={styles.removeProduct}
@@ -55,20 +56,19 @@ const productItem = ({
 }
 
 const ProductList = ({
-  handleClickDelete,
-  handleClickDown,
-  handleClickSearchBarCode,
-  handleClickUp,
-  isSaved,
   onSearch,
-  onSelect,
-  options,
-  products
+  onChange,
+  searchProduct,
+  optionSearch,
+  onSelectProduct,
+  productList,
+  incrementQuantity,
+  decrementQuantity,
+  removeProduct
 }) => {
-  const [product, setProduct] = useState('')
   return (
     <div>
-      <h3>Ponto de Venda</h3>
+      <h2>Ponto de Venda</h2>
       <div className={styles.searchProduct}>
         <Row gutter={[8, 8]}>
           <Col span={24}>
@@ -76,24 +76,20 @@ const ProductList = ({
           </Col>
           <Col span={20}>
             <AutoComplete
-              disabled={isSaved}
-              onChange={setProduct}
+              // disabled={isSaved}
               onSearch={onSearch}
-              onSelect={(productId) => {
-                onSelect(productId)
-                setProduct('')
-              }}
-              options={options}
+              onChange={onChange}
+              onSelect={onSelectProduct}
+              options={optionSearch}
               placeholder="pequise um produto aqui!"
               style={{ width: '100%' }}
-              value={product}
+              value={searchProduct}
             />
           </Col>
-          <Col>
+          <Col span={4}>
             <Button
-              disabled={isSaved}
               icon={<BarcodeOutlined />}
-              onClick={handleClickSearchBarCode}
+              onClick={() => {}}
               type="primary">
               Buscar cód. barras
             </Button>
@@ -105,14 +101,14 @@ const ProductList = ({
           Total de itens
           <spa className={styles.productListTitleQuantity}>
             {' '}
-            {length(products)}
+            {length(productList)}
           </spa>
         </h1>
       </div>
-      <ul className={styles.productList}>
+      <ul className={ClassNames(styles.productList, styles.scrollbarPanelList)}>
         {map(
-          productItem({ handleClickDelete, handleClickDown, handleClickUp, isSaved }),
-          products
+          productItem(removeProduct, incrementQuantity, decrementQuantity, false),
+          productList
         )}
       </ul>
     </div>

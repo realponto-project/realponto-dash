@@ -1,95 +1,81 @@
-import React from 'react'
-import { Col, Row, Modal } from 'antd'
-
-import styles from './style.module.css'
-import Checkout from './Checkout'
+import React from "react"
+import {
+  Row,
+  Col,
+  Steps,
+} from "antd"
+import CustomerInfo from "./CustomerInfo"
+import PaymentInfo from "./PaymentInfo"
+import Detail from "./Detail"
 import ProductList from './ProductList'
-import ModalSearchBarCode from './ModalSearchBarCode'
-import ModalNotFoundProduct from './ModalNotFoundProduct'
-import Cupom from '../../Components/Cupom'
+
+PaymentInfo
+const { Step } = Steps
+const steps = [CustomerInfo, PaymentInfo, Detail]
 
 const PDV = ({
-  company,
-  customer,
-  form,
-  handleCancelCupom,
-  handleCancelNotFountProduct,
-  handleCancelSearchBarCode,
-  handleClickClear,
-  handleClickDown,
-  handleClickDeleteProduct,
-  handleClickSearchBarCode,
-  handleClickTryAgain,
-  handleClickUp,
-  handleSearchBarCode,
+  step,
+  handleNextStep,
+  handlePrevStep,
+  handleSaletype,
+  saleType,
+  handlePaymentType,
+  paymentType,
+  formCustomer,
+  formPayment,
+  getCustomerAddress,
+  formData,
   handleSubmit,
-  isSaved,
-  isVisibleCupom,
-  isVisibleNotFoundProduct,
-  isVisibleSearchBarCode,
-  onSearchCustomer,
   onSearch,
-  onSelect,
-  onValuesChange,
-  options,
-  optionsCustomer,
+  onChange,
+  searchProduct,
   products,
-  subTotal
+  optionSearch,
+  onSelectProduct,
+  productList,
+  incrementQuantity,
+  decrementQuantity,
+  removeProduct,
 }) => {
+  const ComponentStep = steps[step]
   return (
-    <Row className={styles.checkoutContainer} gutter={[16, 16]}>
+    <Row gutter={[16, 16]} style={{ background: "#FFF", minHeight: '88vh', padding: '16px 12px' }}>
       <Col span={16}>
         <ProductList
-          handleClickDelete={handleClickDeleteProduct}
-          handleClickDown={handleClickDown}
-          handleClickSearchBarCode={handleClickSearchBarCode}
-          handleClickUp={handleClickUp}
-          isSaved={isSaved}
           onSearch={onSearch}
-          onSelect={onSelect}
-          options={options}
+          onChange={onChange}
+          searchProduct={searchProduct}
           products={products}
+          optionSearch={optionSearch}
+          onSelectProduct={onSelectProduct}
+          productList={productList}
+          incrementQuantity={incrementQuantity}
+          decrementQuantity={decrementQuantity}
+          removeProduct={removeProduct}
         />
       </Col>
-      <Col span={8}>
-        <Checkout
-          form={form}
-          handleClickClear={handleClickClear}
+      <Col span={8} style={{ background: '#f4f4f4', borderRadius: '3px', padding: '22px', boxSizing: "border-box" }}>
+        <Steps size="small" current={step}>
+          <Step />
+          <Step />
+          <Step />
+        </Steps>
+        <ComponentStep
+          handleNextStep={handleNextStep}
+          handlePrevStep={handlePrevStep}
+          handleSaletype={handleSaletype}
+          saleType={saleType}
+          handlePaymentType={handlePaymentType}
+          paymentType={paymentType}
+          formCustomer={formCustomer}
+          formPayment={formPayment}
+          getCustomerAddress={getCustomerAddress}
+          formData={formData}
           handleSubmit={handleSubmit}
-          isSaved={isSaved}
-          onSearch={onSearchCustomer}
-          onValuesChange={onValuesChange}
-          options={optionsCustomer}
-          subTotal={subTotal}
         />
       </Col>
-
-      <ModalSearchBarCode
-        handleCancel={handleCancelSearchBarCode}
-        handleSearch={handleSearchBarCode}
-        isVisible={isVisibleSearchBarCode}
-      />
-
-      <ModalNotFoundProduct
-        handleCancel={handleCancelNotFountProduct}
-        handleClickTryAgain={handleClickTryAgain}
-        isVisible={isVisibleNotFoundProduct}
-      />
-
-      <Modal
-        visible={isVisibleCupom}
-        onCancel={handleCancelCupom}
-        footer={null}>
-        <Cupom
-          company={company}
-          customer={customer}
-          discount={form.getFieldValue('discount')}
-          items={products}
-          payment={form.getFieldValue('payment')}
-        />
-      </Modal>
     </Row>
-  )
-}
+  );
+};
 
-export default PDV
+export default PDV;

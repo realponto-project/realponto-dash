@@ -10,6 +10,7 @@ import MyTeam from '../Pages/MyTeam'
 import Onboarding from '../Pages/Onboarding'
 import MyInfo from '../Pages/MyInfo'
 import Home from '../Pages/Home'
+import PDV from '../Pages/PDV'
 
 const RootRoutes = [
   {
@@ -92,6 +93,13 @@ const RootRoutes = [
     component: Home,
     title: 'Dashboard',
     path: '/logged/dashboard',
+    exact: true,
+    goBack: true
+  },
+  {
+    component: PDV,
+    title: 'Ponto de venda',
+    path: '/logged/pdv',
     exact: true,
     goBack: true
   }

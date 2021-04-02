@@ -26,292 +26,172 @@ import {
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
+import getAddress from '../../Services/Address'
+import { getAll, getProductById } from '../../Services/Product'
 
 import PDVContainer from '../../Containers/PDV'
-import {
-  getAll,
-  getProductByBarCode,
-  getProductById
-} from '../../Services/Product'
-import {
-  getAll as getAllCustomersService,
-  getCusmtomerById
-} from '../../Services/Customer'
-import { createPdv } from '../../Services/Order'
 
-const PDV = ({ company, history, formPdv, setFormPdv, clearFormPdv }) => {
-  const [customer, setCustomer] = useState(null)
-  const [form] = Form.useForm()
-  const [isVisibleCupom, setIsVisibleCupom] = useState(false)
-  const [isVisibleNotFoundProduct, setIsVisibleNotFoundProduct] = useState(
-    false
-  )
-  const [isVisibleSearchBarCode, setIsVisibleSearchBarCode] = useState(false)
-  const [options, setOptions] = useState([])
-  const [optionsCustomer, setOptionsCustomer] = useState([])
+const PDV = ({ setFormPdv }) => {
+  const [step, setStep] = useState(0)
+  const [saleType, setSaleType] = useState({
+    saleFast: true,
+    saleFull: false,
+  })
 
-  const updateAmount = (id, callback) => {
-    const productsSelcts = pathOr([], ['productsSelcts'], formPdv)
-    const index = findIndex(propEq('id', id), productsSelcts)
+  const [paymentType, setPaymentType] = useState({
+    cash: true,
+    creditCard: false,
+  })
+  
+  const [formCustomer] = Form.useForm()
+  const [formPayment] = Form.useForm()
+  const [formData, setFormData] = useState({})
+  const [searchProduct, setSearchProduct] = useState('')
+  const [products, setProducts] = useState([])
+  const [optionSearch, setOptionSearch] = useState([])
+  const [productList, setProductList] = useState([])
 
-    if (index === -1) return
-
-    return adjust(
-      index,
-      (productsSelct) =>
-        applySpec({
-          id: prop('id'),
-          amount: pipe(
-            prop('amount'),
-            Number,
-            callback,
-            max(1),
-            min(prop('balance')(productsSelct))
-          ),
-          balance: prop('balance'),
-          barCode: prop('barCode'),
-          name: prop('name'),
-          salePrice: prop('salePrice')
-        })(productsSelct),
-      productsSelcts
-    )
-  }
-
-  const handleCancelNotFountProduct = () => setIsVisibleNotFoundProduct(false)
-
-  const handleCancelSearchBarCode = () => setIsVisibleSearchBarCode(false)
-
-  const handleClickClear = () => {
-    clearFormPdv()
-    form.resetFields()
-  }
-
-  const handleClickDown = (id) =>
-    setFormPdv({ productsSelcts: updateAmount(id, dec) })
-
-  const handleClickDeleteProduct = (productId) => {
-    const productsSelcts = filter(
-      ({ id }) => id !== productId,
-      pathOr([], ['productsSelcts'], formPdv)
-    )
-
-    setFormPdv({ productsSelcts })
-  }
-
-  const handleClickSearchBarCode = () => setIsVisibleSearchBarCode(true)
-
-  const handleClickTryAgain = () => {
-    handleCancelNotFountProduct()
-    handleClickSearchBarCode()
-  }
-
-  const handleClickUp = (id) =>
-    setFormPdv({ productsSelcts: updateAmount(id, inc) })
-
-  const handleSearchBarCode = async (barCode) => {
-    handleCancelSearchBarCode()
-    try {
-      const { data } = await getProductByBarCode(barCode)
-      const productsSelcts = pathOr([], ['productsSelcts'], formPdv)
-
-      const index = findIndex(
-        propEq('id', data.id),
-        pathOr([], ['productsSelcts'], formPdv)
-      )
-
-      if (index !== -1) return
-      // if (index !== -1) throw new Error('Product already scannered')
-
-      pipe(
-        insert(0, __, productsSelcts),
-        (productsSelcts) => ({ productsSelcts }),
-        setFormPdv
-      )(merge(data, { amount: 1 }))
-    } catch (error) {
-      console.error(error)
-      setIsVisibleNotFoundProduct(true)
+  const handleNextStep = async (values) => {
+    if (step === 2) {
+      return step 
+    } 
+    
+   try {
+    if (step === 0) {
+      await formCustomer.validateFields()
+      setFormData({
+        ...formData,
+        customers: values
+      })
     }
-  }
 
-  const handleSubmit = async (formData) => {
-    const buildPdv = applySpec({
-      customerId: prop('customerId'),
-      discount: prop('discount'),
-      payment: prop('payment'),
-      type: prop('type'),
-      products: pipe(
-        prop('productsSelcts'),
-        map(
-          applySpec({
-            productId: prop('id'),
-            quantity: prop('amount')
-          })
+    if (step === 1) {
+      await formPayment.validateFields()
+      setFormData({
+        ...formData,
+        payment: (
+          paymentType.cash || values.paymentMethod === 'debit_card'
+            ? { paymentMethod: paymentType.cash ? 'Dinheiro' :  'debit_card', installments: 1 } 
+            : values
         )
-      )
+      })
+    }
+    setFormPdv({
+      ...formData,
+      productList
     })
+    return setStep(step + 1)
+   } catch (error) {
+     console.log(error)
+   }
+  }
+  const handlePrevStep = () => step === 0 ? step : setStep(step - 1)
+  const handleSaletype = (values) => {
+    if (values.saleFast) {
+      formCustomer.resetFields()
+    }
+    setSaleType(values)
+  }
+  const handlePaymentType = (values) => {
+    if (values.cash) {
+      formPayment.resetFields()
+    }
+    setPaymentType(values)
+  }
+
+  const getCustomerAddress = async ({ target }) => {
+    const { name, value } = target
+    if (name === 'zipcode' && value.length === 8) {
+      const address = await getAddress(value)
+      formCustomer.setFieldsValue(address)
+    }
+  }
+
+  const handleSubmit = () => {
+    console.log(formData)
+  }
+
+  const onSearch = value => {
+    if (value.length > 3) {
+      getAll().then(({ data }) => {
+        const source = data.source.map(item => ({ label: `${item.name} - quantidade: ${item.balance }`, value: item.id }))
+        setOptionSearch(source)
+      })
+    }
+  }
+
+  const removeProduct = productId => {
+    setProductList(
+      productList.filter(product => product.id !== productId)
+    )
+  }
+
+  const onChange = value => {
+    setSearchProduct(value)
+  }
+
+  const incrementQuantity = productId => {
+    setProductList(
+      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity + 1 }) : product)
+    )
+  }
+
+  const decrementQuantity = productId => {
+    setProductList(
+      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity === 1 ? product.quantity : product.quantity - 1 }) : product)
+    )
+  }
+
+  const onSelectProduct = async value => {
+    setSearchProduct('')
+    const findProduct = productList.find(product => product.id === value)
+    if (findProduct) {
+      return;
+    }
 
     try {
-      if (formPdv.isSaved) {
-        const { data: customer } = await getCusmtomerById(formPdv.customerId)
+      const { data } = await getProductById(value)
 
-        setCustomer(customer)
-        setIsVisibleCupom(true)
-      } else {
-        const { status } = await createPdv(buildPdv(merge(formPdv, formData)))
-
-        if (status === 201) {
-          setFormPdv({ isSaved: true })
+      setProductList([
+        ...productList,
+        {
+          ...data,
+          quantity: 1
         }
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const getAllCustomers = async (name) => {
-    try {
-      const resp = await getAllCustomersService({
-        name
-      })
-      setOptionsCustomer(
-        map(
-          applySpec({
-            value: prop('id'),
-            label: prop('name')
-          }),
-          resp.data.source
-        )
-      )
+      ])
     } catch (error) {
-      console.error(error)
+      console.log(error)
     }
   }
-
-  const onSearch = async (name) => {
-    try {
-      const resp = await getAll({
-        activated: true,
-        name
-      })
-      setOptions(
-        map(
-          applySpec({
-            value: prop('id'),
-            label: prop('name')
-          }),
-          resp.data.source
-        )
-      )
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const onSelect = async (productId) => {
-    try {
-      const { data } = await getProductById(productId)
-      const productsSelcts = pathOr([], ['productsSelcts'], formPdv)
-
-      const index = findIndex(
-        propEq('id', data.id),
-        pathOr([], ['productsSelcts'], formPdv)
-      )
-
-      if (index !== -1) return
-
-      pipe(
-        insert(0, __, productsSelcts),
-        (productsSelcts) => ({ productsSelcts }),
-        setFormPdv
-      )(merge(data, { amount: 1 }))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const onValuesChange = (dataChanged) => {
-    if (pipe(pathOr(false, ['type']), equals('fast'))(dataChanged)) {
-      setFormPdv({ customerId: undefined })
-    }
-
-    setFormPdv(dataChanged)
-  }
-
-  const getAllProduct = useCallback(async () => {
-    const {
-      data: { source }
-    } = await getAll()
-
-    setOptions(
-      map(
-        applySpec({
-          label: prop('name'),
-          value: prop('id')
-        }),
-        source
-      )
-    )
-  }, [])
-
-  useEffect(() => {
-    getAllProduct()
-    getAllCustomers()
-  }, [])
-
-  useEffect(() => {
-    if (isVisibleCupom) {
-      print({
-        printable: 'cupom-content',
-        type: 'html'
-        // style: '#cupom-content { color: red; }'
-      })
-    }
-  }, [isVisibleCupom])
-
-  useEffect(() => {
-    form.setFieldsValue(formPdv)
-  }, [formPdv])
-
-  const subTotal = reduce(
-    add,
-    0,
-    map(
-      ({ amount, salePrice }) => multiply(amount, salePrice),
-      pathOr([], ['productsSelcts'], formPdv)
-    )
-  )
 
   return (
-    <PDVContainer
-      customer={customer}
-      company={company}
-      form={form}
-      handleCancelCupom={() => setIsVisibleCupom(false)}
-      handleCancelNotFountProduct={handleCancelNotFountProduct}
-      handleCancelSearchBarCode={handleCancelSearchBarCode}
-      handleClickClear={handleClickClear}
-      handleClickDown={handleClickDown}
-      handleClickDeleteProduct={handleClickDeleteProduct}
-      handleClickSearchBarCode={handleClickSearchBarCode}
-      handleClickTryAgain={handleClickTryAgain}
-      handleClickUp={handleClickUp}
-      handleSearchBarCode={handleSearchBarCode}
+    <PDVContainer 
+      step={step}
+      handleNextStep={handleNextStep}
+      handlePrevStep={handlePrevStep}
+      handleSaletype={handleSaletype}
+      saleType={saleType}
+      handlePaymentType={handlePaymentType}
+      paymentType={paymentType}
+      formCustomer={formCustomer}
+      formPayment={formPayment}
+      getCustomerAddress={getCustomerAddress}
+      formData={formData}
       handleSubmit={handleSubmit}
-      isSaved={formPdv.isSaved}
-      isVisibleCupom={isVisibleCupom}
-      isVisibleNotFoundProduct={isVisibleNotFoundProduct}
-      isVisibleSearchBarCode={isVisibleSearchBarCode}
-      onSearchCustomer={getAllCustomers}
       onSearch={onSearch}
-      onSelect={onSelect}
-      onValuesChange={onValuesChange}
-      options={options}
-      optionsCustomer={optionsCustomer}
-      products={formPdv.productsSelcts}
-      subTotal={subTotal}
+      onChange={onChange}
+      searchProduct={searchProduct}
+      products={products}
+      optionSearch={optionSearch}
+      onSelectProduct={onSelectProduct}
+      productList={productList}
+      incrementQuantity={incrementQuantity}
+      decrementQuantity={decrementQuantity}
+      removeProduct={removeProduct}
     />
   )
 }
+
 const mapStateToProps = ({ formPdv, company }) => ({
   formPdv,
   company

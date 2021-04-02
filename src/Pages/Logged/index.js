@@ -9,8 +9,8 @@ import Layout from '../../Components/Layout'
 
 const renderRoute = (route) => <ProtectedRoute key={route.path} {...route} />
 
-export const LoggedWithoutLayout = () => (
-  <div style={{ width: '100vw', overflow: 'hidden' }}>
+export const Logged = () => (
+  <Layout>
     <Row gutter={[8, 8]}>
       <Col span={24}>
         <Header rootRoutes={rootRoutes} />
@@ -19,12 +19,6 @@ export const LoggedWithoutLayout = () => (
         <Switch>{rootRoutes.map(renderRoute)}</Switch>
       </Col>
     </Row>
-  </div>
-)
-
-const Logged = () => (
-  <Layout>
-    <LoggedWithoutLayout />
   </Layout>
 )
 
