@@ -22,7 +22,10 @@ const Onboarding = ({ user, loggedUser, history }) => {
 
   const updateMyInfo = async (userId, values) => {
     try {
-      const { data } = await updateMyInfoService((userId = user.id), values)
+      const { data } = await updateMyInfoService((userId = user.id), {
+        ...values,
+        document: values.document.replace(/\D/g, '')
+      })
       loggedUser({
         ...user,
         ...data

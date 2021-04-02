@@ -26,9 +26,9 @@ const columns = (chooseUser) => [
     fixed: 'left'
   },
   {
-    title: 'Telefone',
-    dataIndex: 'phone',
-    key: 'phone',
+    title: 'Documento',
+    dataIndex: 'document',
+    key: 'document',
     fixed: 'left'
   },
   {
