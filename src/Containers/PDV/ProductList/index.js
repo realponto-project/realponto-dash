@@ -14,7 +14,8 @@ import { formatPrice } from '../../../utils'
 const productItem = ({
   handleClickDelete,
   handleClickDown,
-  handleClickUp
+  handleClickUp,
+  isSaved
 }) => ({ id, name, barCode, amount, salePrice }) => {
   return (
     <li key={id} className={styles.productItem}>
@@ -24,9 +25,9 @@ const productItem = ({
           <p className={styles.productListSubtitle}>{barCode}</p>
         </Col>
         <Col span={4}>
-          <DownOutlined onClick={() => handleClickDown(id)} />
+          { !isSaved && <DownOutlined onClick={() => handleClickDown(id)} /> }
           <span className={styles.productListQuantity}>{amount}</span>
-          <UpOutlined onClick={() => handleClickUp(id)} />
+         { !isSaved && <UpOutlined onClick={() => handleClickUp(id)} /> }
         </Col>
         <Col span={6}>
           <p className={styles.productListSubtitle}>
@@ -39,10 +40,12 @@ const productItem = ({
         <Col span={4}>
           <Row justify="center">
             <Col>
-              <DeleteOutlined
-                onClick={() => handleClickDelete(id)}
-                className={styles.removeProduct}
-              />
+             { !isSaved && (
+                <DeleteOutlined
+                  onClick={() => handleClickDelete(id)}
+                  className={styles.removeProduct}
+                />
+             )}
             </Col>
           </Row>
         </Col>
@@ -63,9 +66,9 @@ const ProductList = ({
   products
 }) => {
   const [product, setProduct] = useState('')
-
   return (
     <div>
+      <h3>Ponto de Venda</h3>
       <div className={styles.searchProduct}>
         <Row gutter={[8, 8]}>
           <Col span={24}>
@@ -108,7 +111,7 @@ const ProductList = ({
       </div>
       <ul className={styles.productList}>
         {map(
-          productItem({ handleClickDelete, handleClickDown, handleClickUp }),
+          productItem({ handleClickDelete, handleClickDown, handleClickUp, isSaved }),
           products
         )}
       </ul>

@@ -1,9 +1,8 @@
 .checkoutContainer {
   background-color: #fff;
-  padding: 16px;
-
+  padding: 20px 16px;
+  box-sizing: border-box;
   min-height: 85vh;
-  
-  width: 100vw;
+  width: calc(100vw - 32px);
   overflow: hidden
 }

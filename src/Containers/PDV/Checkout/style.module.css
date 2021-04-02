@@ -1,10 +1,16 @@
 .checkoutInfo {
   background: #F2F2F3;
-  padding: 16px;
+  padding: 20px;
   box-sizing: border-box;
   border-radius: 3px;
   font-family: Lato;
+  position: fixed;  
   font-weight: normal;
+  min-height: 90vh;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  max-width: 600px;
 }
 
 .checkoutSubtitle{

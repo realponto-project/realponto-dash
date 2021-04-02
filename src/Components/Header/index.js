@@ -11,12 +11,14 @@ const Header = ({
   history,
   loggoutUser,
   user,
+  unSubscribe,
 }) => {
   const handleNavegator = ({ key }) => {
     if (key === 'loggout') {
       localStorage.removeItem('token')
       localStorage.removeItem('user.name')
       loggoutUser()
+      unSubscribe()
       history.push('/login')
     }
 
@@ -93,6 +95,7 @@ const mapStateToProps = ({ user }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   loggoutUser: () => dispatch({ type: 'USER_LOGOUT' }),
+  unSubscribe: () => dispatch({ type: 'UNSET_SUBSCRIPTION' })
 })
 
 const enhanced = compose(

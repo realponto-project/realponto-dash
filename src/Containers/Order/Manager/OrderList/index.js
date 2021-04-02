@@ -9,7 +9,7 @@ const columns = (goToOrderDetail) => [
     key: 'status',
     fixed: 'left',
     render: (_, record) => (
-      <Tag color={record.status.color}>{record.status.value}</Tag>
+      <Tag color={record.status.color}>{record.status.label}</Tag>
     )
   },
   {

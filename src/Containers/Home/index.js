@@ -39,18 +39,18 @@ const Home = ({
         <div className={styles.cardTotalValues}>
           <div>
             <h1 className={styles.cardTotalTitle}>Total de Pedidos</h1>
-            <h1 className={styles.cardTotalValue}>{orders ? orders.value : '-' }</h1>
+            <h1 className={styles.cardTotalValue}>{orders && orders.value ? orders.value : '-' }</h1>
           </div>
-          <Image preview={false} src={orders ? OrdersSvg : EmptyStateOrderSvg} alt="orders" />
+          <Image preview={false} src={orders && orders.value > 0 ? OrdersSvg : EmptyStateOrderSvg} alt="orders" />
         </div>
       </Col>
       <Col span={6}>
         <div className={styles.cardTotalValues}>
           <div>
             <h1 className={styles.cardTotalTitle}>Total de Clientes</h1>
-            <h1 className={styles.cardTotalValue}>{customers ? customers.value : '-' }</h1>
+            <h1 className={styles.cardTotalValue}>{customers && customers.value > 0 ? customers.value : '-' }</h1>
           </div>
-          <Image src={orders ? CustomersSvg : EmptyStateCustomersSvg } preview={false} alt="customers" />
+          <Image src={customers && customers.value > 0 ? CustomersSvg : EmptyStateCustomersSvg } preview={false} alt="customers" />
         </div>
       </Col>
       {
