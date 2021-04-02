@@ -3,9 +3,8 @@ import { merge } from 'ramda'
 import { SET_FORM_PDV, CLEAR_FORM_PDV } from '../actions/formPdv'
 
 const initialState = {
-  discount: 0,
-  productsSelcts: [],
-  isSaved: false
+  customerForm: {},
+  paymentForm: {}
 }
 
 const formPdvReducer = (state = initialState, action) => {

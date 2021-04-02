@@ -1,95 +1,60 @@
-import React from 'react'
-import { Col, Row, Modal } from 'antd'
+import React from "react"
+import {
+  Row,
+  Col,
+  Steps,
+} from "antd"
+import CustomerInfo from "./CustomerInfo"
+import PaymentInfo from "./PaymentInfo"
+import Detail from "./Detail"
 
-import styles from './style.module.css'
-import Checkout from './Checkout'
-import ProductList from './ProductList'
-import ModalSearchBarCode from './ModalSearchBarCode'
-import ModalNotFoundProduct from './ModalNotFoundProduct'
-import Cupom from '../../Components/Cupom'
+PaymentInfo
+const { Step } = Steps
+const steps = [CustomerInfo, PaymentInfo, Detail]
 
 const PDV = ({
-  company,
-  customer,
-  form,
-  handleCancelCupom,
-  handleCancelNotFountProduct,
-  handleCancelSearchBarCode,
-  handleClickClear,
-  handleClickDown,
-  handleClickDeleteProduct,
-  handleClickSearchBarCode,
-  handleClickTryAgain,
-  handleClickUp,
-  handleSearchBarCode,
+  step,
+  handleNextStep,
+  handlePrevStep,
+  handleSaletype,
+  saleType,
+  handlePaymentType,
+  paymentType,
+  formCustomer,
+  formPayment,
+  getCustomerAddress,
+  formData,
   handleSubmit,
-  isSaved,
-  isVisibleCupom,
-  isVisibleNotFoundProduct,
-  isVisibleSearchBarCode,
-  onSearchCustomer,
-  onSearch,
-  onSelect,
-  onValuesChange,
-  options,
-  optionsCustomer,
-  products,
-  subTotal
 }) => {
+  const ComponentStep = steps[step]
+
   return (
-    <Row className={styles.checkoutContainer} gutter={[16, 16]}>
+    <Row>
       <Col span={16}>
-        <ProductList
-          handleClickDelete={handleClickDeleteProduct}
-          handleClickDown={handleClickDown}
-          handleClickSearchBarCode={handleClickSearchBarCode}
-          handleClickUp={handleClickUp}
-          isSaved={isSaved}
-          onSearch={onSearch}
-          onSelect={onSelect}
-          options={options}
-          products={products}
-        />
+        teste produtos
       </Col>
-      <Col span={8}>
-        <Checkout
-          form={form}
-          handleClickClear={handleClickClear}
+      <Col span={7}>
+        <Steps size="small" current={step}>
+          <Step />
+          <Step />
+          <Step />
+        </Steps>
+        <ComponentStep
+          handleNextStep={handleNextStep}
+          handlePrevStep={handlePrevStep}
+          handleSaletype={handleSaletype}
+          saleType={saleType}
+          handlePaymentType={handlePaymentType}
+          paymentType={paymentType}
+          formCustomer={formCustomer}
+          formPayment={formPayment}
+          getCustomerAddress={getCustomerAddress}
+          formData={formData}
           handleSubmit={handleSubmit}
-          isSaved={isSaved}
-          onSearch={onSearchCustomer}
-          onValuesChange={onValuesChange}
-          options={optionsCustomer}
-          subTotal={subTotal}
         />
       </Col>
-
-      <ModalSearchBarCode
-        handleCancel={handleCancelSearchBarCode}
-        handleSearch={handleSearchBarCode}
-        isVisible={isVisibleSearchBarCode}
-      />
-
-      <ModalNotFoundProduct
-        handleCancel={handleCancelNotFountProduct}
-        handleClickTryAgain={handleClickTryAgain}
-        isVisible={isVisibleNotFoundProduct}
-      />
-
-      <Modal
-        visible={isVisibleCupom}
-        onCancel={handleCancelCupom}
-        footer={null}>
-        <Cupom
-          company={company}
-          customer={customer}
-          discount={form.getFieldValue('discount')}
-          items={products}
-          payment={form.getFieldValue('payment')}
-        />
-      </Modal>
     </Row>
-  )
-}
+  );
+};
 
-export default PDV
+export default PDV;

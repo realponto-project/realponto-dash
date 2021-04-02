@@ -25,7 +25,7 @@ const paymentLabel = {
   card_credit_visa: 'Cartão crédito Visa',
   card_debit_master: 'Cartão débito Master',
   card_debit_visa: 'Cartão débito Visa',
-  money: 'Dinheiro'
+  cash: 'Dinheiro'
 }
 
 const Cupom = ({ company, customer, discount, items, payment }) => {
