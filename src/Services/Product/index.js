@@ -9,7 +9,7 @@ const getAll = async (params = {}) => {
 }
 
 const getProductByBarCode = async (barCode) => {
-  return await axiosIntance.get(`/products/getByBarCode/${barCode}`)
+  return await axiosIntance.get(`/products-barcode/${barCode}`)
 }
 
 const getProductById = async (id) => {
