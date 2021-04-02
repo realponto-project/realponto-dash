@@ -27,10 +27,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
 import getAddress from '../../Services/Address'
+import { getAll, getProductById } from '../../Services/Product'
 
 import PDVContainer from '../../Containers/PDV'
 
-const PDV = ({ }) => {
+const PDV = ({ setFormPdv }) => {
   const [step, setStep] = useState(0)
   const [saleType, setSaleType] = useState({
     saleFast: true,
@@ -45,6 +46,10 @@ const PDV = ({ }) => {
   const [formCustomer] = Form.useForm()
   const [formPayment] = Form.useForm()
   const [formData, setFormData] = useState({})
+  const [searchProduct, setSearchProduct] = useState('')
+  const [products, setProducts] = useState([])
+  const [optionSearch, setOptionSearch] = useState([])
+  const [productList, setProductList] = useState([])
 
   const handleNextStep = async (values) => {
     if (step === 2) {
@@ -71,7 +76,10 @@ const PDV = ({ }) => {
         )
       })
     }
-
+    setFormPdv({
+      ...formData,
+      productList
+    })
     return setStep(step + 1)
    } catch (error) {
      console.log(error)
@@ -103,6 +111,59 @@ const PDV = ({ }) => {
     console.log(formData)
   }
 
+  const onSearch = value => {
+    if (value.length > 3) {
+      getAll().then(({ data }) => {
+        const source = data.source.map(item => ({ label: `${item.name} - quantidade: ${item.balance }`, value: item.id }))
+        setOptionSearch(source)
+      })
+    }
+  }
+
+  const removeProduct = productId => {
+    setProductList(
+      productList.filter(product => product.id !== productId)
+    )
+  }
+
+  const onChange = value => {
+    setSearchProduct(value)
+  }
+
+  const incrementQuantity = productId => {
+    setProductList(
+      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity + 1 }) : product)
+    )
+  }
+
+  const decrementQuantity = productId => {
+    setProductList(
+      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity === 1 ? product.quantity : product.quantity - 1 }) : product)
+    )
+  }
+
+  const onSelectProduct = async value => {
+    setSearchProduct('')
+    const findProduct = productList.find(product => product.id === value)
+    if (findProduct) {
+      return;
+    }
+
+    try {
+      const { data } = await getProductById(value)
+
+      setProductList([
+        ...productList,
+        {
+          ...data,
+          quantity: 1
+        }
+      ])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <PDVContainer 
       step={step}
@@ -117,6 +178,16 @@ const PDV = ({ }) => {
       getCustomerAddress={getCustomerAddress}
       formData={formData}
       handleSubmit={handleSubmit}
+      onSearch={onSearch}
+      onChange={onChange}
+      searchProduct={searchProduct}
+      products={products}
+      optionSearch={optionSearch}
+      onSelectProduct={onSelectProduct}
+      productList={productList}
+      incrementQuantity={incrementQuantity}
+      decrementQuantity={decrementQuantity}
+      removeProduct={removeProduct}
     />
   )
 }

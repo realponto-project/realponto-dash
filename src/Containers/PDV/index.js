@@ -26,13 +26,33 @@ const PDV = ({
   getCustomerAddress,
   formData,
   handleSubmit,
+  onSearch,
+  onChange,
+  searchProduct,
+  products,
+  optionSearch,
+  onSelectProduct,
+  productList,
+  incrementQuantity,
+  decrementQuantity,
+  removeProduct,
 }) => {
   const ComponentStep = steps[step]
-
   return (
     <Row gutter={[16, 16]} style={{ background: "#FFF", minHeight: '88vh', padding: '16px 12px' }}>
       <Col span={16}>
-        <ProductList />
+        <ProductList
+          onSearch={onSearch}
+          onChange={onChange}
+          searchProduct={searchProduct}
+          products={products}
+          optionSearch={optionSearch}
+          onSelectProduct={onSelectProduct}
+          productList={productList}
+          incrementQuantity={incrementQuantity}
+          decrementQuantity={decrementQuantity}
+          removeProduct={removeProduct}
+        />
       </Col>
       <Col span={8} style={{ background: '#f4f4f4', borderRadius: '3px', padding: '22px', boxSizing: "border-box" }}>
         <Steps size="small" current={step}>
