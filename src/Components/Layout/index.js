@@ -35,7 +35,7 @@ const menuItems = [
   {
     icon: <CalculatorOutlined />,
     label: 'Ponto de venda',
-    key: '/pdv'
+    key: '/logged/pdv'
   },
   {
     icon: <ShrinkOutlined />,

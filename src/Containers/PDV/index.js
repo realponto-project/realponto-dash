@@ -7,6 +7,7 @@ import {
 import CustomerInfo from "./CustomerInfo"
 import PaymentInfo from "./PaymentInfo"
 import Detail from "./Detail"
+import ProductList from './ProductList'
 
 PaymentInfo
 const { Step } = Steps
@@ -29,11 +30,11 @@ const PDV = ({
   const ComponentStep = steps[step]
 
   return (
-    <Row>
+    <Row gutter={[16, 16]} style={{ background: "#FFF", minHeight: '88vh', padding: '16px 12px' }}>
       <Col span={16}>
-        teste produtos
+        <ProductList />
       </Col>
-      <Col span={7}>
+      <Col span={8} style={{ background: '#f4f4f4', borderRadius: '3px', padding: '22px', boxSizing: "border-box" }}>
         <Steps size="small" current={step}>
           <Step />
           <Step />
