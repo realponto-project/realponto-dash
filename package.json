@@ -10,6 +10,7 @@
     "@testing-library/user-event": "12.1.10",
     "antd": "4.9.4",
     "axios": "0.21.0",
+    "cep-promise": "4.1.0",
     "classnames": "2.2.6",
     "cpf-cnpj-validator": "1.0.3",
     "moment": "2.29.1",
