@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { compose, isEmpty } from 'ramda'
+import { applySpec, compose, isEmpty, pipe, pathOr } from 'ramda'
 
 import ManagerContainer from '../../../Containers/Product/Manager'
 import { createProduct, getAll, updateProduct } from '../../../Services/Product'
@@ -9,6 +9,22 @@ const initialFilterState = {
   activated: ['Ativo', 'Inativo'],
   name: ''
 }
+
+const parsePrice = value => value ? Number(value) * 100 : 0
+const productPayload = applySpec({
+  balance: pathOr(0, ['balance']),
+  barCode: pathOr(null, ['barCode']),
+  buyPrice: pipe(
+    pathOr(0, ['buyPrice']),
+    parsePrice,
+  ),
+  minQuantity: pathOr(null, ['minQuantity']),
+  name: pathOr(null, ['name']),
+  salePrice: pipe(
+    pathOr(0, ['salePrice']),
+    parsePrice,
+  ),
+})
 
 const Manager = ({
   productSearch,
@@ -19,7 +35,6 @@ const Manager = ({
   const [products, setProducts] = useState({})
   const [
     page
-    //  setPage
   ] = useState(1)
 
   useEffect(() => {
@@ -56,7 +71,7 @@ const Manager = ({
 
   const handleSubmit = async (values) => {
     try {
-      await createProduct({ ...values, activated: true })
+      await createProduct(productPayload(values))
       getAllProducts()
     } catch (error) {
       console.log('error', error)
@@ -65,7 +80,7 @@ const Manager = ({
 
   const handleSubmitUpdate = async (values) => {
     try {
-      await updateProduct(values)
+      await updateProduct(productPayload(values))
       getAllProducts()
     } catch (error) {
       console.log('error', error)

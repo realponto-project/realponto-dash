@@ -1,22 +1,10 @@
 .checkoutInfo {
-  height: 80vh;
-  position: fixed;
   background: #F2F2F3;
-  border-radius: 3px;
   padding: 16px;
   box-sizing: border-box;
-
-  width: 350px;
-  right: 10px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  
+  border-radius: 3px;
   font-family: Lato;
   font-weight: normal;
-
-  overflow: auto;
 }
 
 .checkoutSubtitle{

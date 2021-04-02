@@ -9,7 +9,6 @@ import UpdateMyPassword from '../Pages/UpdateMyPassword'
 import MyTeam from '../Pages/MyTeam'
 import Onboarding from '../Pages/Onboarding'
 import MyInfo from '../Pages/MyInfo'
-import PDV from '../Pages/PDV'
 import Home from '../Pages/Home'
 
 const RootRoutes = [
@@ -88,13 +87,6 @@ const RootRoutes = [
     path: '/logged/customer/manager',
     exact: true,
     goBack: false
-  },
-  {
-    component: PDV,
-    title: 'PONTO DE VENDA',
-    path: '/logged/pdv',
-    exact: true,
-    goBack: true
   },
   {
     component: Home,

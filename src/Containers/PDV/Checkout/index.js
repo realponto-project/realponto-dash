@@ -42,9 +42,7 @@ const Checkout = ({
       layout="vertical"
       onFinish={handleSubmit}
       onValuesChange={onValuesChange}>
-      <div className={styles.checkoutInfo}>
-        <h2 className={styles.checkoutSubtitle}>Checkout</h2>
-
+      <div className={styles.checkoutInfo}> 
         <Form.Item label="Tipo de venda" name="type" rules={[ruleRequired]}>
           <Radio.Group style={{ width: '100%' }} disabled={isSaved}>
             <Row justify="space-between">
