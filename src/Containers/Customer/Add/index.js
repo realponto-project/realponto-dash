@@ -58,6 +58,7 @@ const Add = ({
       onOk={() => form.submit()}
       okText='Cadastrar'
       title="Cadastro cliente"
+      centered={true}
       visible={visible}>
       <Form
         labelCol={{ span: 6 }}

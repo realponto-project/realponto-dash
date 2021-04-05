@@ -98,6 +98,15 @@ const Manager = ({
     return setProductSearch({ [name]: value })
   }
 
+  const currencyBRL = (value) => {
+    const formattedValue = value.toLocaleString(
+      'pt-BR',
+      { style: 'currency', currency: 'BRL' }
+    )
+
+    return formattedValue;
+  }
+
   const clearFilters = () => {
     cleanProductSearch()
   }
@@ -111,6 +120,7 @@ const Manager = ({
       handleOnChange={handleOnChange}
       filters={productSearch}
       clearFilters={clearFilters}
+      currencyBRL={currencyBRL}
     />
   )
 }
