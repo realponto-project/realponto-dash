@@ -5825,7 +5825,7 @@ ccount@^1.0.0:
   resolved "https://registry.yarnpkg.com/ccount/-/ccount-1.1.0.tgz#246687debb6014735131be8abab2d93898f8d043"
   integrity sha512-vlNK021QdI7PNeiUh/lKkC/mNHHfV0m/Ad5JoI0TYtlBnJAslM/JIkm/tGC88bkLIwO6OQ5uV6ztS6kVAtCDlg==
 
-cep-promise@^4.1.0:
+cep-promise@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/cep-promise/-/cep-promise-4.1.0.tgz#25cb13bd0fd0a04710e8e91229313b36dc900be3"
   integrity sha512-8Xe8nNtTnumMFnKkdO7mFwbJLdJek4JXku0M+AUE6tXPuaHSp/ea5MgSWA/P7K74C1H3okLy0xUWxC9F/90+bA==

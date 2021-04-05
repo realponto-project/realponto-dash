@@ -63,7 +63,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
 
   useEffect(() => {
     const getAllPlans = () => {
-      getAll({ activated: true }).then(({ data: { source } }) => {
+      getAll({ activated: true, description: 'Anual' }).then(({ data: { source } }) => {
         const sourceFormated = map(buildPlan, source)
         setPlans(sourceFormated)
         setPlanId(
@@ -106,8 +106,8 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
 
   const patterns = {
     card_holder_name: [new Array(45).fill('#').join(''), /([^a-zA-Z|\s])/g],
-    card_number: ['#### #### #### ####', /\D/g],
-    card_expiration_date: ['##/##', /\D/g],
+    card_number: ['#### #### #### ####', /\D/g, /(\s{0,3})$/g],
+    card_expiration_date: ['##/##', /\D/g, /(\/)$/g],
     card_cvv: ['###', /\D/g]
   }
 
