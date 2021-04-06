@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { applySpec, compose, isEmpty, pipe, pathOr } from 'ramda'
+import {
+  applySpec,
+  compose,
+  isEmpty,
+  pipe,
+  pathOr,
+  ifElse,
+  always,
+  prop
+} from 'ramda'
 
 import ManagerContainer from '../../../Containers/Product/Manager'
 import { createProduct, getAll, updateProduct } from '../../../Services/Product'
@@ -10,20 +19,15 @@ const initialFilterState = {
   name: ''
 }
 
-const parsePrice = value => value ? Number(value) * 100 : 0
+const parsePrice = (value) => (value ? Number(value) * 100 : 0)
 const productPayload = applySpec({
+  id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
   balance: pathOr(0, ['balance']),
   barCode: pathOr(null, ['barCode']),
-  buyPrice: pipe(
-    pathOr(0, ['buyPrice']),
-    parsePrice,
-  ),
+  buyPrice: pipe(pathOr(0, ['buyPrice']), parsePrice),
   minQuantity: pathOr(null, ['minQuantity']),
   name: pathOr(null, ['name']),
-  salePrice: pipe(
-    pathOr(0, ['salePrice']),
-    parsePrice,
-  ),
+  salePrice: pipe(pathOr(0, ['salePrice']), parsePrice)
 })
 
 const Manager = ({
@@ -33,9 +37,7 @@ const Manager = ({
   cleanProductSearch
 }) => {
   const [products, setProducts] = useState({})
-  const [
-    page
-  ] = useState(1)
+  const [page] = useState(1)
 
   useEffect(() => {
     getAllProducts()
@@ -99,12 +101,12 @@ const Manager = ({
   }
 
   const currencyBRL = (value) => {
-    const formattedValue = value.toLocaleString(
-      'pt-BR',
-      { style: 'currency', currency: 'BRL' }
-    )
+    const formattedValue = value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    })
 
-    return formattedValue;
+    return formattedValue
   }
 
   const clearFilters = () => {

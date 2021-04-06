@@ -40,29 +40,21 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
         <Form.Item
           name="minQuantity"
           label="Qtd mínima"
-          rules={[
-            { required: true, message: 'Este campo é obrigatório!' }
-          ]}>
+          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <InputNumber min={1} style={{ width: '98%' }} />
         </Form.Item>
-        <Form.Item
-          name="barCode"
-          label="Código de barras">
+        <Form.Item name="barCode" label="Código de barras">
           <Input />
         </Form.Item>
         <Row align="space-between">
           <Col span={12}>
-            <Form.Item
-              name="buyPrice"
-              label="Preço custo">
-              <InputNumber min={1} style={{ width: '98%' }} />
+            <Form.Item name="buyPrice" label="Preço custo">
+              <InputNumber min={0} style={{ width: '98%' }} />
             </Form.Item>
           </Col>
           <Col span={11}>
-            <Form.Item
-              name="salePrice"
-              label="Preço venda">
-              <InputNumber min={1} style={{ width: '98%' }} />
+            <Form.Item name="salePrice" label="Preço venda">
+              <InputNumber min={0} style={{ width: '98%' }} />
             </Form.Item>
           </Col>
         </Row>

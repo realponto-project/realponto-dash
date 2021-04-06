@@ -5,6 +5,7 @@ import Edit from '../Edit'
 import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { applySpec, divide, pipe, prop, __ } from 'ramda'
 const CheckboxGroup = Checkbox.Group
 
 const { Title } = Typography
@@ -35,7 +36,16 @@ const Manager = ({
   }
 
   const handleChooseProduct = (product) => {
-    setProductSelected(product)
+    const buildProductChoosed = applySpec({
+      name: prop('name'),
+      minQuantity: prop('minQuantity'),
+      barCode: prop('barCode'),
+      id: prop('id'),
+      buyPrice: pipe(prop('buyPrice'), divide(__, 100)),
+      salePrice: pipe(prop('salePrice'), divide(__, 100))
+    })
+
+    setProductSelected(buildProductChoosed(product))
     setVisibleEdit(true)
   }
 
