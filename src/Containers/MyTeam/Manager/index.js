@@ -105,7 +105,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
-            <Col span={15}>
+            <Col span={13}>
               <Input
                 placeholder="Filtre por nome ou email."
                 prefix={<SearchOutlined />}
@@ -124,7 +124,7 @@ const Manager = ({
               />
             </Col>
 
-            <Col span={5} style={{ textAlign: 'right' }}>
+            <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
                 Limpar Filtros
               </Button>
