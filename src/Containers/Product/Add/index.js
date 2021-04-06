@@ -1,8 +1,9 @@
 import React from 'react'
 import { Modal, Form, Input, InputNumber, Row, Col } from 'antd'
 
-const Add = ({ visible, onCreate, onCancel }) => {
+const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
   const [form] = Form.useForm()
+
   return (
     <Modal
       width={450}
@@ -37,7 +38,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
             <Form.Item
               name="balance"
               label="Qtd estoque"
-              >
+            >
               <InputNumber min={1} style={{ width: '98%' }} />
             </Form.Item>
           </Col>

@@ -100,6 +100,11 @@ const RootRoutes = [
     component: PDV,
     title: 'Ponto de venda',
     path: '/logged/pdv',
+  },
+  {
+    component: Home,
+    title: 'DASHBOARD',
+    path: '/logged/dashboard',
     exact: true,
     goBack: true
   }

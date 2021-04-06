@@ -66,7 +66,7 @@ const UpdatePass = ({ onEdit }) => {
             label="Senha atual"
             name="password"
             rules={[{ required: true, message: 'Campo obrigatório' }]}>
-            <Input />
+            <Input.Password placeholder='Insira sua senha atual' />
           </Form.Item>
 
           <Form.Item
@@ -76,7 +76,7 @@ const UpdatePass = ({ onEdit }) => {
               validatorPassword('password', false),
               { required: true, message: 'Campo obrigatório!' }
             ]}>
-            <Input />
+            <Input.Password placeholder='Insira sua nova senha'/>
           </Form.Item>
 
           <Form.Item
@@ -86,7 +86,7 @@ const UpdatePass = ({ onEdit }) => {
               validatorPassword('newPassword', true),
               { required: true, message: 'Campo obrigatório!' }
             ]}>
-            <Input />
+            <Input.Password placeholder='Confirme sua senha' />
           </Form.Item>
         </Form>
       </Card>

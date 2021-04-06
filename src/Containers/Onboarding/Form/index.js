@@ -19,10 +19,12 @@ const Formulario = ({ onEdit }) => {
 
   const handleDocument = ({ target }) =>
     form.setFieldsValue({
-      document: target.value.replace(
-        /^(\d{2})(\d{3})(\d{3})(\d{1}).*/,
-        '$1-$2.$3-$4'
-      )
+      document: target.value
+      .replace(/([^x|X|\d])/g,'')
+      .replace(/(\d{2})(\d)/,'$1.$2')
+      .replace(/(\d{3})(\d)/,'$1.$2')
+      .replace(/(\d{3})(\w)/,'$1-$2')
+      .replace(/(-\w{1})\d+?$/,'$1')
     })
 
   return (
@@ -62,7 +64,7 @@ const Formulario = ({ onEdit }) => {
             rules={[{ required: true, message: 'Campo obrigatório' }]}>
             <Input
               onChange={handleDocument}
-              maxLength={9}
+              maxLength={12}
               placeholder="Ex: 88-888.888-8"
             />
           </Form.Item>
@@ -90,7 +92,7 @@ const Formulario = ({ onEdit }) => {
         type="primary"
         className={styles.buttonLetsGo}>
         Continuar
-          </Button>
+      </Button>
     </>
   )
 }
