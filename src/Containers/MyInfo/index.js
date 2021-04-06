@@ -9,6 +9,8 @@ import {
   DatePicker,
   Button
 } from 'antd'
+import { always, applySpec, ifElse, pipe, prop } from 'ramda'
+import moment from 'moment'
 
 const { Title, Text } = Typography
 
@@ -26,6 +28,22 @@ const MyInfo = ({ user, updateMyInfo }) => {
     form.setFieldsValue({
       phone: target.value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '+55 ($1) $2-$3')
     })
+
+  const mask = (pattern) => (value) => {
+    let i = 0
+    const v = value.toString()
+    return pattern.replace(/#/g, () => v[i++] || '')
+  }
+
+  const buildIntialValues = applySpec({
+    document: pipe(prop('document'), mask('##.###.###-#')),
+    phone: prop('phone'),
+    birthday: ifElse(
+      prop('birthday'),
+      pipe(prop('birthday'), moment),
+      always(undefined)
+    )
+  })
 
   return (
     <Row gutter={[8, 16]}>
@@ -53,7 +71,8 @@ const MyInfo = ({ user, updateMyInfo }) => {
             form={form}
             layout="vertical"
             name="form_in_modal"
-            onFinish={updateMyInfo}>
+            onFinish={updateMyInfo}
+            initialValues={buildIntialValues(user)}>
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Title level={5}>Informações pessoais</Title>
