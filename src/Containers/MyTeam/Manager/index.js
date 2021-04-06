@@ -83,7 +83,7 @@ const Manager = ({
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
-                Adicionar Usuário
+                Adicionar usuário
               </Button>
             </Col>
           </Row>
@@ -126,7 +126,7 @@ const Manager = ({
 
             <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-                Limpar Filtros
+                Limpar filtros
               </Button>
               <Button type="primary" onClick={handleFilters}>
                 Filtrar

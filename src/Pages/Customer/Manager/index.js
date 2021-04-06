@@ -36,7 +36,8 @@ const Manager = ({
 
     if (!isEmpty(value)) {
       query = {
-        name: value
+        name: value,
+        document: value
       }
 
       const valueWithReplace = value

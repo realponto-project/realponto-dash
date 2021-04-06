@@ -37,13 +37,13 @@ const Add = ({ visible, onCreate, onCancel }) => {
           name="label"
           label="Descrição"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
-          <Input />
+          <Input placeholder='Insira o status'/>
         </Form.Item>
         <Form.Item
           name="type"
           label="Tipo"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
-          <Select defaultValue="Selecionar tipo" onChange={handleChange}>
+          <Select placeholder="Selecionar tipo" onChange={handleChange}>
             <Option value="inputs">Entrada</Option>
             <Option value="outputs">Saída</Option>
           </Select>

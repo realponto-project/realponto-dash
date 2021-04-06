@@ -99,10 +99,9 @@ const ProductList = ({
       <div className={styles.productListHeader}>
         <h1 className={styles.productListTitle}>
           Total de itens
-          <spa className={styles.productListTitleQuantity}>
-            {' '}
+          <span className={styles.productListTitleQuantity}>
             {length(productList)}
-          </spa>
+          </span>
         </h1>
       </div>
       <ul className={ClassNames(styles.productList, styles.scrollbarPanelList)}>

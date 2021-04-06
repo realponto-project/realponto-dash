@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, Tag, Button } from 'antd'
+import { map } from 'ramda'
 
 const columns = (chooseProduct) => [
   {
@@ -47,7 +48,9 @@ const columns = (chooseProduct) => [
 ]
 
 const ProductList = ({ datasource, chooseProduct }) => {
-  return <Table columns={columns(chooseProduct)} dataSource={datasource} />
+  return <Table columns={columns(chooseProduct)} 
+    dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource || [])}
+  />
 }
 
 export default ProductList

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Table, Button } from 'antd'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
+import {map} from 'ramda'
 
 const columns = ({ handleClickEdit }) => [
   {
@@ -33,7 +34,7 @@ const columns = ({ handleClickEdit }) => [
 
 const CustomerList = ({ datasource, handleClickEdit }) => {
   return (
-    <Table columns={columns({ handleClickEdit })} dataSource={datasource} />
+    <Table columns={columns({ handleClickEdit })} dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
   )
 }
 

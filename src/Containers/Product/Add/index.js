@@ -31,7 +31,7 @@ const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
           name="name"
           label="Descrição"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
-          <Input />
+          <Input placeholder="Insira o nome do produto"/>
         </Form.Item>
         <Row align="space-between">
           <Col span={12}>
@@ -39,7 +39,7 @@ const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
               name="balance"
               label="Qtd estoque"
             >
-              <InputNumber min={1} style={{ width: '98%' }} />
+              <InputNumber min={1} style={{ width: '98%' }} placeholder="Ex: 88"/>
             </Form.Item>
           </Col>
           <Col span={11}>
@@ -49,28 +49,28 @@ const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
               rules={[
                 { required: true, message: 'Este campo é obrigatório!' }
               ]}>
-              <InputNumber min={1} style={{ width: '98%' }} />
+              <InputNumber min={1} style={{ width: '98%' }} placeholder="Ex: 88"/>
             </Form.Item>
           </Col>
         </Row>
         <Form.Item
           name="barCode"
           label="Código de barras">
-          <Input />
+          <Input placeholder="Insira o código de barras"/>
         </Form.Item>
         <Row align="space-between">
           <Col span={12}>
             <Form.Item
               name="buyPrice"
               label="Preço custo">
-              <InputNumber min={1} style={{ width: '98%' }} />
+              <InputNumber min={1} style={{ width: '98%' }} placeholder="Ex: 888.88"/>
             </Form.Item>
           </Col>
           <Col span={11}>
             <Form.Item
               name="salePrice"
               label="Preço venda">
-              <InputNumber min={1} style={{ width: '98%' }} />
+              <InputNumber min={1} style={{ width: '98%' }} placeholder="Ex: 888.88"/>
             </Form.Item>
           </Col>
         </Row>

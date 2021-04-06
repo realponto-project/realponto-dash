@@ -1,5 +1,6 @@
 import React from 'react'
 import { Table, Tag, Button } from 'antd'
+import { map } from 'ramda'
 
 const columns = (chooseUser) => [
   {
@@ -14,7 +15,7 @@ const columns = (chooseUser) => [
     )
   },
   {
-    title: 'Nome do usuário',
+    title: 'Usuário',
     dataIndex: 'name',
     key: 'name',
     fixed: 'left'
@@ -45,7 +46,7 @@ const columns = (chooseUser) => [
 ]
 
 const UserList = ({ datasource, chooseUser }) => {
-  return <Table columns={columns(chooseUser)} dataSource={datasource} />
+  return <Table columns={columns(chooseUser)} dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
 }
 
 export default UserList

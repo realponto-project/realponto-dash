@@ -116,7 +116,7 @@ const Manager = ({
             </Col>
             <Col span={4} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-                Limpar Filtros
+                Limpar filtros
               </Button>
               <Button type="primary" onClick={handleGetOrdersByFilters}>
                 Filtrar
