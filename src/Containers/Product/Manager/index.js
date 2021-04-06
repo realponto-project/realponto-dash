@@ -69,7 +69,7 @@ const Manager = ({
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
-                Adicionar Produto
+                Adicionar produto
               </Button>
             </Col>
           </Row>

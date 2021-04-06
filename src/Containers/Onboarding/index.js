@@ -54,6 +54,7 @@ const Onboarding = ({ user, updateMyInfo, handleSubmit }) => {
         <Card
           style={{
             height: '100vh',
+            overflow: 'auto',
             background: '#F2F2F3',
             padding: '50px 10px 0 20px'
           }}>

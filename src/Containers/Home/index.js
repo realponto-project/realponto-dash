@@ -23,7 +23,7 @@ const Home = ({
   return (
     <Row gutter={[18, 18]}>
       <Col span={24}>
-        <h1 className={styles.welcomeTitle}>Bem Vindo</h1>
+        <h1 className={styles.welcomeTitle}>Bem-vindo</h1>
         <p className={styles.welcomeSubtitle}>Ao <b>alxa dashboard</b> para suas análises</p>
       </Col>
       <Col span={12}>
