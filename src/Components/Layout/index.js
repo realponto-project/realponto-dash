@@ -47,7 +47,7 @@ const menuItems = [
 const LayoutComponent = ({ children, history, location, company, subscription }) => {
   const goTo = ({ key }) => history.push(key)
   const companyName = pathOr('', ['name'], company)
-  const parseCompanyName = companyName.length > 18 ? `${companyName.substr(0, 18)}...` : companyName
+  const parseCompanyName = companyName.length > 22 ? `${companyName.substr(0, 22)}...` : companyName
 
   return (
     <Layout>
@@ -83,7 +83,8 @@ const LayoutComponent = ({ children, history, location, company, subscription })
           <p
             style={{
               color: '#454550',
-              fontSize: '16px'
+              fontSize: '18px',
+              fontWeight: 'bold',
             }}
             title={parseCompanyName}
           >

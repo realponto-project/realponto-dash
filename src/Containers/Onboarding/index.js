@@ -10,15 +10,16 @@ import Logo from './alxa.svg'
 
 const { Paragraph } = Typography
 
-const Onboarding = ({ user, updateMyInfo, handleSubmit }) => {
+const Onboarding = ({ user, updateMyInfo, handleSubmit, errorMessage }) => {
   const [isWelcomeVisible, setWelcomeVisible] = useState(true)
   const [isFormVisible, setFormVisible] = useState(false)
   const [isUpdateVisible, setUpdateVisible] = useState(false)
 
   const onSubmitUpdateInfo = (values) => {
-    updateMyInfo(user.id, { ...values, firstAccess: false })
-    setFormVisible(false)
-    setUpdateVisible(true)
+    updateMyInfo(user.id, { ...values, firstAccess: false }).then(() => {
+      setFormVisible(false)
+      setUpdateVisible(true)
+    }).catch((err) => console.error(err))
   }
 
   const onSubmitUpdatePass = (values) => {
@@ -63,10 +64,10 @@ const Onboarding = ({ user, updateMyInfo, handleSubmit }) => {
           </Paragraph>
           {isWelcomeVisible ? <> <Welcome /> <Button className={styles.buttonLetsGo} type="primary" onClick={next}>
             Vamos lá!
-          </Button> </>: null}
-          {isFormVisible ? <Formulario onEdit={onSubmitUpdateInfo} /> : null}
+          </Button> </> : null}
+          {isFormVisible ? <Formulario onEdit={onSubmitUpdateInfo} errorMessage={errorMessage} /> : null}
           {isUpdateVisible ? <UpdatePass onEdit={onSubmitUpdatePass} /> : null}
-          
+
         </Card>
       </Col>
     </Row>

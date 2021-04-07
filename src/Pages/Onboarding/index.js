@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
@@ -8,7 +8,10 @@ import {
   updateMyInfo as updateMyInfoService
 } from '../../Services/User'
 
+
 const Onboarding = ({ user, loggedUser, history }) => {
+  const [errorMessage, setErrorMessage] = useState(false)
+
   const handleSubmit = async (values) => {
     try {
       await updateUserPasswordService(values)
@@ -31,16 +34,18 @@ const Onboarding = ({ user, loggedUser, history }) => {
         ...data
       })
     } catch (error) {
-      console.log(error)
-      history.push('/logged/dashboard')
+      setErrorMessage(error.response.data.error)
+      throw error
     }
   }
+
 
   return (
     <OnboardingContainer
       user={user}
       updateMyInfo={updateMyInfo}
       handleSubmit={handleSubmit}
+      errorMessage={errorMessage}
     />
   )
 }

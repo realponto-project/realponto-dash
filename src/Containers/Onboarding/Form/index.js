@@ -14,7 +14,7 @@ import {
 const { Title } = Typography
 const { Paragraph } = Typography
 
-const Formulario = ({ onEdit }) => {
+const Formulario = ({ onEdit, errorMessage }) => {
   const [form] = Form.useForm()
 
   const handleDocument = ({ target }) =>
@@ -84,6 +84,8 @@ const Formulario = ({ onEdit }) => {
             <Input placeholder="Digite o número do crachá" />
           </Form.Item>
         </Form>
+        {console.log(errorMessage)}
+        {errorMessage === 'user alredy exist with this document' ? <p style={{color: 'red', textAlign: 'center'}}>Ja existe um usuário cadastrado com este documento.</p> : null}
       </Card>
       <Button
         form="form_onboarding" 

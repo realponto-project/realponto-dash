@@ -30,7 +30,12 @@ const columns = (chooseUser) => [
     title: 'Documento',
     dataIndex: 'document',
     key: 'document',
-    fixed: 'left'
+    fixed: 'left',
+    render: (text) => (text.replace(/([^x|X|\d])/g,'')
+    .replace(/(\d{2})(\d)/,'$1.$2')
+    .replace(/(\d{3})(\d)/,'$1.$2')
+    .replace(/(\d{3})(\w)/,'$1-$2')
+    .replace(/(-\w{1})\d+?$/,'$1'))
   },
   {
     title: '',
