@@ -9,7 +9,7 @@ import styles from './style.module.css'
 const { Paragraph } = Typography
 const rules = [{ required: true, message: 'Campo obrigatório!' }]
 
-const Login = ({ registerPath, authentication }) => {
+const Login = ({ isVisibleMessageError, registerPath, authentication }) => {
   const onFinish = (values) => {
     authentication(values)
   }
@@ -66,6 +66,15 @@ const Login = ({ registerPath, authentication }) => {
             </Form>
           </Col>
         </Row>
+
+        {isVisibleMessageError && (
+          <Row justify="center">
+            <Paragraph style={{ textAlign: 'center', color: 'red' }}>
+              E-mail ou senha incorretos. Confira-os.
+            </Paragraph>
+          </Row>
+        )}
+
         <Row justify="center">
           <Paragraph style={{ textAlign: 'center' }}>
             Ainda não possui conta no alxa?
