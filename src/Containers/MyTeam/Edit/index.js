@@ -1,31 +1,49 @@
-import React from 'react'
-import { Modal, Form, Input } from 'antd'
+import React, { useState } from 'react'
+import { Modal, Form, Input, Button } from 'antd'
 
 const Edit = ({ visible, onEdit, onCancel, userSelected }) => {
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
 
   return (
     <Modal
       width={350}
       visible={visible}
       title="ALTERAR UM USUÁRIO"
-      okText="Editar Usuário"
-      cancelText="Cancelar"
       onCancel={() => {
         form.resetFields()
         onCancel()
       }}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
+      footer={[
+        <Button
+          key="back"
+          onClick={() => {
+            onCancel()
             form.resetFields()
-            onEdit(values)
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info)
-          })
-      }}>
+          }}>
+          Cancelar
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={() => {
+            setLoading(true)
+            form
+              .validateFields()
+              .then((values) => {
+                form.resetFields()
+                onEdit(values)
+                setLoading(false)
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info)
+                setLoading(false)
+              })
+          }}>
+          Editar Usuário
+        </Button>
+      ]}>
       <Form
         form={form}
         layout="vertical"
@@ -40,7 +58,13 @@ const Edit = ({ visible, onEdit, onCancel, userSelected }) => {
         <Form.Item
           name="email"
           label="Email do usuário"
-          rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
+          rules={[
+            { required: true, message: 'Este campo é obrigatório!' },
+            {
+              pattern: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
+              message: 'E-mail inválido!'
+            }
+          ]}>
           <Input />
         </Form.Item>
       </Form>
