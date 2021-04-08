@@ -51,7 +51,7 @@ const columns = (goToOrderDetail) => [
   }
 ]
 
-const OrderList = ({ datasource, goToOrderDetail, handlePagination }) => {
+const OrderList = ({ datasource, goToOrderDetail, onChangeTable, total, loading, page }) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty
       description="Não há dados"
@@ -59,9 +59,11 @@ const OrderList = ({ datasource, goToOrderDetail, handlePagination }) => {
       />
     }>
       <Table
+        loading={loading}
         columns={columns(goToOrderDetail)}
         dataSource={datasource}
-        pagination={{ onChange: handlePagination }}
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
       />
     </ConfigProvider>
   )

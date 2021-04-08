@@ -73,9 +73,9 @@ const Home = ({
             <div className={styles.cardEmptyState}>
               <div className={styles.cardEmptyStateInfo}>
                 <h1 className={styles.cardEmptyStateTitle}>Não encontramos nenhuma
-                  <span className={styles.cardEmptyStateTitleSpan}> Venda</span>!
+                  <span className={styles.cardEmptyStateTitleSpan}> venda</span>!
                 </h1>
-                <p className={styles.cardEmptyStateSubtitle}>Você ainda não possue nenhuma venda para calcularmos as suas métricas</p>
+                <p className={styles.cardEmptyStateSubtitle}>Você ainda não possue nenhuma venda para calcularmos as suas métricas.</p>
                 <p className={styles.cardEmptyStateSubtitle}>Cadastre um <b>produto</b>, acesse o <b>ponto de venda</b> e comece a utilizar o <b>alxa</b>!</p>
               </div>
               <Image src={EmptyStateSvg} preview={false} alt="empty state" />

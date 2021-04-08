@@ -17,7 +17,10 @@ const Manager = ({
   clearFilters,
   handleOnChange,
   filters,
-  handleGetStatusByFilters
+  handleGetStatusByFilters,
+  loading,
+  page,
+  onChangeTable
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -114,8 +117,12 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <StatusList
+            onChangeTable={onChangeTable}
+            loading={loading}
             datasource={status.source}
+            total={status.total}
             chooseStatus={handleChooseStatus}
+            page={page}
           />
         </Card>
       </Col>

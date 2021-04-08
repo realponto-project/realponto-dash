@@ -9,7 +9,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
     <Modal
       width={350}
       visible={visible}
-      title="CRIA UM USUÁRIO"
+      title="CRIAR USUÁRIO"
       onCancel={() => {
         onCancel()
         form.resetFields()
@@ -53,7 +53,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
           name="name"
           label="Nome do usuário"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
-          <Input />
+          <Input placeholder="Insira o nome do usuário"/>
         </Form.Item>
         <Form.Item
           name="email"
@@ -65,7 +65,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
               message: 'E-mail inválido!'
             }
           ]}>
-          <Input />
+          <Input placeholder="Insira o email do usuário"/>
         </Form.Item>
       </Form>
     </Modal>

@@ -48,14 +48,19 @@ const columns = (chooseProduct) => [
   }
 ]
 
-const ProductList = ({ datasource, chooseProduct }) => {
+const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total, page }) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty
       description="Não há dados"
       image={<Image width={85} src={NoData} preview={false} />}
       />
     }>
-      <Table columns={columns(chooseProduct)} dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
+      <Table 
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns(chooseProduct)} 
+        loading={loading} 
+        dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
     </ConfigProvider>
   )
 }

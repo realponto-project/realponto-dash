@@ -34,14 +34,19 @@ const columns = ({ handleClickEdit }) => [
 ]
 
 
-const CustomerList = ({ datasource, handleClickEdit }) => {
+const CustomerList = ({ datasource, handleClickEdit, loading, onChangeTable, total, page}) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty 
       description="Não há dados" 
       image={<Image width={85} src={NoData} preview={false} />}
       />
     }>
-      <Table columns={columns({ handleClickEdit })} dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
+      <Table 
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns({ handleClickEdit })} 
+        loading={loading} 
+        dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
     </ConfigProvider>
   )
 }

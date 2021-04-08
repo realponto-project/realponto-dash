@@ -9,7 +9,7 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
     <Modal
       width={450}
       visible={visible}
-      title="ALTERAR UM PRODUTO"
+      title="ALTERAR PRODUTO"
       onCancel={() => {
         form.resetFields()
         onCancel()
@@ -62,7 +62,7 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
           <InputNumber min={1} style={{ width: '98%' }} />
         </Form.Item>
         <Form.Item name="barCode" label="Código de barras">
-          <Input />
+          <Input placeholder="Insira o código de barras"/>
         </Form.Item>
         <Row align="space-between">
           <Col span={12}>

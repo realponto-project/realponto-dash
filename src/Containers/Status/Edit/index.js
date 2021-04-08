@@ -15,7 +15,7 @@ const Edit = ({ visible, onEdit, onCancel, statusSelected }) => {
     <Modal
       width={450}
       visible={visible}
-      title="ALTERAR UM STATUS"
+      title="ALTERAR STATUS"
       onCancel={() => {
         form.resetFields()
         onCancel()

@@ -39,12 +39,15 @@ const Manager = ({
   goToAddOrderOut,
   goToOrderDetail,
   handleGetOrdersByFilters,
-  handlePagination,
   chartSettings,
   datasourceChart,
   filters,
   handleOnChange,
-  clearFilters
+  clearFilters,
+  loading,
+  onChangeTable, 
+  total, 
+  page
 }) => {
   const [radioValue, setRadioValue] = useState('table')
   const radioOnChange = ({ target }) => setRadioValue(target.value)
@@ -93,7 +96,7 @@ const Manager = ({
                 }
               />
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <Input
                 placeholder="Filtre por nome."
                 prefix={<SearchOutlined />}
@@ -102,7 +105,7 @@ const Manager = ({
                 value={filters.user_name}
               />
             </Col>
-            <Col span={4} style={{ paddingTop: '7px', textAlign: 'center' }}>
+            <Col span={5} style={{ paddingTop: '7px', textAlign: 'center' }}>
               <span style={{ paddingLeft: '5px', paddingRight: '10px' }}>
                 Revisar?
               </span>
@@ -114,7 +117,7 @@ const Manager = ({
                 }
               />
             </Col>
-            <Col span={4} style={{ textAlign: 'right' }}>
+            <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
                 Limpar filtros
               </Button>
@@ -156,9 +159,12 @@ const Manager = ({
               )}
               {radioValue === 'table' && (
                 <OrderList
+                  loading={loading}
                   datasource={datasource.source}
                   goToOrderDetail={goToOrderDetail}
-                  onChange={handlePagination}
+                  total={total}
+                  onChangeTable={onChangeTable}
+                  page={page}
                 />
               )}
             </Col>

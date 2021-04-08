@@ -20,12 +20,17 @@ const Manager = ({
     chartSettings: []
   })
   const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
+  const [total, setTotal] = useState(10)
 
   useEffect(() => {
     handleGetAllOrders()
-  }, [])
+  }, [page])
 
   const handleGetAllOrders = async () => {
+
+    setLoading(true)
+
     try {
       const { data } = await getAllOrder(buildOrderSearch(orderSearch))
       const { data: dataChart } = await getAllOrderSummary(
@@ -33,9 +38,12 @@ const Manager = ({
       )
       setDatasourceChart(dataChart)
       setDatasource(data)
+      setTotal(data.total)
     } catch (error) {
       console.log(error)
     }
+
+    setLoading(false)
   }
 
   const buildOrderSearch = (orderSearch) => {
@@ -60,16 +68,12 @@ const Manager = ({
       ...datesSpec,
       ...checkedPendingReview,
       page,
-      limit: 25
+      limit: 10
     }
   }
 
-  const handlePagination = async (nextpage) => {
-    try {
-      const { data } = await getAllOrder({ page: nextpage, limit: 25 })
-      setPage(nextpage)
-      setDatasource(data)
-    } catch (error) {}
+  const onChangeTable = ({current}) => {
+    setPage(current)
   }
 
   const goToAddOrder = () => history.push('/logged/order-inputs')
@@ -91,20 +95,31 @@ const Manager = ({
     cleanOrderSearch()
   }
 
+  const handleGetOrdersByFilters = () => {
+    if(page !== 1){
+      setPage(1)
+    } else {
+      handleGetAllOrders()
+    }
+  }
+
   return (
     <ManagerContainer
       datasource={datasource}
       goToAddOrder={goToAddOrder}
       goToOrderDetail={goToOrderDetail}
       goToAddOrderOut={goToAddOrderOut}
-      handleGetOrdersByFilters={handleGetAllOrders}
-      handlePagination={handlePagination}
+      handleGetOrdersByFilters={handleGetOrdersByFilters}
       datasourceChart={datasourceChart.source}
       chartSettings={datasourceChart.chartSettings}
       filters={orderSearch}
       handleOnChange={handleOnChange}
       clearFilters={clearFilters}
       dates={orderSearch.dates}
+      loading={loading}
+      onChangeTable={onChangeTable}
+      total={total}
+      page={page}
     />
   )
 }

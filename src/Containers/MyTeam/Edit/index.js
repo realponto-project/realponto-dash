@@ -9,7 +9,7 @@ const Edit = ({ visible, onEdit, onCancel, userSelected }) => {
     <Modal
       width={350}
       visible={visible}
-      title="ALTERAR UM USUÁRIO"
+      title="ALTERAR USUÁRIO"
       onCancel={() => {
         form.resetFields()
         onCancel()

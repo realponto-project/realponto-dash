@@ -18,7 +18,10 @@ const Manager = ({
   clearFilters,
   handleOnChange,
   filters,
-  handleGetProductsByFilters
+  handleGetProductsByFilters,
+  loading,
+  onChangeTable,
+  page
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -124,8 +127,12 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <ProductList
+            onChangeTable={onChangeTable}
+            total={products.total}
+            loading={loading}
             datasource={products.source}
             chooseProduct={handleChooseProduct}
+            page={page}
           />
         </Card>
       </Col>

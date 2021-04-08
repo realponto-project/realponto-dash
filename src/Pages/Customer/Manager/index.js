@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { cpf, cnpj } from 'cpf-cnpj-validator'
 import { connect } from 'react-redux'
 import {
   applySpec,
@@ -36,37 +35,39 @@ const Manager = ({
   const [id, setId] = useState()
   const [source, setSource] = useState([])
   const [visibleModalAdd, setVisibleModalAdd] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(10)
 
   useEffect(() => {
     getAllCustomers()
-  }, [])
+  }, [page])
 
   const getAllCustomers = async () => {
     const value = customerSearch.search_name_or_document
+
+    setLoading(true)
+
     let query = {}
 
     if (!isEmpty(value)) {
       query = {
         name: value,
-        document: value
-      }
-
-      const valueWithReplace = value
-        .replace(/\./g, '')
-        .replace(/-/g, '')
-        .replace(/\//g, '')
-
-      if (cnpj.isValid(valueWithReplace) || cpf.isValid(valueWithReplace)) {
-        query = {
-          document: valueWithReplace
-        }
+        document: value.replace(/\D/g, '')
       }
     }
 
     try {
-      const { data } = await getAll(query)
-      setSource(data.source) // precisamos adicionar uma key
+      const { data } = await getAll({ ...query, page, limit: 10 })
+      setSource(data.source)
+      setTotal(data.total)
     } catch (error) {}
+
+    setLoading(false)
+  }
+
+  const onChangeTable = ({current}) => {
+    setPage(current)
   }
 
   const onChangeSearch = ({ target }) => {
@@ -132,6 +133,14 @@ const Manager = ({
     }
   }
 
+  const handleFilter = () => {
+    if(page !== 1){
+      setPage(1)
+    } else {
+      getAllCustomers()
+    }
+  }
+
   return (
     <ManagerContainer
       clearFilters={clearFilters}
@@ -141,7 +150,7 @@ const Manager = ({
       formAdd={formAdd}
       handleClickEdit={handleClickEdit}
       handleClickExpand={handleClickExpand}
-      handleFilter={getAllCustomers}
+      handleFilter={handleFilter}
       handleSubmitAdd={handleSubmitAdd}
       modelTitle={isNil(id) ? 'Cadastro cliente' : 'Atualizar cliente'}
       onChangeSearch={onChangeSearch}
@@ -149,6 +158,9 @@ const Manager = ({
       source={source}
       visibleModalAdd={visibleModalAdd}
       loading={loading}
+      onChangeTable={onChangeTable}
+      total={total}
+      page={page}
     />
   )
 }

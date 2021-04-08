@@ -33,15 +33,15 @@ const productPayload = applySpec({
 const Manager = ({
   productSearch,
   setProductSearch,
-  updateProductSearch,
   cleanProductSearch
 }) => {
   const [products, setProducts] = useState({})
-  const [page] = useState(1)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getAllProducts()
-  }, [])
+  }, [page])
 
   const buildProductSearch = (values) => {
     const { name, activated } = values
@@ -58,17 +58,26 @@ const Manager = ({
       ...checkedActivated,
       ...checkedName,
       page,
-      limit: 25
+      limit: 10
     }
   }
 
+  const onChangeTable = ({current}) => {
+    setPage(current)
+  }
+
   const getAllProducts = async () => {
+
+    setLoading(true)
+
     try {
       const { data } = await getAll(buildProductSearch(productSearch))
       setProducts(data)
     } catch (error) {
       console.log(error)
     }
+
+    setLoading(false)
   }
 
   const handleSubmit = async (values) => {
@@ -113,16 +122,27 @@ const Manager = ({
     cleanProductSearch()
   }
 
+  const handleGetProductsByFilters = () => {
+    if(page !== 1){
+      setPage(1)
+    } else {
+      getAllProducts()
+    }
+  }
+
   return (
     <ManagerContainer
       products={products}
       handleSubmit={handleSubmit}
       handleSubmitUpdate={handleSubmitUpdate}
-      handleGetProductsByFilters={getAllProducts}
+      handleGetProductsByFilters={handleGetProductsByFilters}
       handleOnChange={handleOnChange}
       filters={productSearch}
       clearFilters={clearFilters}
       currencyBRL={currencyBRL}
+      loading={loading}
+      onChangeTable={onChangeTable}
+      page={page}
     />
   )
 }

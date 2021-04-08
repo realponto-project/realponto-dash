@@ -51,14 +51,20 @@ const columns = (chooseUser) => [
   }
 ]
 
-const UserList = ({ datasource, chooseUser }) => {
+const UserList = ({ datasource, chooseUser, loading, onChangeTable, total, page }) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty
       description="Não há dados"
       image={<Image width={85} src={NoData} preview={false} />}
       />
     }>
-      <Table columns={columns(chooseUser)} dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
+      {console.log('total', total)}
+      <Table 
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns(chooseUser)} 
+        loading={loading} 
+        dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
     </ConfigProvider>
   )
 }

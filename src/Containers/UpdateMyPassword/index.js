@@ -43,7 +43,7 @@ const UpdateMyPassword = ({ goToOrder, handleSubmit, loading }) => {
               name="password"
               label="Senha"
               rules={[{ required: true, message: 'Campo obrigatório!' }]}>
-              <Input.Password />
+              <Input.Password placeholder="Insira sua senha atual"/>
             </Form.Item>
             <Form.Item
               name="newPassword"
@@ -52,7 +52,7 @@ const UpdateMyPassword = ({ goToOrder, handleSubmit, loading }) => {
                 validatorPassword('password', false),
                 { required: true, message: 'Campo obrigatório!' }
               ]}>
-              <Input.Password />
+              <Input.Password placeholder="Insira sua nova senha"/>
             </Form.Item>
             <Form.Item
               name="confirmPassword"
@@ -61,7 +61,7 @@ const UpdateMyPassword = ({ goToOrder, handleSubmit, loading }) => {
                 validatorPassword('newPassword', true),
                 { required: true, message: 'Campo obrigatório!' }
               ]}>
-              <Input.Password />
+              <Input.Password placeholder="Confirme sua senha"/>
             </Form.Item>
 
             <Col span={24} style={{ textAlign: 'right' }}>

@@ -24,7 +24,6 @@ const RootRoutes = [
     component: Onboarding,
     path: '/user/onboarding',
     exact: true,
-    goBack: true
   },
   {
     component: MyInfo,
@@ -91,23 +90,15 @@ const RootRoutes = [
   },
   {
     component: Home,
-    title: 'Dashboard',
-    path: '/logged/dashboard',
-    exact: true,
-    goBack: true
-  },
-  {
-    component: PDV,
-    title: 'Ponto de venda',
-    path: '/logged/pdv',
-  },
-  {
-    component: Home,
     title: 'DASHBOARD',
     path: '/logged/dashboard',
     exact: true,
-    goBack: true
-  }
+  },
+  {
+    component: PDV,
+    title: 'PONTO DE VENDA',
+    path: '/logged/pdv',
+  },
 ]
 
 export default RootRoutes
