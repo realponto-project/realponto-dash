@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
 import { connect } from 'react-redux'
-import { compose, isEmpty, isNil, pathOr } from 'ramda'
+import {
+  applySpec,
+  compose,
+  isEmpty,
+  isNil,
+  map,
+  path,
+  pathOr,
+  pipe
+} from 'ramda'
 import { Form } from 'antd'
 
 import ManagerContainer from '../../../Containers/Customer/Manager'
@@ -23,6 +32,7 @@ const Manager = ({
 }) => {
   const [expand, setExpand] = useState(false)
   const [formAdd] = Form.useForm()
+  const [id, setId] = useState()
   const [source, setSource] = useState([])
   const [visibleModalAdd, setVisibleModalAdd] = useState(false)
 
@@ -67,6 +77,7 @@ const Manager = ({
   }
 
   const closeModalAdd = () => {
+    setId()
     setExpand(false)
     setVisibleModalAdd(false)
     formAdd.resetFields()
@@ -77,21 +88,34 @@ const Manager = ({
   const handleSubmitAdd = async (formData) => {
     const customerValues = buildAddCustomer(expand)(formData)
     try {
-      if (isNil(customerValues.id)) {
+      if (isNil(id)) {
         await createCustomer(customerValues)
       } else {
-        await updateCustomer(customerValues)
+        await updateCustomer({ ...customerValues, id })
       }
 
       getAllCustomers()
       closeModalAdd()
     } catch (err) {
-      console.log(err)
+      console.error(err)
+
+      const errors = pathOr([], ['response', 'data', 'errors'], err)
+
+      formAdd.setFields(
+        map(
+          applySpec({
+            errors: pipe(path(['message']), Array),
+            name: pipe(path(['field']), Array)
+          }),
+          errors
+        )
+      )
     }
   }
 
   const handleClickEdit = async (id) => {
     try {
+      setId(id)
       const { status, data } = await getCusmtomerById(id)
 
       if (status !== 200) throw new Error('Customer not found')
@@ -115,6 +139,7 @@ const Manager = ({
       handleClickExpand={handleClickExpand}
       handleFilter={getAllCustomers}
       handleSubmitAdd={handleSubmitAdd}
+      modelTitle={isNil(id) ? 'Cadastro cliente' : 'Atualizar cliente'}
       onChangeSearch={onChangeSearch}
       openModalAdd={() => setVisibleModalAdd(true)}
       source={source}
