@@ -35,7 +35,6 @@ const Manager = ({
   const [id, setId] = useState()
   const [source, setSource] = useState([])
   const [visibleModalAdd, setVisibleModalAdd] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(10)
 

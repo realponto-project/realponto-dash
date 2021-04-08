@@ -23,7 +23,6 @@ const Manager = ({
   openModalAdd,
   source,
   visibleModalAdd,
-  loading,
   onChangeTable,
   total,
   page
