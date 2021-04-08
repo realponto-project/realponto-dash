@@ -1,6 +1,9 @@
 import customer from './customerMasks'
+import myInfo from './myInfoMasks'
 
 export const customerMask = customer
+
+export const myInfoMask = myInfo
 
 const mask = (pattern) => (value) => {
   let i = 0

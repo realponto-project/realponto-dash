@@ -9,29 +9,31 @@ import {
   DatePicker,
   Button
 } from 'antd'
-import { always, applySpec, ifElse, pipe, prop } from 'ramda'
+import {
+  always,
+  applySpec,
+  head,
+  ifElse,
+  keys,
+  pipe,
+  prop,
+  replace,
+  __
+} from 'ramda'
 import moment from 'moment'
-import mask from '../../utils/Masks'
+import mask, { myInfoMask } from '../../utils/Masks'
 
 const { Title, Text } = Typography
 
-const MyInfo = ({ user, updateMyInfo }) => {
+const MyInfo = ({ loading, user, updateMyInfo }) => {
   const [form] = Form.useForm()
-  const handleDocument = ({ target }) =>
-    form.setFieldsValue({
-      document: target.value.replace(
-        /^(\d{2})(\d{3})(\d{3})(\d{1}).*/,
-        '$1.$2.$3-$4'
-      )
-    })
-
-  const handlePhone = ({ target }) =>
-    form.setFieldsValue({
-      phone: target.value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '+55 ($1) $2-$3')
-    })
 
   const buildIntialValues = applySpec({
-    document: pipe(prop('document'), mask('##.###.###-#')),
+    document: pipe(
+      prop('document'),
+      mask('##.###.###-#'),
+      replace(/^\.\.-$/, '')
+    ),
     phone: prop('phone'),
     birthday: ifElse(
       prop('birthday'),
@@ -39,6 +41,19 @@ const MyInfo = ({ user, updateMyInfo }) => {
       always(undefined)
     )
   })
+
+  const onValuesChange = (dataChange) => {
+    const { name, value } = myInfoMask(
+      applySpec({
+        name: pipe(keys, head),
+        value: (item) => pipe(pipe(keys, head), prop(__, item))(item)
+      })(dataChange)
+    )
+
+    form.setFieldsValue({
+      [name]: value
+    })
+  }
 
   return (
     <Row gutter={[8, 16]}>
@@ -66,6 +81,7 @@ const MyInfo = ({ user, updateMyInfo }) => {
             form={form}
             layout="vertical"
             name="form_in_modal"
+            onValuesChange={onValuesChange}
             onFinish={updateMyInfo}
             initialValues={buildIntialValues(user)}>
             <Row gutter={[16, 16]}>
@@ -79,7 +95,7 @@ const MyInfo = ({ user, updateMyInfo }) => {
                   rules={[
                     { required: true, message: 'Este campo é obrigatório!' }
                   ]}>
-                  <Input onChange={handleDocument} maxLength={9} />
+                  <Input maxLength={11} />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -89,7 +105,7 @@ const MyInfo = ({ user, updateMyInfo }) => {
                   rules={[
                     { required: true, message: 'Este campo é obrigatório!' }
                   ]}>
-                  <Input onChange={handlePhone} maxLength={17} />
+                  <Input addonBefore="+55 " maxLength={17} />
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -107,7 +123,7 @@ const MyInfo = ({ user, updateMyInfo }) => {
                 </Form.Item>
               </Col>
               <Col span={24} style={{ textAlign: 'right' }}>
-                <Button htmlType="submit" type="primary">
+                <Button loading={loading} htmlType="submit" type="primary">
                   Salvar
                 </Button>
               </Col>

@@ -2,7 +2,7 @@
 import React from 'react'
 import { Row, Col, Card, Input, Form, Button } from 'antd'
 
-const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
+const UpdateMyPassword = ({ goToOrder, handleSubmit, loading }) => {
   const [form] = Form.useForm()
 
   const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
@@ -63,6 +63,7 @@ const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
               ]}>
               <Input.Password />
             </Form.Item>
+
             <Col span={24} style={{ textAlign: 'right' }}>
               <Button
                 type="outline"
@@ -71,7 +72,7 @@ const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
                 onClick={goToOrder}>
                 Cancelar
               </Button>
-              <Button type="primary" htmlType="submit">
+              <Button loading={loading} type="primary" htmlType="submit">
                 Salvar alterações
               </Button>
             </Col>
