@@ -1,21 +1,34 @@
-import React from 'react'
+import { message } from 'antd'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import UpdateMyPasswordContainer from '../../Containers/UpdateMyPassword'
 import { updateUserPassword as updateUserPasswordService } from '../../Services/User'
 
 const UpdateMyPassword = ({ history }) => {
+  const [loading, setLoading] = useState(false)
+
   const handleSubmit = async (values) => {
+    setLoading(true)
+
     try {
       await updateUserPasswordService(values)
-    } catch (error) {}
+      setLoading(false)
+    } catch (error) {
+      // isso é temporário
+      message.error(
+        'Não foi possível atualizar senha! Verifique os dados que estão sendo passados'
+      )
+      setLoading(false)
+    }
   }
 
   const goToOrder = () => history.push('/order/manager')
 
   return (
     <UpdateMyPasswordContainer
-      handleSubmit={handleSubmit}
       goToOrder={goToOrder}
+      handleSubmit={handleSubmit}
+      loading={loading}
     />
   )
 }
