@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Input, Modal, Row } from 'antd'
-import { isEmpty, map } from 'ramda'
+import { isEmpty, isNil, map } from 'ramda'
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons'
 import getAddress from '../../../Services/Address'
 import { customerMask } from '../../../utils/Masks'
@@ -9,7 +9,9 @@ import { cpf, cnpj } from 'cpf-cnpj-validator'
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
 const cnpjAndCpfIsInvalid = (value) =>
-  !isEmpty(value) && !cpf.isValid(value) && !cnpj.isValid(value)
+  !(isEmpty(value) || isNil(value)) &&
+  !cpf.isValid(value) &&
+  !cnpj.isValid(value)
 
 const customerFormItemsList = [
   {
@@ -29,9 +31,11 @@ const customerFormItemsList = [
     placeholder: 'Insira o documento',
     rules: [
       {
-        validator: (_, value) =>
-          cnpjAndCpfIsInvalid(value) &&
-          Promise.reject(new Error('Valor inválido'))
+        validator: async (_, value) => {
+          if (cnpjAndCpfIsInvalid(value)) {
+            return Promise.reject(new Error('Valor inválido'))
+          }
+        }
       }
     ]
   },
