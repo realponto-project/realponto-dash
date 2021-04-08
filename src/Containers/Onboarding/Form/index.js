@@ -84,8 +84,7 @@ const Formulario = ({ onEdit, errorMessage }) => {
             <Input placeholder="Digite o número do crachá" />
           </Form.Item>
         </Form>
-        {console.log(errorMessage)}
-        {errorMessage === 'user alredy exist with this document' ? <p style={{color: 'red', textAlign: 'center'}}>Ja existe um usuário cadastrado com este documento.</p> : null}
+        {errorMessage === 'user alredy exist with this document' ? <p style={{color: 'red', textAlign: 'center'}}>Erro ao atualizar dados.</p> : null}
       </Card>
       <Button
         form="form_onboarding" 

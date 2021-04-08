@@ -1,6 +1,7 @@
 import React from 'react'
-import { Table, Tag, Button } from 'antd'
+import { Table, Tag, Button, Empty, ConfigProvider, Image } from 'antd'
 import { map } from 'ramda'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = (chooseUser) => [
   {
@@ -51,7 +52,15 @@ const columns = (chooseUser) => [
 ]
 
 const UserList = ({ datasource, chooseUser }) => {
-  return <Table columns={columns(chooseUser)} dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
+  return (
+    <ConfigProvider renderEmpty={() => <Empty
+      description="Não há dados"
+      image={<Image width={85} src={NoData} preview={false} />}
+      />
+    }>
+      <Table columns={columns(chooseUser)} dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
+    </ConfigProvider>
+  )
 }
 
 export default UserList
