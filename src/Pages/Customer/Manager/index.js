@@ -30,6 +30,7 @@ const Manager = ({
   customerSearch,
   setCustomerSearch
 }) => {
+  const [loading, setLoading] = useState(false)
   const [expand, setExpand] = useState(false)
   const [formAdd] = Form.useForm()
   const [id, setId] = useState()
@@ -86,6 +87,7 @@ const Manager = ({
   const handleClickExpand = () => setExpand(!expand)
 
   const handleSubmitAdd = async (formData) => {
+    setLoading(true)
     const customerValues = buildAddCustomer(expand)(formData)
     try {
       if (isNil(id)) {
@@ -96,7 +98,9 @@ const Manager = ({
 
       getAllCustomers()
       closeModalAdd()
+      setLoading(false)
     } catch (err) {
+      setLoading(false)
       console.error(err)
 
       const errors = pathOr([], ['response', 'data', 'errors'], err)
@@ -144,6 +148,7 @@ const Manager = ({
       openModalAdd={() => setVisibleModalAdd(true)}
       source={source}
       visibleModalAdd={visibleModalAdd}
+      loading={loading}
     />
   )
 }

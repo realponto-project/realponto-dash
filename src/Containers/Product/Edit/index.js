@@ -1,31 +1,49 @@
-import React from 'react'
-import { Modal, Form, Input, InputNumber, Col, Row } from 'antd'
+import React, { useState } from 'react'
+import { Modal, Form, Input, InputNumber, Col, Row, Button } from 'antd'
 
 const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
 
   return (
     <Modal
       width={450}
       visible={visible}
       title="ALTERAR UM PRODUTO"
-      okText="Editar Produto"
-      cancelText="Cancelar"
       onCancel={() => {
         form.resetFields()
         onCancel()
       }}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
+      footer={[
+        <Button
+          key="back"
+          onClick={() => {
+            onCancel()
             form.resetFields()
-            onEdit(values)
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info)
-          })
-      }}>
+          }}>
+          Cancelar
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={() => {
+            setLoading(true)
+            form
+              .validateFields()
+              .then((values) => {
+                form.resetFields()
+                onEdit(values)
+                setLoading(false)
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info)
+                setLoading(false)
+              })
+          }}>
+          Editar Produto
+        </Button>
+      ]}>
       <Form
         form={form}
         layout="vertical"

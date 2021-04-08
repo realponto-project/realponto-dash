@@ -17,9 +17,11 @@ const Login = ({
   setSubscription
 }) => {
   const [isVisibleMessageError, setIsVisibleMessageError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const authentication = (values) => {
     let redirectPage = '/logged/dashboard'
+    setLoading(true)
     Auth(values)
       .then(({ data }) => {
         loggedUser(data)
@@ -40,6 +42,7 @@ const Login = ({
       .then(({ data }) => setSubscription(data))
       .then(() => history.push(redirectPage))
       .catch((err) => {
+        setLoading(false)
         setIsVisibleMessageError(!!err.response)
         console.error(err)
       })
@@ -49,6 +52,7 @@ const Login = ({
     <LoginContainer
       authentication={authentication}
       isVisibleMessageError={isVisibleMessageError}
+      loading={loading}
       registerPath="register"
     />
   )

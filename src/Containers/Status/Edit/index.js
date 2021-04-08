@@ -1,10 +1,11 @@
-import React from 'react'
-import { Modal, Form, Input, Select } from 'antd'
+import React, { useState } from 'react'
+import { Modal, Form, Input, Select, Button } from 'antd'
 
 const { Option } = Select
 
 const Edit = ({ visible, onEdit, onCancel, statusSelected }) => {
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (value) => {
     console.log(`selected ${value}`)
@@ -15,23 +16,40 @@ const Edit = ({ visible, onEdit, onCancel, statusSelected }) => {
       width={450}
       visible={visible}
       title="ALTERAR UM STATUS"
-      okText="Editar Status"
-      cancelText="Cancelar"
       onCancel={() => {
         form.resetFields()
         onCancel()
       }}
-      onOk={() => {
-        form
-          .validateFields()
-          .then((values) => {
+      footer={[
+        <Button
+          key="back"
+          onClick={() => {
+            onCancel()
             form.resetFields()
-            onEdit(values)
-          })
-          .catch((info) => {
-            console.log('Validate Failed:', info)
-          })
-      }}>
+          }}>
+          Cancelar
+        </Button>,
+        <Button
+          key="submit"
+          type="primary"
+          loading={loading}
+          onClick={() => {
+            setLoading(true)
+            form
+              .validateFields()
+              .then((values) => {
+                form.resetFields()
+                onEdit(values)
+                setLoading(false)
+              })
+              .catch((info) => {
+                console.log('Validate Failed:', info)
+                setLoading(false)
+              })
+          }}>
+          Editar Status
+        </Button>
+      ]}>
       <Form
         form={form}
         layout="vertical"

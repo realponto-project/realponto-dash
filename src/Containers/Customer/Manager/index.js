@@ -17,6 +17,7 @@ const Manager = ({
   handleClickExpand,
   handleFilter,
   handleSubmitAdd,
+  loading,
   modelTitle,
   onChangeSearch,
   openModalAdd,
@@ -79,6 +80,7 @@ const Manager = ({
       handleCancel={closeModalAdd}
       handleClickExpand={handleClickExpand}
       handleSubmit={handleSubmitAdd}
+      loading={loading}
       title={modelTitle}
       visible={visibleModalAdd}
     />

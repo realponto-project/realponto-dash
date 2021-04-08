@@ -9,7 +9,12 @@ import styles from './style.module.css'
 const { Paragraph } = Typography
 const rules = [{ required: true, message: 'Campo obrigatório!' }]
 
-const Login = ({ isVisibleMessageError, registerPath, authentication }) => {
+const Login = ({
+  authentication,
+  isVisibleMessageError,
+  loading,
+  registerPath
+}) => {
   const onFinish = (values) => {
     authentication(values)
   }
@@ -57,8 +62,9 @@ const Login = ({ isVisibleMessageError, registerPath, authentication }) => {
               <Form.Item>
                 <Button
                   htmlType="submit"
-                  type="primary"
+                  loading={loading}
                   size="large"
+                  type="primary"
                   style={{ width: '100%', marginTop: 35 }}>
                   Acessar
                 </Button>

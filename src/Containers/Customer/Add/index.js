@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, Modal, Row } from 'antd'
+import { Button, Form, Input, Modal, Row } from 'antd'
 import { isEmpty, isNil, map } from 'ramda'
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons'
 import getAddress from '../../../Services/Address'
@@ -85,6 +85,7 @@ const Add = ({
   handleCancel,
   handleClickExpand,
   handleSubmit,
+  loading,
   title,
   visible
 }) => {
@@ -110,11 +111,21 @@ const Add = ({
   }
   return (
     <Modal
-      onCancel={handleCancel}
-      onOk={() => form.submit()}
-      okText="Salvar"
-      title={title}
       centered={true}
+      footer={[
+        <Button key="back" onClick={handleCancel}>
+          Cancelar
+        </Button>,
+        <Button
+          key="submit"
+          loading={loading}
+          onClick={() => form.submit()}
+          type="primary">
+          Salvar
+        </Button>
+      ]}
+      onCancel={handleCancel}
+      title={title}
       visible={visible}>
       <Form
         labelCol={{ span: 6 }}
