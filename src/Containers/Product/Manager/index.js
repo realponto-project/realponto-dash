@@ -5,6 +5,7 @@ import Edit from '../Edit'
 import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { applySpec, divide, pipe, prop, __ } from 'ramda'
 const CheckboxGroup = Checkbox.Group
 
 const { Title } = Typography
@@ -17,7 +18,10 @@ const Manager = ({
   clearFilters,
   handleOnChange,
   filters,
-  handleGetProductsByFilters
+  handleGetProductsByFilters,
+  loading,
+  onChangeTable,
+  page
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -35,7 +39,16 @@ const Manager = ({
   }
 
   const handleChooseProduct = (product) => {
-    setProductSelected(product)
+    const buildProductChoosed = applySpec({
+      name: prop('name'),
+      minQuantity: prop('minQuantity'),
+      barCode: prop('barCode'),
+      id: prop('id'),
+      buyPrice: pipe(prop('buyPrice'), divide(__, 100)),
+      salePrice: pipe(prop('salePrice'), divide(__, 100))
+    })
+
+    setProductSelected(buildProductChoosed(product))
     setVisibleEdit(true)
   }
 
@@ -59,7 +72,7 @@ const Manager = ({
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
-                Adicionar Produto
+                Adicionar produto
               </Button>
             </Col>
           </Row>
@@ -81,7 +94,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
-            <Col span={15}>
+            <Col span={14}>
               <Input
                 placeholder="Filtre por nome"
                 prefix={<SearchOutlined />}
@@ -90,7 +103,7 @@ const Manager = ({
                 onChange={handleOnChange}
               />
             </Col>
-            <Col span={4} style={{ paddingTop: '5px' }}>
+            <Col span={3} style={{ paddingTop: '5px' }}>
               <CheckboxGroup
                 options={plainOptions}
                 value={filters.activated}
@@ -100,9 +113,9 @@ const Manager = ({
               />
             </Col>
 
-            <Col span={5} style={{ textAlign: 'right' }}>
+            <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-                Limpar Filtros
+                Limpar filtros
               </Button>
               <Button type="primary" onClick={handleGetProductsByFilters}>
                 Filtrar
@@ -114,8 +127,12 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <ProductList
+            onChangeTable={onChangeTable}
+            total={products.total}
+            loading={loading}
             datasource={products.source}
             chooseProduct={handleChooseProduct}
+            page={page}
           />
         </Card>
       </Col>

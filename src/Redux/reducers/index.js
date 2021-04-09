@@ -5,13 +5,32 @@ import companyReducer from './company'
 import statusReducer from './status'
 import customerSearchReducer from './customerSearch'
 import productSearchReducer from './productSearch'
+import statusSearchReducer from './statusSearch'
 import orderSearchReducer from './orderSearch'
+import formPdvReducer from './formPdv'
+import SubscriptionReducer from './subscription'
+import MyTeamReducer from './myTeam'
 
-export default combineReducers({
+const appReducer =  combineReducers({
   user: userReducer,
   company: companyReducer,
   status: statusReducer,
   customerSearch: customerSearchReducer,
   productSearch: productSearchReducer,
-  orderSearch: orderSearchReducer
+  formPdv: formPdvReducer,
+  statusSearch: statusSearchReducer,
+  orderSearch: orderSearchReducer,
+  subscription: SubscriptionReducer,
+  myTeamSearch: MyTeamReducer
 })
+
+
+const rootReducer = (state, action) => {
+  if (action.type === 'USER_LOGOUT') {
+    state = undefined
+  }
+
+  return appReducer(state, action)
+}
+
+export default rootReducer

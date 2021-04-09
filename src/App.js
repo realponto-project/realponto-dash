@@ -8,8 +8,12 @@ import { PersistGate } from 'redux-persist/integration/react'
 import storage from 'redux-persist/lib/storage'
 
 import Login from './Pages/Login'
-import logged from './Pages/Logged'
+import Register from './Pages/Accreditation/Register'
+import Success from './Pages/Accreditation/Register/Success'
+import Logged from './Pages/Logged'
 import reducers from './Redux/reducers'
+import Onboarding from './Pages/Onboarding'
+import PDV  from './Pages/PDV'
 
 const persistConfig = {
   key: 'root',
@@ -26,12 +30,17 @@ const store = createStore(
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistStore(store)}></PersistGate>
-      <Switch>
-        <Route path="/login" component={Login} />
-        <Route path="/logged" component={logged} />
-        <Redirect from="*" to="/login" />
-      </Switch>
+      <PersistGate loading={null} persistor={persistStore(store)}>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route exact path="/register/sucess" component={Success} />
+          <Route path="/register" component={Register} />
+          <Route path="/logged" component={Logged} />
+          <Route path="/pdv" component={PDV} />
+          <Route exact path="/user/onboarding" component={Onboarding} />
+          <Redirect from="*" to="/login" />
+        </Switch>
+      </PersistGate>
     </Provider>
   )
 }

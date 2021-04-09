@@ -1,5 +1,7 @@
 import React from 'react'
-import { Table, Tag, Button } from 'antd'
+import { Table, Tag, Button, Empty, ConfigProvider, Image } from 'antd'
+import { map } from 'ramda'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = (chooseProduct) => [
   {
@@ -21,17 +23,17 @@ const columns = (chooseProduct) => [
   },
 
   {
-    title: 'Quantidade mínima',
+    title: 'Qtd mínima',
     dataIndex: 'minQuantity',
     key: 'minQuantity',
     fixed: 'left'
   },
   {
-    title: 'Quantidade estoque',
-    dataIndex: 'record.balances[0].quantity',
+    title: 'Qtd estoque',
+    dataIndex: 'record.balance',
     key: 'balance',
     fixed: 'left',
-    render: (_, record) => record.balances[0].quantity
+    render: (_, record) => record.balance
   },
   {
     title: '',
@@ -46,8 +48,21 @@ const columns = (chooseProduct) => [
   }
 ]
 
-const ProductList = ({ datasource, chooseProduct }) => {
-  return <Table columns={columns(chooseProduct)} dataSource={datasource} />
+const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total, page }) => {
+  return (
+    <ConfigProvider renderEmpty={() => <Empty
+      description="Não há dados"
+      image={<Image width={85} src={NoData} preview={false} />}
+      />
+    }>
+      <Table 
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns(chooseProduct)} 
+        loading={loading} 
+        dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
+    </ConfigProvider>
+  )
 }
 
 export default ProductList

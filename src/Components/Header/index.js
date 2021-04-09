@@ -6,31 +6,19 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 
-import AdBanner from '../../Components/AdBanner'
-
 const Header = ({
   rootRoutes,
   history,
-  location,
   loggoutUser,
-  unSetCompany,
-  unSetStatus,
   user,
-  company,
-  cleanCustomer,
-  cleanOrder,
-  cleanProduct
+  unSubscribe,
 }) => {
   const handleNavegator = ({ key }) => {
     if (key === 'loggout') {
       localStorage.removeItem('token')
       localStorage.removeItem('user.name')
       loggoutUser()
-      unSetCompany()
-      unSetStatus()
-      cleanCustomer()
-      cleanOrder()
-      cleanProduct()
+      unSubscribe()
       history.push('/login')
     }
 
@@ -44,6 +32,7 @@ const Header = ({
         Gerenciamento de equipe
       </Menu.Item>
       <Menu.Item key="/logged/account-password">Alterar senha</Menu.Item>
+      <Menu.Item key="/logged/config/status">Configurações</Menu.Item>
       <Menu.Item key="loggout">Sair</Menu.Item>
     </Menu>
   )
@@ -86,10 +75,6 @@ const Header = ({
           </Button>
         </Dropdown>
       </Col>
-      <Col span={24}>
-        {location.pathname.replace('/logged/', '') !== 'plans' &&
-          !company.subscription && <AdBanner />}
-      </Col>
     </Row>
   )
 
@@ -104,18 +89,13 @@ const Header = ({
   )
 }
 
-const mapStateToProps = ({ user, company }) => ({
-  user,
-  company
+const mapStateToProps = ({ user }) => ({
+  user
 })
 
 const mapDispatchToProps = (dispatch) => ({
   loggoutUser: () => dispatch({ type: 'USER_LOGOUT' }),
-  unSetCompany: () => dispatch({ type: 'UNSET_COMPANY' }),
-  unSetStatus: () => dispatch({ type: 'UNSET_STATUS' }),
-  cleanCustomer: () => dispatch({ type: 'CLEAN_CUSTOMER_GLOBAL_SEARCH' }),
-  cleanOrder: () => dispatch({ type: 'CLEAN_ORDER_GLOBAL_SEARCH' }),
-  cleanProduct: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' })
+  unSubscribe: () => dispatch({ type: 'UNSET_SUBSCRIPTION' })
 })
 
 const enhanced = compose(

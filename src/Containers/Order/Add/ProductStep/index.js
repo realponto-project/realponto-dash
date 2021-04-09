@@ -109,7 +109,7 @@ const ProductStep = ({
           <Col span={4}>
             <Form.Item label=" ">
               <Button htmlType="submit" type="primary">
-                Adicionar Produto
+                Adicionar produto
               </Button>
             </Form.Item>
           </Col>

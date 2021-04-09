@@ -1,16 +1,31 @@
 import React from 'react'
-import { Button, Card, Input, Row, Col, Typography } from 'antd'
-import CustomerList from './CustomerList'
+import { Button, Card, Col, Input, Row, Typography } from 'antd'
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+
+import ModalAdd from '../Add'
+import CustomerList from './CustomerList'
 
 const { Title } = Typography
 
 const Manager = ({
-  source,
-  onChangeSearch,
+  clearFilters,
+  closeModalAdd,
+  expand,
   filters,
+  formAdd,
+  handleClickEdit,
+  handleClickExpand,
   handleFilter,
-  clearFilters
+  handleSubmitAdd,
+  loading,
+  modelTitle,
+  onChangeSearch,
+  openModalAdd,
+  source,
+  visibleModalAdd,
+  onChangeTable,
+  total,
+  page
 }) => (
   <Row gutter={[8, 16]}>
     <Col span={24}>
@@ -24,10 +39,10 @@ const Manager = ({
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
             <Button
-              onClick={console.log}
+              onClick={openModalAdd}
               style={{ marginRight: '16px' }}
               icon={<PlusOutlined />}>
-              Adicionar Cliente
+              Adicionar cliente
             </Button>
           </Col>
         </Row>
@@ -36,7 +51,7 @@ const Manager = ({
     <Col span={24}>
       <Card bordered={false}>
         <Row gutter={[8, 8]}>
-          <Col span={20}>
+          <Col span={16}>
             <Input
               name="search_name_or_document"
               placeholder="Filtre por nome ou documento."
@@ -45,9 +60,9 @@ const Manager = ({
               onChange={onChangeSearch}
             />
           </Col>
-          <Col span={4} style={{ textAlign: 'right' }}>
+          <Col span={8} style={{ textAlign: 'right' }}>
             <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-              Limpar Filtros
+              Limpar filtros
             </Button>
             <Button type="primary" onClick={handleFilter}>
               Filtrar
@@ -58,9 +73,26 @@ const Manager = ({
     </Col>
     <Col span={24}>
       <Card bordered={false}>
-        <CustomerList datasource={source} />
+        <CustomerList 
+          onChangeTable={onChangeTable} 
+          datasource={source} 
+          total={total}
+          handleClickEdit={handleClickEdit} 
+          loading={loading}
+          page={page}/>
       </Card>
     </Col>
+
+    <ModalAdd
+      expand={expand}
+      form={formAdd}
+      handleCancel={closeModalAdd}
+      handleClickExpand={handleClickExpand}
+      handleSubmit={handleSubmitAdd}
+      loading={loading}
+      title={modelTitle}
+      visible={visibleModalAdd}
+    />
   </Row>
 )
 

@@ -9,7 +9,7 @@ import Layout from '../../Components/Layout'
 
 const renderRoute = (route) => <ProtectedRoute key={route.path} {...route} />
 
-const Logged = () => (
+export const Logged = () => (
   <Layout>
     <Row gutter={[8, 8]}>
       <Col span={24}>

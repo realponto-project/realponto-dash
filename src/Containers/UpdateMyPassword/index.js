@@ -2,7 +2,7 @@
 import React from 'react'
 import { Row, Col, Card, Input, Form, Button } from 'antd'
 
-const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
+const UpdateMyPassword = ({ goToOrder, handleSubmit, loading }) => {
   const [form] = Form.useForm()
 
   const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
@@ -43,7 +43,7 @@ const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
               name="password"
               label="Senha"
               rules={[{ required: true, message: 'Campo obrigatório!' }]}>
-              <Input.Password />
+              <Input.Password placeholder="Insira sua senha atual"/>
             </Form.Item>
             <Form.Item
               name="newPassword"
@@ -52,7 +52,7 @@ const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
                 validatorPassword('password', false),
                 { required: true, message: 'Campo obrigatório!' }
               ]}>
-              <Input.Password />
+              <Input.Password placeholder="Insira sua nova senha"/>
             </Form.Item>
             <Form.Item
               name="confirmPassword"
@@ -61,8 +61,9 @@ const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
                 validatorPassword('newPassword', true),
                 { required: true, message: 'Campo obrigatório!' }
               ]}>
-              <Input.Password />
+              <Input.Password placeholder="Confirme sua senha"/>
             </Form.Item>
+
             <Col span={24} style={{ textAlign: 'right' }}>
               <Button
                 type="outline"
@@ -71,7 +72,7 @@ const UpdateMyPassword = ({ handleSubmit, goToOrder }) => {
                 onClick={goToOrder}>
                 Cancelar
               </Button>
-              <Button type="primary" htmlType="submit">
+              <Button loading={loading} type="primary" htmlType="submit">
                 Salvar alterações
               </Button>
             </Col>

@@ -2,15 +2,15 @@ import OrderAdd from '../Pages/Order/Add'
 import OutOrder from '../Pages/Order/OutOrder'
 import OrderDetail from '../Pages/Order/Detail'
 import OrderManager from '../Pages/Order/Manager'
-import CustomerAdd from '../Pages/Customer/Add'
-import CustomerDetail from '../Pages/Customer/Detail'
 import CustomerManager from '../Pages/Customer/Manager'
 import ProductManager from '../Pages/Product/Manager'
+import StatusManager from '../Pages/Status/Manager'
 import UpdateMyPassword from '../Pages/UpdateMyPassword'
 import MyTeam from '../Pages/MyTeam'
+import Onboarding from '../Pages/Onboarding'
 import MyInfo from '../Pages/MyInfo'
+import Home from '../Pages/Home'
 import PDV from '../Pages/PDV'
-import Plans from '../Pages/Plans'
 
 const RootRoutes = [
   {
@@ -21,9 +21,21 @@ const RootRoutes = [
     goBack: true
   },
   {
+    component: Onboarding,
+    path: '/user/onboarding',
+    exact: true,
+  },
+  {
     component: MyInfo,
     title: 'MINHA CONTA',
     path: '/logged/account-myinfo',
+    exact: true,
+    goBack: true
+  },
+  {
+    component: StatusManager,
+    title: 'STATUS',
+    path: '/logged/config/status',
     exact: true,
     goBack: true
   },
@@ -77,33 +89,16 @@ const RootRoutes = [
     goBack: false
   },
   {
-    component: CustomerAdd,
-    title: 'ADICIONAR CLIENTE',
-    path: '/logged/customer/add',
+    component: Home,
+    title: 'DASHBOARD',
+    path: '/logged/dashboard',
     exact: true,
-    goBack: true
-  },
-  {
-    component: CustomerDetail,
-    title: 'DETALHES DO CLIENTE',
-    path: '/logged/customer/detail/:id',
-    exact: true,
-    goBack: true
   },
   {
     component: PDV,
     title: 'PONTO DE VENDA',
     path: '/logged/pdv',
-    exact: true,
-    goBack: true
   },
-  {
-    component: Plans,
-    title: 'PLANOS',
-    path: '/logged/plans',
-    exact: true,
-    goBack: true
-  }
 ]
 
 export default RootRoutes

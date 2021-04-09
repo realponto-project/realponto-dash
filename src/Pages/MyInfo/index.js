@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 
@@ -6,7 +6,10 @@ import { updateMyInfo as updateMyInfoService } from '../../Services/User'
 import MyInfoContainer from '../../Containers/MyInfo'
 
 const MyInfo = ({ user, loggedUser }) => {
+  const [loading, setLoading] = useState(false)
+
   const updateMyInfo = async (values) => {
+    setLoading(true)
     try {
       const { data } = await updateMyInfoService(user.id, values)
       loggedUser({
@@ -16,9 +19,16 @@ const MyInfo = ({ user, loggedUser }) => {
     } catch (error) {
       console.log(error)
     }
+    setLoading(false)
   }
 
-  return <MyInfoContainer user={user} updateMyInfo={updateMyInfo} />
+  return (
+    <MyInfoContainer
+      loading={loading}
+      user={user}
+      updateMyInfo={updateMyInfo}
+    />
+  )
 }
 
 const mapStateToProps = ({ user }) => ({

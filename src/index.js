@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ptBR from 'antd/lib/locale/pt_BR'
+import { ConfigProvider } from 'antd'
 import { HashRouter } from 'react-router-dom'
 
 import './index.css'
@@ -9,7 +11,9 @@ import reportWebVitals from './reportWebVitals'
 ReactDOM.render(
   <React.StrictMode>
     <HashRouter>
-      <App />
+      <ConfigProvider locale={ptBR}>
+        <App />
+      </ConfigProvider>
     </HashRouter>
   </React.StrictMode>,
   document.getElementById('root')

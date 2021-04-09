@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { compose, isEmpty } from 'ramda'
+import {
+  applySpec,
+  compose,
+  isEmpty,
+  pipe,
+  pathOr,
+  ifElse,
+  always,
+  prop
+} from 'ramda'
 
 import ManagerContainer from '../../../Containers/Product/Manager'
 import { createProduct, getAll, updateProduct } from '../../../Services/Product'
@@ -10,21 +19,29 @@ const initialFilterState = {
   name: ''
 }
 
+const parsePrice = (value) => (value ? Number(value) * 100 : 0)
+const productPayload = applySpec({
+  id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
+  balance: pathOr(0, ['balance']),
+  barCode: pathOr(null, ['barCode']),
+  buyPrice: pipe(pathOr(0, ['buyPrice']), parsePrice),
+  minQuantity: pathOr(null, ['minQuantity']),
+  name: pathOr(null, ['name']),
+  salePrice: pipe(pathOr(0, ['salePrice']), parsePrice)
+})
+
 const Manager = ({
   productSearch,
   setProductSearch,
-  updateProductSearch,
   cleanProductSearch
 }) => {
   const [products, setProducts] = useState({})
-  const [
-    page
-    //  setPage
-  ] = useState(1)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getAllProducts()
-  }, [])
+  }, [page])
 
   const buildProductSearch = (values) => {
     const { name, activated } = values
@@ -41,22 +58,31 @@ const Manager = ({
       ...checkedActivated,
       ...checkedName,
       page,
-      limit: 25
+      limit: 10
     }
   }
 
+  const onChangeTable = ({current}) => {
+    setPage(current)
+  }
+
   const getAllProducts = async () => {
+
+    setLoading(true)
+
     try {
       const { data } = await getAll(buildProductSearch(productSearch))
       setProducts(data)
     } catch (error) {
       console.log(error)
     }
+
+    setLoading(false)
   }
 
   const handleSubmit = async (values) => {
     try {
-      await createProduct(values)
+      await createProduct(productPayload(values))
       getAllProducts()
     } catch (error) {
       console.log('error', error)
@@ -65,7 +91,7 @@ const Manager = ({
 
   const handleSubmitUpdate = async (values) => {
     try {
-      await updateProduct(values)
+      await updateProduct(productPayload(values))
       getAllProducts()
     } catch (error) {
       console.log('error', error)
@@ -83,8 +109,25 @@ const Manager = ({
     return setProductSearch({ [name]: value })
   }
 
+  const currencyBRL = (value) => {
+    const formattedValue = value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    })
+
+    return formattedValue
+  }
+
   const clearFilters = () => {
     cleanProductSearch()
+  }
+
+  const handleGetProductsByFilters = () => {
+    if(page !== 1){
+      setPage(1)
+    } else {
+      getAllProducts()
+    }
   }
 
   return (
@@ -92,10 +135,14 @@ const Manager = ({
       products={products}
       handleSubmit={handleSubmit}
       handleSubmitUpdate={handleSubmitUpdate}
-      handleGetProductsByFilters={getAllProducts}
+      handleGetProductsByFilters={handleGetProductsByFilters}
       handleOnChange={handleOnChange}
       filters={productSearch}
       clearFilters={clearFilters}
+      currencyBRL={currencyBRL}
+      loading={loading}
+      onChangeTable={onChangeTable}
+      page={page}
     />
   )
 }
