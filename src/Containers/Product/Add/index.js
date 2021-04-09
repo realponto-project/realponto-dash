@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Modal, Form, Input, InputNumber, Row, Col, Button } from 'antd'
 
-const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
+const Add = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
 
