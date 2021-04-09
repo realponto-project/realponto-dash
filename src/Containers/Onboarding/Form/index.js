@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from '../style.module.css'
 import {
   Row,
@@ -14,9 +14,8 @@ import {
 const { Title } = Typography
 const { Paragraph } = Typography
 
-const Formulario = ({ onEdit, errorMessage }) => {
+const Formulario = ({ loading, setLoading, onEdit, errorMessage }) => {
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState(false)
 
   const handleDocument = ({ target }) =>
     form.setFieldsValue({
@@ -55,7 +54,6 @@ const Formulario = ({ onEdit, errorMessage }) => {
               .then((values) => {
                 form.resetFields()
                 onEdit(values)
-                setLoading(false)
               })
               .catch((info) => {
                 setLoading(false)
@@ -88,11 +86,11 @@ const Formulario = ({ onEdit, errorMessage }) => {
             <Input placeholder="Digite o número do crachá" />
           </Form.Item>
         </Form>
-        {errorMessage === 'user alredy exist with this document' ? (
+        {errorMessage === 'user alredy exist with this document' && (
           <p style={{ color: 'red', textAlign: 'center' }}>
             Erro ao atualizar dados.
           </p>
-            ) : null}
+        )}
       </Card>
       <Button
         form="form_onboarding"

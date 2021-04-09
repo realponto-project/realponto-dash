@@ -1,14 +1,13 @@
 /* eslint-disable prefer-promise-reject-errors */
-import React, { useState } from 'react'
+import React from 'react'
 import styles from '../style.module.css'
 import { Row, Col, Card, Form, Input, Button, Typography } from 'antd'
 
 const { Title } = Typography
 const { Paragraph } = Typography
 
-const UpdatePass = ({ onEdit }) => {
+const UpdatePass = ({ onEdit, loading, setLoading }) => {
   const [form] = Form.useForm()
-  const [loading, setLoading] = useState(false)
 
   const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
     getFieldValue
@@ -59,7 +58,6 @@ const UpdatePass = ({ onEdit }) => {
               .then((values) => {
                 form.resetFields()
                 onEdit(values)
-                setLoading(false)
               })
               .catch((info) => {
                 setLoading(false)
