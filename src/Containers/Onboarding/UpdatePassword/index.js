@@ -1,5 +1,5 @@
 /* eslint-disable prefer-promise-reject-errors */
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../style.module.css'
 import { Row, Col, Card, Form, Input, Button, Typography } from 'antd'
 
@@ -8,6 +8,7 @@ const { Paragraph } = Typography
 
 const UpdatePass = ({ onEdit }) => {
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
 
   const validatorPassword = (passwordPropName, shouldBeEqual = false) => ({
     getFieldValue
@@ -52,13 +53,16 @@ const UpdatePass = ({ onEdit }) => {
           layout="vertical"
           form={form}
           onFinish={() => {
+            setLoading(true)
             form
               .validateFields()
               .then((values) => {
                 form.resetFields()
                 onEdit(values)
+                setLoading(false)
               })
               .catch((info) => {
+                setLoading(false)
                 console.log('Validate Failed:', info)
               })
           }}>
@@ -66,7 +70,7 @@ const UpdatePass = ({ onEdit }) => {
             label="Senha atual"
             name="password"
             rules={[{ required: true, message: 'Campo obrigatório' }]}>
-            <Input.Password placeholder='Insira sua senha atual' />
+            <Input.Password placeholder="Insira sua senha atual" />
           </Form.Item>
 
           <Form.Item
@@ -76,7 +80,7 @@ const UpdatePass = ({ onEdit }) => {
               validatorPassword('password', false),
               { required: true, message: 'Campo obrigatório!' }
             ]}>
-            <Input.Password placeholder='Insira sua nova senha'/>
+            <Input.Password placeholder="Insira sua nova senha" />
           </Form.Item>
 
           <Form.Item
@@ -86,7 +90,7 @@ const UpdatePass = ({ onEdit }) => {
               validatorPassword('newPassword', true),
               { required: true, message: 'Campo obrigatório!' }
             ]}>
-            <Input.Password placeholder='Confirme sua senha' />
+            <Input.Password placeholder="Confirme sua senha" />
           </Form.Item>
         </Form>
       </Card>
@@ -94,6 +98,7 @@ const UpdatePass = ({ onEdit }) => {
         form="form_update_password_onboarding"
         key="submit"
         htmlType="submit"
+        loading={loading}
         type="primary"
         className={styles.buttonLetsGo}>
         Concluir
