@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
@@ -9,9 +9,19 @@ import { getCompanyById } from '../../Services/Company'
 import { getAllStatus } from '../../Services/Status'
 import { getSubscriptionActivated } from '../../Services/Subscription'
 
-const Login = ({ history, loggedUser, setCompany, setStatus, setSubscription }) => {
+const Login = ({
+  history,
+  loggedUser,
+  setCompany,
+  setStatus,
+  setSubscription
+}) => {
+  const [isVisibleMessageError, setIsVisibleMessageError] = useState(false)
+  const [loading, setLoading] = useState(false)
+
   const authentication = (values) => {
     let redirectPage = '/logged/dashboard'
+    setLoading(true)
     Auth(values)
       .then(({ data }) => {
         loggedUser(data)
@@ -30,13 +40,19 @@ const Login = ({ history, loggedUser, setCompany, setStatus, setSubscription }) 
       .then(({ data }) => setStatus(data))
       .then(() => getSubscriptionActivated())
       .then(({ data }) => setSubscription(data))
-      .then(() =>  history.push(redirectPage))
-      .catch((err) => console.log(err))
+      .then(() => history.push(redirectPage))
+      .catch((err) => {
+        setLoading(false)
+        setIsVisibleMessageError(!!err.response)
+        console.error(err)
+      })
   }
 
   return (
-    <LoginContainer 
+    <LoginContainer
       authentication={authentication}
+      isVisibleMessageError={isVisibleMessageError}
+      loading={loading}
       registerPath="register"
     />
   )
@@ -46,7 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
   loggedUser: (payload) => dispatch({ type: 'USER_LOGGED', payload }),
   setCompany: (payload) => dispatch({ type: 'SET_COMPANY', payload }),
   setStatus: (payload) => dispatch({ type: 'SET_STATUS', payload }),
-  setSubscription: (payload) => dispatch({ type: 'SET_SUBSCRIPTION', payload})
+  setSubscription: (payload) => dispatch({ type: 'SET_SUBSCRIPTION', payload })
 })
 
 const enhanced = compose(connect(null, mapDispatchToProps), withRouter)

@@ -1,5 +1,7 @@
 import React from 'react'
-import { Table, Tag, Button } from 'antd'
+import { Table, Tag, Button, Empty, ConfigProvider, Image } from 'antd'
+import { map } from 'ramda'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = (chooseUser) => [
   {
@@ -14,7 +16,7 @@ const columns = (chooseUser) => [
     )
   },
   {
-    title: 'Nome do usuário',
+    title: 'Usuário',
     dataIndex: 'name',
     key: 'name',
     fixed: 'left'
@@ -29,7 +31,12 @@ const columns = (chooseUser) => [
     title: 'Documento',
     dataIndex: 'document',
     key: 'document',
-    fixed: 'left'
+    fixed: 'left',
+    render: (text) => (text.replace(/([^x|X|\d])/g,'')
+    .replace(/(\d{2})(\d)/,'$1.$2')
+    .replace(/(\d{3})(\d)/,'$1.$2')
+    .replace(/(\d{3})(\w)/,'$1-$2')
+    .replace(/(-\w{1})\d+?$/,'$1'))
   },
   {
     title: '',
@@ -44,8 +51,22 @@ const columns = (chooseUser) => [
   }
 ]
 
-const UserList = ({ datasource, chooseUser }) => {
-  return <Table columns={columns(chooseUser)} dataSource={datasource} />
+const UserList = ({ datasource, chooseUser, loading, onChangeTable, total, page }) => {
+  return (
+    <ConfigProvider renderEmpty={() => <Empty
+      description="Não há dados"
+      image={<Image width={85} src={NoData} preview={false} />}
+      />
+    }>
+      {console.log('total', total)}
+      <Table 
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns(chooseUser)} 
+        loading={loading} 
+        dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
+    </ConfigProvider>
+  )
 }
 
 export default UserList

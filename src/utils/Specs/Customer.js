@@ -9,7 +9,7 @@ export const buildAddCustomer = (expand) =>
         complementary: prop('complementary'),
         neighborhood: prop('neighborhood'),
         reference: prop('reference'),
-        states: prop('states'),
+        states: prop('state'),
         street: prop('street'),
         streetNumber: prop('streetNumber'),
         zipcode: prop('zipcode')
@@ -33,7 +33,7 @@ export const buildFormValuesCustomer = applySpec({
   phone: prop('phone'),
   reference: pathOr('', ['address', 'reference']),
   socialName: prop('socialName'),
-  states: pathOr('', ['address', 'states']),
+  state: pathOr('', ['address', 'states']),
   street: pathOr('', ['address', 'street']),
   streetNumber: pathOr('', ['address', 'streetNumber']),
   zipcode: pathOr('', ['address', 'zipcode'])

@@ -1,5 +1,7 @@
 import React from 'react'
-import { Table, Tag, Button } from 'antd'
+import { Table, Tag, Button, Empty, ConfigProvider, Image } from 'antd'
+import { map } from 'ramda'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = (chooseStatus) => [
   {
@@ -49,8 +51,21 @@ const columns = (chooseStatus) => [
   }
 ]
 
-const StatustList = ({ datasource, chooseStatus }) => {
-  return <Table columns={columns(chooseStatus)} dataSource={datasource} />
+const StatustList = ({ datasource, chooseStatus, loading, onChangeTable, total, page }) => {
+  return (
+    <ConfigProvider renderEmpty={() => <Empty
+      description="Não há dados"
+      image={<Image width={85} src={NoData} preview={false} />}
+    />
+    }>
+      <Table
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns(chooseStatus)}
+        loading={loading}
+        dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
+    </ConfigProvider>
+  )
 }
 
 export default StatustList

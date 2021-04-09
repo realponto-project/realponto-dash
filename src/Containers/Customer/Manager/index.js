@@ -17,10 +17,15 @@ const Manager = ({
   handleClickExpand,
   handleFilter,
   handleSubmitAdd,
+  loading,
+  modelTitle,
   onChangeSearch,
   openModalAdd,
   source,
-  visibleModalAdd
+  visibleModalAdd,
+  onChangeTable,
+  total,
+  page
 }) => (
   <Row gutter={[8, 16]}>
     <Col span={24}>
@@ -68,7 +73,13 @@ const Manager = ({
     </Col>
     <Col span={24}>
       <Card bordered={false}>
-        <CustomerList datasource={source} handleClickEdit={handleClickEdit} />
+        <CustomerList 
+          onChangeTable={onChangeTable} 
+          datasource={source} 
+          total={total}
+          handleClickEdit={handleClickEdit} 
+          loading={loading}
+          page={page}/>
       </Card>
     </Col>
 
@@ -78,6 +89,8 @@ const Manager = ({
       handleCancel={closeModalAdd}
       handleClickExpand={handleClickExpand}
       handleSubmit={handleSubmitAdd}
+      loading={loading}
+      title={modelTitle}
       visible={visibleModalAdd}
     />
   </Row>

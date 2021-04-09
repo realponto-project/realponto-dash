@@ -9,21 +9,23 @@ const CheckboxGroup = Checkbox.Group
 
 const { Title } = Typography
 const plainOptions = ['Ativo', 'Inativo']
-const initialFilterState = {
-  activated: ['Ativo', 'Inativo'],
-  search: ''
-}
 
 const Manager = ({
   handleSubmitUpdate,
   handleSubmit,
   users,
-  handleGetUsersByFilters
+  clearFilters,
+  handleOnChange,
+  filters,
+  handleGetUsersByFilters,
+  loading,
+  onChangeTable,
+  total,
+  page
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
   const [userSelected, setUserSelected] = useState({})
-  const [filters, setFilters] = useState(initialFilterState)
 
   const onSubmitUpdate = (values) => {
     handleSubmitUpdate({ ...values, id: userSelected.id })
@@ -46,30 +48,6 @@ const Manager = ({
     setUserSelected({})
   }
 
-  const onChange = ({ target }) => {
-    const { name, value } = target
-    if (name === 'activated') {
-      return setFilters({
-        ...filters,
-        [name]: value.length === 0 ? initialFilterState.activated : value
-      })
-    }
-
-    return setFilters({
-      ...filters,
-      [name]: value
-    })
-  }
-
-  const handleFilters = async () => {
-    await handleGetUsersByFilters(filters)
-  }
-
-  const clearFilters = async () => {
-    setFilters(initialFilterState)
-    await handleGetUsersByFilters({})
-  }
-
   return (
     <Row gutter={[8, 16]}>
       <Col span={24}>
@@ -83,7 +61,7 @@ const Manager = ({
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
-                Adicionar Usuário
+                Adicionar usuário
               </Button>
             </Col>
           </Row>
@@ -109,9 +87,9 @@ const Manager = ({
               <Input
                 placeholder="Filtre por nome ou email."
                 prefix={<SearchOutlined />}
-                name="search"
-                value={filters.search}
-                onChange={onChange}
+                name="name"
+                value={filters.name}
+                onChange={handleOnChange}
               />
             </Col>
             <Col span={4} style={{ paddingTop: '5px' }}>
@@ -119,16 +97,16 @@ const Manager = ({
                 options={plainOptions}
                 value={filters.activated}
                 onChange={(value) =>
-                  onChange({ target: { name: 'activated', value } })
+                  handleOnChange({ target: { name: 'activated', value } })
                 }
               />
             </Col>
 
             <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-                Limpar Filtros
+                Limpar filtros
               </Button>
-              <Button type="primary" onClick={handleFilters}>
+              <Button type="primary" onClick={handleGetUsersByFilters}>
                 Filtrar
               </Button>
             </Col>
@@ -137,7 +115,13 @@ const Manager = ({
       </Col>
       <Col span={24}>
         <Card bordered={false}>
-          <UserList datasource={users} chooseUser={handleChooseUser} />
+          <UserList 
+            onChangeTable={onChangeTable}
+            datasource={users} 
+            chooseUser={handleChooseUser} 
+            loading={loading} 
+            total={total}
+            page={page}/>
         </Card>
       </Col>
     </Row>

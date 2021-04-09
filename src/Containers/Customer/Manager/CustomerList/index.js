@@ -1,6 +1,8 @@
 import React from 'react'
-import { Table, Button } from 'antd'
+import { Table, Button, Empty, ConfigProvider, Image } from 'antd'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
+import {map} from 'ramda'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = ({ handleClickEdit }) => [
   {
@@ -31,9 +33,21 @@ const columns = ({ handleClickEdit }) => [
   }
 ]
 
-const CustomerList = ({ datasource, handleClickEdit }) => {
+
+const CustomerList = ({ datasource, handleClickEdit, loading, onChangeTable, total, page}) => {
   return (
-    <Table columns={columns({ handleClickEdit })} dataSource={datasource} />
+    <ConfigProvider renderEmpty={() => <Empty 
+      description="Não há dados" 
+      image={<Image width={85} src={NoData} preview={false} />}
+      />
+    }>
+      <Table 
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+        columns={columns({ handleClickEdit })} 
+        loading={loading} 
+        dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
+    </ConfigProvider>
   )
 }
 

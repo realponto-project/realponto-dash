@@ -1,6 +1,7 @@
 import React from 'react'
-import { Button, Table, Tag } from 'antd'
+import { Button, Table, Tag, Empty, ConfigProvider, Image } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
+import NoData from '../../../../Assets/noData.svg'
 
 const columns = (goToOrderDetail) => [
   {
@@ -50,13 +51,21 @@ const columns = (goToOrderDetail) => [
   }
 ]
 
-const OrderList = ({ datasource, goToOrderDetail, handlePagination }) => {
+const OrderList = ({ datasource, goToOrderDetail, onChangeTable, total, loading, page }) => {
   return (
-    <Table
-      columns={columns(goToOrderDetail)}
-      dataSource={datasource}
-      pagination={{ onChange: handlePagination }}
-    />
+    <ConfigProvider renderEmpty={() => <Empty
+      description="Não há dados"
+      image={<Image width={85} src={NoData} preview={false} />}
+      />
+    }>
+      <Table
+        loading={loading}
+        columns={columns(goToOrderDetail)}
+        dataSource={datasource}
+        pagination={{ total, current: page }}
+        onChange={onChangeTable}
+      />
+    </ConfigProvider>
   )
 }
 

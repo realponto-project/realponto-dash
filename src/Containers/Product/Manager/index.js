@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Row, Col, Card, Button, Typography, Input, Checkbox } from 'antd'
+import { connect } from 'react-redux'
+
 import Add from '../Add'
 import Edit from '../Edit'
+import Upgrade from '../Upgrade'
 import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
+import { applySpec, divide, compose, pipe, prop, __ } from 'ramda'
 const CheckboxGroup = Checkbox.Group
 
 const { Title } = Typography
@@ -17,11 +21,17 @@ const Manager = ({
   clearFilters,
   handleOnChange,
   filters,
-  handleGetProductsByFilters
+  handleGetProductsByFilters,
+  loading,
+  onChangeTable,
+  page,
+  company
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
+  const [visibleLimitProduct, setVisibleLimitProduct] = useState(false)
   const [productSelected, setProductSelected] = useState({})
+  const [quantityProduct, setQuantityProduct] = useState(0)
 
   const onSubmitUpdate = (values) => {
     handleSubmitUpdate({ ...values, id: productSelected.id })
@@ -35,7 +45,16 @@ const Manager = ({
   }
 
   const handleChooseProduct = (product) => {
-    setProductSelected(product)
+    const buildProductChoosed = applySpec({
+      name: prop('name'),
+      minQuantity: prop('minQuantity'),
+      barCode: prop('barCode'),
+      id: prop('id'),
+      buyPrice: pipe(prop('buyPrice'), divide(__, 100)),
+      salePrice: pipe(prop('salePrice'), divide(__, 100))
+    })
+
+    setProductSelected(buildProductChoosed(product))
     setVisibleEdit(true)
   }
 
@@ -43,6 +62,18 @@ const Manager = ({
     setVisibleEdit(false)
     setProductSelected({})
   }
+  
+  const checkQuantityProduct = () => {
+    if(products.total === quantityProduct){
+      setVisibleLimitProduct(true)
+    }else{
+      setVisible(true)
+    }
+  }
+
+  useEffect(() => {
+    setQuantityProduct(company.subscription.plan.quantityProduct)
+  }, [company])
 
   return (
     <Row gutter={[8, 16]}>
@@ -58,17 +89,25 @@ const Manager = ({
               </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
-              <Button icon={<PlusOutlined />} onClick={() => setVisible(true)}>
-                Adicionar Produto
+              <Button icon={<PlusOutlined />} onClick={() => checkQuantityProduct()}>
+                Adicionar produto
               </Button>
             </Col>
           </Row>
         </Card>
+        {visibleLimitProduct && (
+          <Upgrade
+            visible
+            onCancel={() => setVisibleLimitProduct(false)}
+          />
+        )}
+        {visible && (
         <Add
           visible={visible}
           onCreate={onSubmit}
           onCancel={() => setVisible(false)}
         />
+        )}   
         {visibleEdit && (
           <Edit
             visible
@@ -102,7 +141,7 @@ const Manager = ({
 
             <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} onClick={clearFilters}>
-                Limpar Filtros
+                Limpar filtros
               </Button>
               <Button type="primary" onClick={handleGetProductsByFilters}>
                 Filtrar
@@ -114,8 +153,12 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <ProductList
+            onChangeTable={onChangeTable}
+            total={products.total}
+            loading={loading}
             datasource={products.source}
             chooseProduct={handleChooseProduct}
+            page={page}
           />
         </Card>
       </Col>
@@ -123,4 +166,10 @@ const Manager = ({
   )
 }
 
-export default Manager
+const mapStateToProps = ({ company }) => ({
+  company
+})
+
+const enhanced = compose(connect(mapStateToProps))
+
+export default enhanced(Manager)

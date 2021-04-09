@@ -17,11 +17,12 @@ const initialFilterState = {
 
 const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
   const [status, setStatus] = useState({})
-  const [page] = useState(1)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getAllStatuses()
-  }, [])
+  }, [page])
 
   const buildStatusSearch = (values) => {
     const { label, activated } = values
@@ -38,17 +39,26 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
       ...checkedActivated,
       ...checkedName,
       page,
-      limit: 25
+      limit: 10
     }
   }
 
-  const getAllStatuses = async () => {
+  const onChangeTable = ({current}) => {
+    setPage(current)
+  }
+
+  const getAllStatuses = async ( ) => {
+
+    setLoading(true)
+
     try {
       const { data } = await getAllStatus(buildStatusSearch(statusSearch))
       setStatus(data)
     } catch (error) {
       console.log(error)
     }
+
+    setLoading(false)
   }
 
   const handleSubmit = async (values) => {
@@ -92,15 +102,26 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
     cleanStatusSearch()
   }
 
+  const handleGetStatusByFilters = () => {
+    if(page !== 1){
+      setPage(1)
+    } else {
+    getAllStatuses()
+    }
+  }
+
   return (
     <StatusContainer
       status={status}
       handleSubmit={handleSubmit}
       handleSubmitUpdate={handleSubmitUpdate}
-      handleGetStatusByFilters={getAllStatuses}
+      handleGetStatusByFilters={handleGetStatusByFilters}
       handleOnChange={handleOnChange}
       filters={statusSearch}
       clearFilters={clearFilters}
+      loading={loading}
+      page={page}
+      onChangeTable={onChangeTable}
     />
   )
 }
