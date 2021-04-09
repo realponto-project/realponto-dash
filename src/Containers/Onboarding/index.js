@@ -10,16 +10,25 @@ import Logo from './alxa.svg'
 
 const { Paragraph } = Typography
 
-const Onboarding = ({ user, updateMyInfo, handleSubmit, errorMessage }) => {
+const Onboarding = ({
+  loading,
+  setLoading,
+  user,
+  updateMyInfo,
+  handleSubmit,
+  errorMessage
+}) => {
   const [isWelcomeVisible, setWelcomeVisible] = useState(true)
   const [isFormVisible, setFormVisible] = useState(false)
   const [isUpdateVisible, setUpdateVisible] = useState(false)
 
   const onSubmitUpdateInfo = (values) => {
-    updateMyInfo(user.id, { ...values, firstAccess: false }).then(() => {
-      setFormVisible(false)
-      setUpdateVisible(true)
-    }).catch((err) => console.error(err))
+    updateMyInfo(user.id, { ...values, firstAccess: false })
+      .then(() => {
+        setFormVisible(false)
+        setUpdateVisible(true)
+      })
+      .catch((err) => console.error(err))
   }
 
   const onSubmitUpdatePass = (values) => {
@@ -62,12 +71,32 @@ const Onboarding = ({ user, updateMyInfo, handleSubmit, errorMessage }) => {
           <Paragraph className={styles.textWelcome}>
             Bem vindo, {user.name}
           </Paragraph>
-          {isWelcomeVisible ? <> <Welcome /> <Button className={styles.buttonLetsGo} type="primary" onClick={next}>
-            Vamos lá!
-          </Button> </> : null}
-          {isFormVisible ? <Formulario onEdit={onSubmitUpdateInfo} errorMessage={errorMessage} /> : null}
-          {isUpdateVisible ? <UpdatePass onEdit={onSubmitUpdatePass} /> : null}
-
+          {isWelcomeVisible && (
+            <>
+              <Welcome />
+              <Button
+                className={styles.buttonLetsGo}
+                type="primary"
+                onClick={next}>
+                Vamos lá!
+              </Button>
+            </>
+          )}
+          {isFormVisible && (
+            <Formulario
+              loading={loading}
+              setLoading={setLoading}
+              onEdit={onSubmitUpdateInfo}
+              errorMessage={errorMessage}
+            />
+          )}
+          {isUpdateVisible && (
+            <UpdatePass
+              loading={loading}
+              setLoading={setLoading}
+              onEdit={onSubmitUpdatePass}
+            />
+          )}
         </Card>
       </Col>
     </Row>
