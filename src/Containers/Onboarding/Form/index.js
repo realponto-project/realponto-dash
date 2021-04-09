@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from '../style.module.css'
 import {
   Row,
@@ -16,15 +16,16 @@ const { Paragraph } = Typography
 
 const Formulario = ({ onEdit, errorMessage }) => {
   const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
 
   const handleDocument = ({ target }) =>
     form.setFieldsValue({
       document: target.value
-      .replace(/([^x|X|\d])/g,'')
-      .replace(/(\d{2})(\d)/,'$1.$2')
-      .replace(/(\d{3})(\d)/,'$1.$2')
-      .replace(/(\d{3})(\w)/,'$1-$2')
-      .replace(/(-\w{1})\d+?$/,'$1')
+        .replace(/([^x|X|\d])/g, '')
+        .replace(/(\d{2})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\w)/, '$1-$2')
+        .replace(/(-\w{1})\d+?$/, '$1')
     })
 
   return (
@@ -48,13 +49,16 @@ const Formulario = ({ onEdit, errorMessage }) => {
           layout="vertical"
           form={form}
           onFinish={() => {
+            setLoading(true)
             form
               .validateFields()
               .then((values) => {
                 form.resetFields()
                 onEdit(values)
+                setLoading(false)
               })
               .catch((info) => {
+                setLoading(false)
                 console.log('Validate Failed:', info)
               })
           }}>
@@ -84,12 +88,17 @@ const Formulario = ({ onEdit, errorMessage }) => {
             <Input placeholder="Digite o número do crachá" />
           </Form.Item>
         </Form>
-        {errorMessage === 'user alredy exist with this document' ? <p style={{color: 'red', textAlign: 'center'}}>Erro ao atualizar dados.</p> : null}
+        {errorMessage === 'user alredy exist with this document' ? (
+          <p style={{ color: 'red', textAlign: 'center' }}>
+            Erro ao atualizar dados.
+          </p>
+            ) : null}
       </Card>
       <Button
-        form="form_onboarding" 
-        key="submit" 
+        form="form_onboarding"
+        key="submit"
         htmlType="submit"
+        loading={loading}
         type="primary"
         className={styles.buttonLetsGo}>
         Continuar
