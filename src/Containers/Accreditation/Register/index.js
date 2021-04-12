@@ -20,7 +20,7 @@ import { validateCNPJ, validateEmail } from '../../../utils/validators'
 const { Title, Text, Paragraph } = Typography
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
-const Register = ({ handleClickContinue }) => (
+const Register = ({ handleClickContinue, loading }) => (
   <Row>
     <Col span={12}>
       <div className={styles.contentPublicity}>
@@ -112,6 +112,7 @@ const Register = ({ handleClickContinue }) => (
                   <Button
                     size="large"
                     htmlType="submit"
+                    loading={loading}
                     type="primary"
                     style={{ width: '100%' }}>
                     Continuar
