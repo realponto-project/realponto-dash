@@ -6,8 +6,6 @@ import { compose, isEmpty } from 'ramda'
 import ManagerContainer from '../../../Containers/Order/Manager'
 import { getAllOrder, getAllOrderSummary } from '../../../Services/Order'
 
-const pendingReview = ['Sim', 'Não']
-
 const Manager = ({
   history,
   orderSearch,
@@ -49,11 +47,7 @@ const Manager = ({
   const buildOrderSearch = (orderSearch) => {
     // eslint-disable-next-line camelcase
     const { user_name, dates, pendingReview } = orderSearch
-    const checkedPendingReview =
-      pendingReview && pendingReview.length < 2 && pendingReview.length !== 0
-        ? { pendingReview: pendingReview[0] !== 'Não' }
-        : {}
-
+   
     const datesSpec =
       dates[0] && dates[1]
         ? {
@@ -66,7 +60,6 @@ const Manager = ({
     return {
       ...checkedName,
       ...datesSpec,
-      ...checkedPendingReview,
       page,
       limit: 10
     }

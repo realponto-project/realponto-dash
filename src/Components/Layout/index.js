@@ -13,7 +13,8 @@ import {
   ShrinkOutlined,
   BlockOutlined,
   CalculatorOutlined,
-  TeamOutlined
+  TeamOutlined,
+  DiffOutlined
 } from '@ant-design/icons'
 
 const { Sider, Content } = Layout
@@ -42,6 +43,11 @@ const menuItems = [
     icon: <ShrinkOutlined />,
     label: 'Ordens',
     key: '/logged/order/manager'
+  },
+  {
+    icon: <DiffOutlined />,
+    label: 'Relatórios',
+    key: '/logged/order/report'
   }
 ]
 
