@@ -1,18 +1,22 @@
 import React from 'react'
-import { Table, Tag, Button, Empty, ConfigProvider, Image } from 'antd'
+import { Table, Button, Empty, ConfigProvider, Image, Switch } from 'antd'
 import { map } from 'ramda'
 import NoData from '../../../../Assets/noData.svg'
 
-const columns = (chooseUser) => [
-  {
+const columns = (chooseUser, handleSubmitUpdate) => [
+  { 
     title: 'Status',
     dataIndex: 'activated',
     key: 'id',
     fixed: 'left',
-    render: (text) => (
-      <Tag color={text ? '#65A300' : '#DF285F'}>
-        {text ? 'Ativo' : 'Inativo'}
-      </Tag>
+    render: (__, record) => (
+      <Switch 
+        style={{width: '70px', backgroundColor: record.activated ? '#65A300' : 'rgba(0,0,0,.25)'}} 
+        checkedChildren="Ativo" 
+        unCheckedChildren="Inativo" 
+        defaultChecked={record.activated}
+        onChange={(activated) => handleSubmitUpdate({activated, id: record.id})}
+      />
     )
   },
   {
@@ -44,25 +48,24 @@ const columns = (chooseUser) => [
     key: 'id',
     fixed: 'left',
     render: (_, record) => (
-      <Button type="link" onClick={() => chooseUser(record)}>
+      <Button type="link" onClick={() => chooseUser(record)} disabled={!record.activated}>
         Editar
       </Button>
     )
   }
 ]
 
-const UserList = ({ datasource, chooseUser, loading, onChangeTable, total, page }) => {
+const UserList = ({ datasource, chooseUser, loading, onChangeTable, total, page, handleSubmitUpdate }) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty
       description="Não há dados"
       image={<Image width={85} src={NoData} preview={false} />}
       />
     }>
-      {console.log('total', total)}
       <Table 
         pagination={{ total, current: page }}
         onChange={onChangeTable}
-        columns={columns(chooseUser)} 
+        columns={columns(chooseUser, handleSubmitUpdate)} 
         loading={loading} 
         dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
     </ConfigProvider>

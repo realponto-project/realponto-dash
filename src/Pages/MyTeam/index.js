@@ -20,8 +20,6 @@ const Manager = ({ myTeamSearch, setMyTeamSearch, cleanMyTeamSearch }) => {
   }, [page])
 
   const buildMyTeamSearch = (values) => {
-    console.log(values)
-
     const { name, activated } = values
     const checkedActivated =
       activated && activated.length < 2 && activated.length !== 0
