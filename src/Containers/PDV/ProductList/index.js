@@ -16,6 +16,7 @@ const productItem = (
   handleClickDelete,
   handleClickUp,
   handleClickDown,
+  orderCreated,
   isSaved
 ) => ({ id, name, barCode, quantity, salePrice, balance }) => {
   return (
@@ -26,13 +27,13 @@ const productItem = (
           <p className={styles.productListSubtitle}>{barCode}</p>
         </Col>
         <Col span={4}>
-          {<DownOutlined onClick={() => handleClickDown(id)} />}
+          {orderCreated && <DownOutlined onClick={() => handleClickDown(id)} />}
           <span className={styles.productListQuantity}>{quantity}</span>
-          {
+          {orderCreated && (
             <UpOutlined
               onClick={() => (quantity < balance ? handleClickUp(id) : null)}
             />
-          }
+          )}
         </Col>
         <Col span={6} style={{ textAlign: 'center' }}>
           <p className={styles.productListSubtitle}>
@@ -45,12 +46,12 @@ const productItem = (
         <Col span={4}>
           <Row justify="center">
             <Col>
-              {
+              {orderCreated && (
                 <DeleteOutlined
                   onClick={() => handleClickDelete(id)}
                   className={styles.removeProduct}
                 />
-              }
+              )}
             </Col>
           </Row>
         </Col>
@@ -68,7 +69,9 @@ const ProductList = ({
   productList,
   incrementQuantity,
   decrementQuantity,
-  removeProduct
+  removeProduct,
+  openModalBarcode,
+  orderCreated
 }) => {
   return (
     <div>
@@ -88,12 +91,14 @@ const ProductList = ({
               placeholder="pequise um produto aqui!"
               style={{ width: '100%' }}
               value={searchProduct}
+              disabled={!!orderCreated}
             />
           </Col>
           <Col span={8}>
             <Button
+              disabled={!!orderCreated}
               icon={<BarcodeOutlined />}
-              onClick={() => {}}
+              onClick={openModalBarcode}
               type="primary">
               Buscar cód. barras
             </Button>
@@ -114,6 +119,7 @@ const ProductList = ({
             removeProduct,
             incrementQuantity,
             decrementQuantity,
+            (orderCreated = !orderCreated),
             false
           ),
           productList

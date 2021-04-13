@@ -2,14 +2,18 @@ import { merge } from 'ramda'
 
 import { SET_FORM_PDV, CLEAR_FORM_PDV } from '../actions/formPdv'
 
-const initialState = {}
+const initialState = {
+  productList: [],
+  customers: {},
+  payment: {}
+}
 
 const formPdvReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_FORM_PDV:
       return {
-        ...state, 
-        ...action.payload,
+        ...state,
+        ...action.payload
       }
     case CLEAR_FORM_PDV:
       return initialState

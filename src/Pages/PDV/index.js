@@ -1,91 +1,79 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import print from 'print-js'
-import {
-  add,
-  adjust,
-  applySpec,
-  compose,
-  dec,
-  equals,
-  filter,
-  findIndex,
-  inc,
-  insert,
-  map,
-  max,
-  merge,
-  min,
-  multiply,
-  pathOr,
-  pipe,
-  prop,
-  propEq,
-  reduce,
-  __
-} from 'ramda'
+import React, { useEffect, useState } from 'react'
+import { compose, isEmpty, isNil } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
 import getAddress from '../../Services/Address'
-import { getAll, getProductById } from '../../Services/Product'
+import {
+  getAll,
+  getProductById,
+  getProductByBarCode
+} from '../../Services/Product'
 import { createOrder } from '../../Services/Order'
 import PDVContainer from '../../Containers/PDV'
 
-const PDV = ({ setFormPdv, company }) => {
+const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   const [step, setStep] = useState(0)
   const [saleType, setSaleType] = useState({
     saleFast: true,
-    saleFull: false,
+    saleFull: false
   })
 
   const [paymentType, setPaymentType] = useState({
     cash: true,
-    creditCard: false,
+    creditCard: false
   })
-  
+  const [productList, setProductList] = useState([])
+  const [orderCreated, setOrderCreated] = useState(null)
   const [formCustomer] = Form.useForm()
   const [formPayment] = Form.useForm()
   const [formData, setFormData] = useState({})
+
   const [searchProduct, setSearchProduct] = useState('')
   const [products, setProducts] = useState([])
   const [optionSearch, setOptionSearch] = useState([])
-  const [productList, setProductList] = useState([])
-  const [orderCreated, setOrderCreated] = useState(null)
+  const [isVisibleModalBarcode, setIsVisibleModalBarcode] = useState(false)
+  const [isVisibleModalNotFound, setIsVisibleModalNotFound] = useState(false)
+
   const handleNextStep = async (values) => {
     if (step === 2) {
-      return step 
-    } 
-    
-   try {
-    if (step === 0) {
-      await formCustomer.validateFields()
-      setFormData({
-        ...formData,
-        customers: values
-      })
+      return step
     }
 
-    if (step === 1) {
-      await formPayment.validateFields()
-      setFormData({
+    try {
+      if (step === 0) {
+        await formCustomer.validateFields()
+        setFormData({
+          ...formData,
+          customers: values
+        })
+      }
+
+      if (step === 1) {
+        await formPayment.validateFields()
+        setFormData({
+          ...formData,
+          payment:
+            paymentType.cash || values.paymentMethod === 'debit_card'
+              ? {
+                  paymentMethod: paymentType.cash ? 'Dinheiro' : 'debit_card',
+                  installments: 1
+                }
+              : values
+        })
+      }
+      setFormPdv({
         ...formData,
-        payment: (
-          paymentType.cash || values.paymentMethod === 'debit_card'
-            ? { paymentMethod: paymentType.cash ? 'Dinheiro' :  'debit_card', installments: 1 } 
-            : values
-        )
+        productList
       })
+      return setStep(step + 1)
+    } catch (error) {
+      console.log(error)
     }
-    setFormPdv({
-      ...formData,
-      productList
-    })
-    return setStep(step + 1)
-   } catch (error) {
-     console.log(error)
-   }
   }
-  const handlePrevStep = () => step === 0 ? step : setStep(step - 1)
+
+  const handlePrevStep = () => (step === 0 ? step : setStep(step - 1))
+
   const handleSaletype = (values) => {
     if (values.saleFast) {
       formCustomer.resetFields()
@@ -113,51 +101,84 @@ const PDV = ({ setFormPdv, company }) => {
         ...formData,
         ...formData.payment,
         originType: 'pdv',
-        products: productList.map(({ id, quantity, salePrice }) => ({ id, quantity, salePrice })),
+        products: productList.map(({ id, quantity, salePrice }) => ({
+          productId: id,
+          quantity,
+          price: salePrice
+        }))
       })
       setOrderCreated(data)
-    }
-    catch(err) {
+    } catch (err) {
       console.log('error', err)
     }
   }
 
-  const onSearch = value => {
+  const onSearch = (value) => {
     if (value.length > 3) {
       getAll().then(({ data }) => {
-        const source = data.source.map(item => ({ label: `${item.name} - quantidade: ${item.balance }`, value: item.id }))
+        const source = data.source.map((item) => ({
+          label: `${item.name} - quantidade: ${item.balance}`,
+          value: item.id
+        }))
         setOptionSearch(source)
       })
     }
   }
 
-  const removeProduct = productId => {
-    setProductList(
-      productList.filter(product => product.id !== productId)
-    )
+  const handleSearchByBarcode = async (value) => {
+    console.log(value)
+    setIsVisibleModalBarcode(false)
+    try {
+      const { data } = await getProductByBarCode(value)
+
+      if (isNil(data)) {
+        setIsVisibleModalNotFound(true)
+      } else {
+        console.log(data)
+        onSelectProduct(data.id)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  const onChange = value => {
+  const removeProduct = (productId) => {
+    setProductList(productList.filter((product) => product.id !== productId))
+  }
+
+  const onChange = (value) => {
     setSearchProduct(value)
   }
 
-  const incrementQuantity = productId => {
+  const incrementQuantity = (productId) => {
     setProductList(
-      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity + 1 }) : product)
+      productList.map((product) =>
+        product.id === productId
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      )
     )
   }
 
-  const decrementQuantity = productId => {
+  const decrementQuantity = (productId) => {
     setProductList(
-      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity === 1 ? product.quantity : product.quantity - 1 }) : product)
+      productList.map((product) =>
+        product.id === productId
+          ? {
+              ...product,
+              quantity:
+                product.quantity === 1 ? product.quantity : product.quantity - 1
+            }
+          : product
+      )
     )
   }
 
-  const onSelectProduct = async value => {
+  const onSelectProduct = async (value) => {
     setSearchProduct('')
-    const findProduct = productList.find(product => product.id === value)
+    const findProduct = productList.find((product) => product.id === value)
     if (findProduct) {
-      return;
+      return
     }
 
     try {
@@ -175,8 +196,49 @@ const PDV = ({ setFormPdv, company }) => {
     }
   }
 
+  useEffect(() => {
+    console.log(formPdv)
+    setProductList(formPdv.productList)
+    formCustomer.setFieldsValue(formPdv.customers)
+    formPayment.setFieldsValue(formPdv.payment)
+
+    if (
+      !isEmpty(formPdv.payment) &&
+      formPdv.payment.paymentMethod !== 'Dinheiro'
+    ) {
+      setPaymentType({
+        cash: false,
+        creditCard: true
+      })
+    }
+    if (!isEmpty(formPdv.customers)) {
+      setSaleType({
+        saleFast: false,
+        saleFull: true
+      })
+    }
+  }, [formPdv])
+
+  const resetAll = () => {
+    setStep(0)
+    formCustomer.resetFields()
+    formPayment.resetFields()
+    setFormData({})
+    setProductList([])
+    setOrderCreated(null)
+    clearFormPdv()
+    setSaleType({
+      saleFast: true,
+      saleFull: false
+    })
+    setPaymentType({
+      cash: true,
+      creditCard: false
+    })
+  }
+
   return (
-    <PDVContainer 
+    <PDVContainer
       step={step}
       handleNextStep={handleNextStep}
       handlePrevStep={handlePrevStep}
@@ -201,6 +263,12 @@ const PDV = ({ setFormPdv, company }) => {
       removeProduct={removeProduct}
       orderCreated={orderCreated}
       company={company}
+      handleSearchByBarcode={handleSearchByBarcode}
+      isVisibleModalBarcode={isVisibleModalBarcode}
+      setIsVisibleModalBarcode={setIsVisibleModalBarcode}
+      isVisibleModalNotFound={isVisibleModalNotFound}
+      setIsVisibleModalNotFound={setIsVisibleModalNotFound}
+      resetAll={resetAll}
     />
   )
 }
