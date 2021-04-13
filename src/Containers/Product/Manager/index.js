@@ -10,6 +10,7 @@ import ProductList from './ProductList'
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { applySpec, divide, compose, pipe, prop, __ } from 'ramda'
 const CheckboxGroup = Checkbox.Group
+import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 
 const { Title } = Typography
 const plainOptions = ['Ativo', 'Inativo']
@@ -50,11 +51,13 @@ const Manager = ({
       minQuantity: prop('minQuantity'),
       barCode: prop('barCode'),
       id: prop('id'),
-      buyPrice: pipe(prop('buyPrice'), divide(__, 100)),
-      salePrice: pipe(prop('salePrice'), divide(__, 100))
     })
 
-    setProductSelected(buildProductChoosed(product))
+    setProductSelected({
+      ...buildProductChoosed(product), 
+      buyPrice: parseValuePTbr(product.buyPrice),
+      salePrice: parseValuePTbr(product.salePrice),
+    })
     setVisibleEdit(true)
   }
 
@@ -153,6 +156,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <ProductList
+            handleSubmitUpdate={handleSubmitUpdate}
             onChangeTable={onChangeTable}
             total={products.total}
             loading={loading}

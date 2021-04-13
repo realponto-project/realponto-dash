@@ -42,7 +42,6 @@ const PDV = ({
   company,
 }) => {
   const ComponentStep = steps[step]
-  console.log(orderCreated)
   return (
     <Row
       gutter={[16, 16]}

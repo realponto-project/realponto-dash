@@ -117,6 +117,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <StatusList
+            handleSubmitUpdate={handleSubmitUpdate}
             onChangeTable={onChangeTable}
             loading={loading}
             datasource={status.source}

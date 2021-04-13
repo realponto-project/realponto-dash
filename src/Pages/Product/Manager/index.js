@@ -19,15 +19,17 @@ const initialFilterState = {
   name: ''
 }
 
-const parsePrice = (value) => (value ? Number(value) * 100 : 0)
+const parsePrice = (value) => value ? value.replace(/\D/g, '') : value
 const productPayload = applySpec({
   id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
   balance: pathOr(0, ['balance']),
   barCode: pathOr(null, ['barCode']),
-  buyPrice: pipe(pathOr(0, ['buyPrice']), parsePrice),
+  buyPrice: pipe(pathOr('0', ['buyPrice']), parsePrice),
   minQuantity: pathOr(null, ['minQuantity']),
   name: pathOr(null, ['name']),
-  salePrice: pipe(pathOr(0, ['salePrice']), parsePrice)
+  salePrice: pipe(pathOr('0', ['salePrice']), parsePrice),
+  activated: pathOr(true, ['activated'])
+
 })
 
 const Manager = ({

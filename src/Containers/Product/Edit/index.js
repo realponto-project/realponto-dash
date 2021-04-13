@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Modal, Form, Input, InputNumber, Col, Row, Button } from 'antd'
+import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 
 const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
   const [form] = Form.useForm()
@@ -67,12 +68,16 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
         <Row align="space-between">
           <Col span={12}>
             <Form.Item name="buyPrice" label="Preço custo">
-              <InputNumber min={0} style={{ width: '98%' }} />
+              <Input 
+              style={{ width: '98%' }}
+              onChange={({ target: { value }}) => form.setFieldsValue({ buyPrice: `${parseValuePTbr(value)}` })} />
             </Form.Item>
           </Col>
           <Col span={11}>
             <Form.Item name="salePrice" label="Preço venda">
-              <InputNumber min={0} style={{ width: '98%' }} />
+              <Input 
+                style={{ width: '98%' }} 
+                onChange={({ target: { value }}) => form.setFieldsValue({ salePrice: `${parseValuePTbr(value)}` })} />
             </Form.Item>
           </Col>
         </Row>

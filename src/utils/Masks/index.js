@@ -1,5 +1,5 @@
 import customer from './customerMasks'
-import myInfo from './myInfoMasks'
+import { myInfoMask as myInfo } from './myInfoMasks'
 
 export const customerMask = customer
 

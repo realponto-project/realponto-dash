@@ -36,7 +36,6 @@ const Cupom = ({ company, customer, discount, items = [], payment, installments,
   )
   : 0
 
-  console.log(items)
 
   return (
     <table className={styles.printerTicket}>

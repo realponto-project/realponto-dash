@@ -128,7 +128,8 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
         planId,
         cardHash,
         activated: true,
-        amount: Number(amount) * 100
+        amount: Number(amount) * 100,
+        paymentMethod: 'credit_card'
       })
       setSubscription(data)
       return response
