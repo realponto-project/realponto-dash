@@ -7,7 +7,8 @@ import styles from './style.module.css'
 const Detail = ({
   handlePrevStep,
   formData,
-  handleSubmit
+  handleSubmit,
+  orderCreated
 }) => {
   const name = pathOr(null, ['customers', 'name'], formData)
   const installments = pathOr(null, ['payment', 'installments'], formData)
@@ -67,12 +68,30 @@ const Detail = ({
       <Col span={12} style={{ paddingTop: '14px', textAlign: 'right' }}>
         <h2><b>R$ 200,00</b></h2>
       </Col>
-      <Col span={12}>
-        <Button onClick={handlePrevStep} block>Voltar</Button>
-      </Col>
-      <Col span={12} style={{ textAlign: 'right'}}>
-        <Button onClick={handleSubmit} type="primary" block>Salvar</Button>
-      </Col>
+      {
+        !orderCreated && (
+          <>
+            <Col span={12}>
+              <Button onClick={handlePrevStep} block>Voltar</Button>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right'}}>
+              <Button onClick={handleSubmit} type="primary" block>Salvar</Button>
+            </Col>
+          </>
+        )
+      }
+       {
+        orderCreated && (
+          <>
+            <Col span={12}>
+              <Button onClick={handlePrevStep} block>Novo Pedido</Button>
+            </Col>
+            <Col span={12} style={{ textAlign: 'right'}}>
+              <Button onClick={() => window.print()} type="primary" block>Imprimir</Button>
+            </Col>
+          </>
+        )
+      }
     </Row>
   )
 }

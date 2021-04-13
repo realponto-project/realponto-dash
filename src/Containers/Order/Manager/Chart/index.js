@@ -71,7 +71,7 @@ const Chart = ({ data, chartSettings }) => (
         <Title level={5}>LEGENDAS</Title>
       </Col>
       {chartSettings.map(({ color, value }) => (
-        <Col key={`${color}-${value}`} xs={8} sm={8} md={8} lg={8} xl={8}>
+        <Col key={`${color}-${value}`} xs={12} sm={12} md={12} lg={12} xl={12}>
           <Tag color={color}>{value}</Tag>
         </Col>
       ))}

@@ -28,10 +28,10 @@ import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
 import getAddress from '../../Services/Address'
 import { getAll, getProductById } from '../../Services/Product'
-
+import { createOrder } from '../../Services/Order'
 import PDVContainer from '../../Containers/PDV'
 
-const PDV = ({ setFormPdv }) => {
+const PDV = ({ setFormPdv, company }) => {
   const [step, setStep] = useState(0)
   const [saleType, setSaleType] = useState({
     saleFast: true,
@@ -50,7 +50,7 @@ const PDV = ({ setFormPdv }) => {
   const [products, setProducts] = useState([])
   const [optionSearch, setOptionSearch] = useState([])
   const [productList, setProductList] = useState([])
-
+  const [orderCreated, setOrderCreated] = useState(null)
   const handleNextStep = async (values) => {
     if (step === 2) {
       return step 
@@ -107,8 +107,19 @@ const PDV = ({ setFormPdv }) => {
     }
   }
 
-  const handleSubmit = () => {
-    console.log(formData)
+  const handleSubmit = async () => {
+    try {
+      const { data } = await createOrder({
+        ...formData,
+        ...formData.payment,
+        originType: 'pdv',
+        products: productList.map(({ id, quantity, salePrice }) => ({ id, quantity, salePrice })),
+      })
+      setOrderCreated(data)
+    }
+    catch(err) {
+      console.log('error', err)
+    }
   }
 
   const onSearch = value => {
@@ -188,6 +199,8 @@ const PDV = ({ setFormPdv }) => {
       incrementQuantity={incrementQuantity}
       decrementQuantity={decrementQuantity}
       removeProduct={removeProduct}
+      orderCreated={orderCreated}
+      company={company}
     />
   )
 }
