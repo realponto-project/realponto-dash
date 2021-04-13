@@ -11,6 +11,7 @@ import Onboarding from '../Pages/Onboarding'
 import MyInfo from '../Pages/MyInfo'
 import Home from '../Pages/Home'
 import PDV from '../Pages/PDV'
+import Report from '../Pages/Report'
 
 const RootRoutes = [
   {
@@ -98,6 +99,12 @@ const RootRoutes = [
     component: PDV,
     title: 'PONTO DE VENDA',
     path: '/logged/pdv',
+  },
+  {
+    component: Report,
+    title: 'ORDENS CONSOLIDADAS',
+    path: '/logged/order/report',
+    goBack: true
   },
 ]
 
