@@ -28,17 +28,11 @@ const columns = (goToOrderDetail) => [
     render: (text) => formattedDate(text, 'DD/MM/YY - HH:mm')
   },
   {
-    title: 'Funcionário',
+    title: 'Colaborador',
     dataIndex: 'user.name',
     key: 'user.name',
     fixed: 'left',
     render: (_, record) => record.user && record.user.name
-  },
-  {
-    title: 'Revisar?',
-    dataIndex: 'pendingReview',
-    fixed: 'left',
-    render: (text) => (text ? 'Sim' : 'Não')
   },
   {
     title: '',

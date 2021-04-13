@@ -34,6 +34,7 @@ const OrderInfoStep = ({
           <Form.Item
             name="userId"
             label="Usuário"
+            rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
             validateStatus={formErrors && formErrors.userId ? 'error' : ''}
             style={{ marginBottom: '4px' }}
             hasFeedback>

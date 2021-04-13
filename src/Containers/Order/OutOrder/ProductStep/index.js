@@ -6,9 +6,11 @@ import {
   InputNumber,
   Select,
   Row,
+  Input,
   Table,
   Typography
 } from 'antd'
+import { parseValuePTbr } from '../../../../utils/Masks/myInfoMasks'
 import { find, multiply, pipe, propEq, propOr } from 'ramda'
 
 const { Option } = Select
@@ -34,6 +36,13 @@ const columns = (handleRemoveItem) => [
     fixed: 'left'
   },
   {
+    title: 'Preço de venda',
+    dataIndex: 'price',
+    key: 'price',
+    fixed: 'left',
+    render: (value) => parseValuePTbr(value)
+  },
+  {
     title: '',
     key: 'operation',
     fixed: 'right',
@@ -52,9 +61,9 @@ const ProductStep = ({
   productList,
   form
 }) => {
-  const OptionComponent = ({ id, name, balances }) => (
+  const OptionComponent = ({ id, name, balance }) => (
     <Option key={id} value={id}>
-      {name} - quantidade: {balances}
+      {name} - quantidade: {balance}
     </Option>
   )
 
@@ -103,8 +112,11 @@ const ProductStep = ({
               name="price"
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
-              <InputNumber style={{ width: '100%' }} min={0} />
-            </Form.Item>
+              <Input 
+                style={{ width: '100%' }}
+                placeholder='R$'
+                onChange={({ target: { value }}) => form.setFieldsValue({ price: `${parseValuePTbr(value)}` })}/>
+              </Form.Item>
           </Col>
 
           <Col span={4}>
