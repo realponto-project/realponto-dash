@@ -2,7 +2,7 @@ import { anyPass, isEmpty, isNil } from 'ramda'
 
 const orderInfoValidators = {
   customerId: false,
-  userId: false
+  userId: true
 }
 
 const transactionValidators = {

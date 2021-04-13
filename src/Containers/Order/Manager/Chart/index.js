@@ -52,12 +52,12 @@ const Chart = ({ data, chartSettings }) => (
             cursor={{ fillOpacity: 0.3 }}
             labelFormatter={(value) => formattedDate(value, 'DD/MM/YYYY')}
           />
-          {chartSettings.map(({ label, color, value }) => (
+          {chartSettings.map(({ label, color }) => (
             <Bar
               dataKey={label}
               fill={color}
               key={label}
-              name={value}
+              name={label}
               stackId="a"
               stroke={color}
               type="monotone"
@@ -70,9 +70,9 @@ const Chart = ({ data, chartSettings }) => (
       <Col span={24}>
         <Title level={5}>LEGENDAS</Title>
       </Col>
-      {chartSettings.map(({ color, value }) => (
+      {chartSettings.map(({ color, value, label }) => (
         <Col key={`${color}-${value}`} xs={12} sm={12} md={12} lg={12} xl={12}>
-          <Tag color={color}>{value}</Tag>
+          <Tag color={color}>{label}</Tag>
         </Col>
       ))}
     </Row>

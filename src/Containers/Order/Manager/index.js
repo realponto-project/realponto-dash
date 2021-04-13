@@ -71,13 +71,13 @@ const Manager = ({
                 style={{ marginRight: '16px' }}
                 icon={<PlusOutlined />}
                 danger>
-                Adicionar Saída
+                Adicionar saída
               </Button>
               <Button
                 onClick={goToAddOrder}
                 style={{ marginRight: '16px' }}
                 icon={<PlusOutlined />}>
-                Adicionar Entrada
+                Adicionar entrada
               </Button>
             </Col>
           </Row>
@@ -96,25 +96,13 @@ const Manager = ({
                 }
               />
             </Col>
-            <Col span={8}>
+            <Col span={13}>
               <Input
                 placeholder="Filtre por nome."
                 prefix={<SearchOutlined />}
                 onChange={handleOnChange}
                 name="user_name"
                 value={filters.user_name}
-              />
-            </Col>
-            <Col span={5} style={{ paddingTop: '7px', textAlign: 'center' }}>
-              <span style={{ paddingLeft: '5px', paddingRight: '10px' }}>
-                Revisar?
-              </span>
-              <CheckboxGroup
-                options={plainOptions}
-                value={filters.pendingReview}
-                onChange={(value) =>
-                  handleOnChange({ target: { name: 'pendingReview', value } })
-                }
               />
             </Col>
             <Col span={7} style={{ textAlign: 'right' }}>

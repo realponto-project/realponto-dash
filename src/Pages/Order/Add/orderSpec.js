@@ -5,7 +5,11 @@ const buildProduct = applySpec({
   productId: prop('productId'),
   productName: prop('name'),
   quantity: pipe(prop('quantity'), Number),
-  price: pipe(prop('price'), Number)
+  price: pipe(
+    pathOr('0', ['price']),
+    (value) => value.replace(/\D/g, ''), 
+    Number
+  )
 })
 
 const buildProducts = pipe(prop('products'), map(buildProduct))
