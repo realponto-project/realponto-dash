@@ -11,7 +11,7 @@ const Sucess = ({ goToLogin }) => (
   <Row style={{ padding: '44px' }}>
     <Col span={10}>
       <div className={styles.contentText}>
-        <Image src={logo} preview={false} />
+        <Image width={160} src={logo} preview={false} />
 
         <p className={styles.title}>
           <strong>Parabéns,</strong> você acaba de completa o seu cadastro!
