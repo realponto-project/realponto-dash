@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Row, Col, Steps } from 'antd'
 import CustomerInfo from './CustomerInfo'
 import PaymentInfo from './PaymentInfo'
@@ -6,6 +6,9 @@ import Detail from './Detail'
 import ProductList from './ProductList'
 import styles from './style.module.css'
 import Cupom from '../../Components/Cupom'
+
+import ModalNotFoundProduct from './ModalNotFoundProduct'
+import ModalSearchBarCode from './ModalSearchBarCode'
 
 const { Step } = Steps
 const steps = [CustomerInfo, PaymentInfo, Detail]
@@ -34,9 +37,17 @@ const PDV = ({
   decrementQuantity,
   removeProduct,
   orderCreated,
-  company
+  company,
+  handleSearchByBarcode,
+  isVisibleModalBarcode,
+  setIsVisibleModalBarcode,
+  isVisibleModalNotFound,
+  setIsVisibleModalNotFound,
+  resetAll
 }) => {
   const ComponentStep = steps[step]
+
+  console.log('>>', orderCreated)
   return (
     <Row
       gutter={[16, 16]}
@@ -53,6 +64,8 @@ const PDV = ({
           incrementQuantity={incrementQuantity}
           decrementQuantity={decrementQuantity}
           removeProduct={removeProduct}
+          orderCreated={orderCreated}
+          openModalBarcode={() => setIsVisibleModalBarcode(true)}
         />
       </Col>
       <Col
@@ -82,18 +95,40 @@ const PDV = ({
           getCustomerAddress={getCustomerAddress}
           formData={formData}
           handleSubmit={handleSubmit}
+          productList={productList}
           orderCreated={orderCreated}
+          resetAll={resetAll}
         />
       </Col>
-      <Cupom
-        className={styles.print}
-        company={company}
-        customer={{ name: 'Venda Rápida', document: '-' }}
-        discount={0}
-        items={orderCreated && orderCreated.transactions}
-        payment={orderCreated && orderCreated.payment}
-        installment={orderCreated && orderCreated.installments}
-        createdAt={orderCreated && orderCreated.createdAt}
+
+      {orderCreated && (
+        <Cupom
+          className={styles.print}
+          formData={formData}
+          company={company}
+          // customer={{ name: 'Venda Rápida', document: '-' }}
+          customer={formData.customers}
+          discount={0}
+          items={orderCreated && orderCreated.transactions}
+          payment={orderCreated && orderCreated.payment}
+          installments={orderCreated && orderCreated.installments}
+          createdAt={orderCreated && orderCreated.createdAt}
+        />
+      )}
+
+      <ModalSearchBarCode
+        isVisible={isVisibleModalBarcode}
+        handleCancel={() => setIsVisibleModalBarcode(false)}
+        handleSearch={handleSearchByBarcode}
+      />
+
+      <ModalNotFoundProduct
+        isVisible={isVisibleModalNotFound}
+        handleCancel={() => setIsVisibleModalNotFound(false)}
+        handleClickTryAgain={() => {
+          setIsVisibleModalNotFound(false)
+          setIsVisibleModalBarcode(true)
+        }}
       />
     </Row>
   )
