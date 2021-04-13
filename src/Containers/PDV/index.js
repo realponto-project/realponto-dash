@@ -1,17 +1,12 @@
-import React from "react"
-import {
-  Row,
-  Col,
-  Steps,
-} from "antd"
-import CustomerInfo from "./CustomerInfo"
-import PaymentInfo from "./PaymentInfo"
-import Detail from "./Detail"
+import React from 'react'
+import { Row, Col, Steps } from 'antd'
+import CustomerInfo from './CustomerInfo'
+import PaymentInfo from './PaymentInfo'
+import Detail from './Detail'
 import ProductList from './ProductList'
 import styles from './style.module.css'
 import Cupom from '../../Components/Cupom'
 
-PaymentInfo
 const { Step } = Steps
 const steps = [CustomerInfo, PaymentInfo, Detail]
 
@@ -39,15 +34,14 @@ const PDV = ({
   decrementQuantity,
   removeProduct,
   orderCreated,
-  company,
+  company
 }) => {
   const ComponentStep = steps[step]
   return (
     <Row
       gutter={[16, 16]}
-      style={{ background: "#FFF", minHeight: '88vh', padding: '16px 12px' }}
-    >
-      <Col span={16} className={styles.noPrint}>
+      style={{ background: '#FFF', minHeight: '88vh', padding: '16px 12px' }}>
+      <Col span={14} className={styles.noPrint}>
         <ProductList
           onSearch={onSearch}
           onChange={onChange}
@@ -61,7 +55,15 @@ const PDV = ({
           removeProduct={removeProduct}
         />
       </Col>
-      <Col  className={styles.noPrint} span={8} style={{ background: '#f4f4f4', borderRadius: '3px', padding: '22px', boxSizing: "border-box" }}>
+      <Col
+        className={styles.noPrint}
+        span={10}
+        style={{
+          background: '#f4f4f4',
+          borderRadius: '3px',
+          padding: '22px',
+          boxSizing: 'border-box'
+        }}>
         <Steps size="small" current={step}>
           <Step />
           <Step />
@@ -83,10 +85,10 @@ const PDV = ({
           orderCreated={orderCreated}
         />
       </Col>
-      <Cupom 
+      <Cupom
         className={styles.print}
         company={company}
-        customer={{ name: 'Venda Rápida', document: '-'}}
+        customer={{ name: 'Venda Rápida', document: '-' }}
         discount={0}
         items={orderCreated && orderCreated.transactions}
         payment={orderCreated && orderCreated.payment}
@@ -94,7 +96,7 @@ const PDV = ({
         createdAt={orderCreated && orderCreated.createdAt}
       />
     </Row>
-  );
-};
+  )
+}
 
-export default PDV;
+export default PDV

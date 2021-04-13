@@ -104,7 +104,10 @@ const Add = ({
           products: formData.products.map((product) =>
             product.productId === values.productId &&
             product.analysis === values.analysis
-              ? { ...product, quantity: product.quantity + values.quantity }
+              ? {
+                  ...product,
+                  quantity: product.quantity + values.quantity
+                }
               : product
           )
         })
