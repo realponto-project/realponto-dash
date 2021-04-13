@@ -5,6 +5,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
+import styles from './style.module.css'
 
 const Header = ({
   rootRoutes,
@@ -38,7 +39,7 @@ const Header = ({
   )
 
   const renderHeader = (props) => () => (
-    <Row>
+    <Row className={styles.noPrint}>
       <Col span={12}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {

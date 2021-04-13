@@ -7,9 +7,9 @@
 }
 
 .printerTicket {
-  display: table !important;
+  display: none !important;
   width: 100%;
-  max-width: 400px;
+  max-width: 100%;
   font-weight: light;
   line-height: 1.3em;
 }
@@ -22,7 +22,7 @@
 
 .printerTicket th:nth-child(2),
 .printerTicket td:nth-child(2) {
-  width: 50px;
+  width: 120px;
 }
 
 .printerTicket th:nth-child(3),
@@ -36,6 +36,15 @@
   padding: 10px 0;
   text-align: center;
   border-bottom: 1px dashed #bcbcbc;
+}
+
+.bbd {
+  border-bottom: 1px dashed #bcbcbc;
+}
+
+.ttu1 {
+  border-top: 1px dashed #bcbcbc;
+  text-transform: uppercase;
 }
 
 .printerTicket tbody tr:last-child td {
@@ -57,9 +66,23 @@
 }
 
 .printerTicket .top td {
-  padding-top: 10px;
+  padding: 10px 0;
+}
+
+.printerTicket .top1 td {
+  padding-bottom: 10px;
+}
+
+.printerTicket .top3 td {
+  padding-top: 5px;
 }
 
 .printerTicket .last td {
   padding-bottom: 10px;
+}
+
+@media print {
+  .printerTicket {
+    display: table !important;
+  }
 }

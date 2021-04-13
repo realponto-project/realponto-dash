@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import moment from 'moment'
 import ClassNames from 'classnames'
 import { add, map, multiply, reduce } from 'ramda'
@@ -6,17 +6,17 @@ import { add, map, multiply, reduce } from 'ramda'
 import styles from './style.module.css'
 import { formatPrice } from '../../utils'
 
-const renderItems = ({ amount, id, name, salePrice }) => (
-  <tbody key={id}>
-    <tr className={styles.top}>
-      <td colSpan="3">{name}</td>
+const renderItems = ({ quantity, productId, price, product }) => (
+  <Fragment key={productId} >
+    <tr className={styles.ttu}>
+      <td colSpan="3">{product.name}</td>
     </tr>
-    <tr>
-      <td>R$ {formatPrice(salePrice)}</td>
-      <td>{amount}</td>
-      <td>R$ {formatPrice(salePrice * amount)}</td>
+    <tr className={ClassNames(styles.ttu, styles.top1)}>
+      <td>R$ {formatPrice(price)}</td>
+      <td>{quantity}</td>
+      <td>R$ {formatPrice(price * quantity)}</td>
     </tr>
-  </tbody>
+  </Fragment>
 )
 
 const paymentLabel = {
@@ -28,94 +28,75 @@ const paymentLabel = {
   cash: 'Dinheiro'
 }
 
-const Cupom = ({ company, customer, discount, items, payment }) => {
-  const subTotal = reduce(
+const Cupom = ({ company, customer, discount, items = [], payment, installments, createdAt }) => {
+  const subTotal = items && items.length > 0 ? reduce(
     add,
     0,
-    map(({ amount, salePrice }) => multiply(amount, salePrice), items)
+    map(({ quantity, price }) => multiply(quantity, price), items)
   )
+  : 0
+
+  console.log(items)
 
   return (
-    <table id="cupom-content" className={styles.printerTicket}>
-      <thead>
+    <table className={styles.printerTicket}>
+      <tbody>
         <tr>
           <th className={styles.title} colSpan="3">
             {company.name}
           </th>
         </tr>
         <tr>
-          <th colSpan="3">{moment().format('DD/MM/YYYY - LTS')}</th>
+          <th colSpan="3">{moment(createdAt).format('DD/MM/YYYY - LTS')}</th>
         </tr>
-        {customer && (
-          <tr>
-            <th colSpan="3">
-              {customer.name} <br />
-              {customer.document}
-            </th>
-          </tr>
-        )}
-        <tr>
-          <th className={styles.ttu} colSpan="3">
+        <tr className={styles.top3}>
+          <td colSpan="3">{customer.name}</td>
+        </tr>
+        <tr className={styles.ttu}>
+          <td colSpan="2">439.473.218-21</td>
+        </tr>
+        <tr className={styles.ttu}>
+          <td colSpan="2">+55 11 96503-5205</td>
+        </tr>
+        <tr className={styles.top3}>
+          <td colSpan="3">Endereço</td>
+        </tr>
+        <tr className={ClassNames(styles.ttu)} >
+          <td colSpan="3">Rua Bueno Vilela, 51, Vila São Pedro, <br />São Bernardo do Campo - São Paulo/SP <br/> 09784-385</td>
+        </tr>
+        <tr style={{ borderBottom: 'none' }}>
+          <th className={styles.ttu} colSpan="3" style={{ borderTop: '1px dashed #bcbcbc'}}>
             <b>Cupom não fiscal</b>
           </th>
         </tr>
-      </thead>
-      {map(renderItems, items)}
-      <tfoot>
-        <tr
-          className={ClassNames(
-            styles.sup,
-            styles.ttu,
-            styles.paddingBottomZero
-          )}>
-          <td colSpan="3">
-            <b>Totais</b>
-          </td>
+          {items && items.length > 0 &&  map(renderItems, items)} 
+          <tr >
+            <th className={styles.ttu1} colSpan="3">
+              <b>Condições de pagamento</b>
+            </th>
+          </tr>
+        <tr className={styles.top3}>
+          <td colSpan="2">FORMA DE PAGAMENTO</td>
+          <td align="right">{payment !== 'Dinheiro' && `${installments} x ` } {payment}</td>
         </tr>
         <tr className={styles.ttu}>
           <td colSpan="2">Sub-total</td>
           <td align="right">R$ {formatPrice(subTotal)}</td>
         </tr>
-        {/* <tr className={styles.ttu}>
-          <td colSpan="2">Taxa de serviço</td>
-          <td align="right">R$4,60</td>
-        </tr> */}
-        <tr className={styles.ttu}>
+        <tr className={styles.ttu} style={{ padding: '10px 0' }}>
           <td colSpan="2">Desconto</td>
-          <td align="right">R$ {formatPrice(discount)}</td>
+          <td align="right">- R$ {formatPrice(discount)}</td>
         </tr>
-        <tr className={styles.ttu}>
+        <tr className={styles.ttu} style={{ padding: '10px 0' }}>
           <td colSpan="2">Total</td>
           <td align="right">R$ {formatPrice(subTotal - discount)}</td>
         </tr>
-        <tr className="sup ttu p--0">
-          <td colSpan="3">
-            <b>Pagamentos</b>
-          </td>
-        </tr>
-        <tr className={styles.ttu}>
-          <td colSpan="2">{paymentLabel[payment]}</td>
-          <td align="right">R$ {formatPrice(subTotal - discount)}</td>
-        </tr>
-        <tr className={styles.ttu}>
-          <td colSpan="2">Total pago</td>
-          <td align="right">R$ {formatPrice(subTotal - discount)}</td>
-        </tr>
-        <tr className={styles.ttu}>
-          <td colSpan="2">Troco</td>
-          <td align="right">R$ 0,00</td>
-        </tr>
-        <tr className={styles.sup}>
+        <tr className={styles.sup} style={{ borderTop: '1px dashed #bcbcbc'}}>
           <td colSpan="3" align="center">
-            <b>Pedido:</b>
+            {company.siteUrl || 'www.alxa.com.br - gestão integrada'}
           </td>
         </tr>
-        <tr className={styles.sup}>
-          <td colSpan="3" align="center">
-            {company.siteUrl}
-          </td>
-        </tr>
-      </tfoot>
+      </tbody>
     </table>
   )
 }

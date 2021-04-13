@@ -8,6 +8,8 @@ import CustomerInfo from "./CustomerInfo"
 import PaymentInfo from "./PaymentInfo"
 import Detail from "./Detail"
 import ProductList from './ProductList'
+import styles from './style.module.css'
+import Cupom from '../../Components/Cupom'
 
 PaymentInfo
 const { Step } = Steps
@@ -36,11 +38,17 @@ const PDV = ({
   incrementQuantity,
   decrementQuantity,
   removeProduct,
+  orderCreated,
+  company,
 }) => {
   const ComponentStep = steps[step]
+  console.log(orderCreated)
   return (
-    <Row gutter={[16, 16]} style={{ background: "#FFF", minHeight: '88vh', padding: '16px 12px' }}>
-      <Col span={16}>
+    <Row
+      gutter={[16, 16]}
+      style={{ background: "#FFF", minHeight: '88vh', padding: '16px 12px' }}
+    >
+      <Col span={16} className={styles.noPrint}>
         <ProductList
           onSearch={onSearch}
           onChange={onChange}
@@ -54,13 +62,14 @@ const PDV = ({
           removeProduct={removeProduct}
         />
       </Col>
-      <Col span={8} style={{ background: '#f4f4f4', borderRadius: '3px', padding: '22px', boxSizing: "border-box" }}>
+      <Col  className={styles.noPrint} span={8} style={{ background: '#f4f4f4', borderRadius: '3px', padding: '22px', boxSizing: "border-box" }}>
         <Steps size="small" current={step}>
           <Step />
           <Step />
           <Step />
         </Steps>
         <ComponentStep
+          className={styles.noPrint}
           handleNextStep={handleNextStep}
           handlePrevStep={handlePrevStep}
           handleSaletype={handleSaletype}
@@ -72,8 +81,19 @@ const PDV = ({
           getCustomerAddress={getCustomerAddress}
           formData={formData}
           handleSubmit={handleSubmit}
+          orderCreated={orderCreated}
         />
       </Col>
+      <Cupom 
+        className={styles.print}
+        company={company}
+        customer={{ name: 'Venda Rápida', document: '-'}}
+        discount={0}
+        items={orderCreated && orderCreated.transactions}
+        payment={orderCreated && orderCreated.payment}
+        installment={orderCreated && orderCreated.installments}
+        createdAt={orderCreated && orderCreated.createdAt}
+      />
     </Row>
   );
 };
