@@ -47,7 +47,7 @@ const Login = ({
 
       <Col span={8}>
         <Row justify="center" gutter={[0, 87]}>
-          <Image src={logo} preview={false} />
+          <Image width={160} src={logo} preview={false} />
         </Row>
 
         <Row justify="center">

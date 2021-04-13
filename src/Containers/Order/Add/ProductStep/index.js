@@ -5,11 +5,11 @@ import {
   Form,
   InputNumber,
   Select,
-  Radio,
   Row,
   Table,
   Typography
 } from 'antd'
+import { find, multiply, pipe, propEq, propOr } from 'ramda'
 
 const { Option } = Select
 const { Title } = Typography
@@ -78,6 +78,15 @@ const ProductStep = ({
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
               <Select
+                onChange={(productId) =>
+                  form.setFieldsValue({
+                    price: pipe(
+                      find(propEq('id', productId)),
+                      propOr(0, 'buyPrice'),
+                      multiply(0.01)
+                    )(productList)
+                  })
+                }
                 placeholder="Selecione o produto"
                 notFoundContent="Nenhum produto encontrado!"
                 allowClear>
@@ -94,16 +103,14 @@ const ProductStep = ({
               <InputNumber style={{ width: '100%' }} min={1} />
             </Form.Item>
           </Col>
-          <Col span={4}>
+
+          <Col span={6}>
             <Form.Item
-              name="analysis"
-              label="Análise?"
+              label="Preço"
+              name="price"
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
-              <Radio.Group name="analysis">
-                <Radio value={true}>Sim</Radio>
-                <Radio value={false}>Não</Radio>
-              </Radio.Group>
+              <InputNumber style={{ width: '100%' }} min={0} />
             </Form.Item>
           </Col>
           <Col span={4}>

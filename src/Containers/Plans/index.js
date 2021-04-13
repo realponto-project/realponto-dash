@@ -93,7 +93,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
     )(plans)
 
   const inicioAssinatura = moment().format('L')
-  const terminoAssinatura = moment().add(12, 'months').format('L')
+  const terminoAssinatura = moment().add(13, 'months').format('L')
 
   const mask = (value, pattern) => {
     let i = 0
@@ -134,7 +134,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
       setSubscription(data)
       return response
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

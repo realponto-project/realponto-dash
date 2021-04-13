@@ -42,7 +42,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
                 setLoading(false)
               })
           }}>
-          Criar Produto
+          Criar produto
         </Button>
       ]}>
       <Form form={form} layout="vertical" name="form_in_modal">

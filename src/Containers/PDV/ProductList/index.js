@@ -26,9 +26,13 @@ const productItem = (
           <p className={styles.productListSubtitle}>{barCode}</p>
         </Col>
         <Col span={4}>
-          { <DownOutlined onClick={() => handleClickDown(id)} /> }
+          {<DownOutlined onClick={() => handleClickDown(id)} />}
           <span className={styles.productListQuantity}>{quantity}</span>
-         { <UpOutlined onClick={() => quantity < balance ? handleClickUp(id) : null } /> }
+          {
+            <UpOutlined
+              onClick={() => (quantity < balance ? handleClickUp(id) : null)}
+            />
+          }
         </Col>
         <Col span={6} style={{ textAlign: 'center' }}>
           <p className={styles.productListSubtitle}>
@@ -41,12 +45,12 @@ const productItem = (
         <Col span={4}>
           <Row justify="center">
             <Col>
-             {(
+              {
                 <DeleteOutlined
                   onClick={() => handleClickDelete(id)}
                   className={styles.removeProduct}
                 />
-             )}
+              }
             </Col>
           </Row>
         </Col>
@@ -74,7 +78,7 @@ const ProductList = ({
           <Col span={24}>
             <h4>Buscar produto</h4>
           </Col>
-          <Col span={20}>
+          <Col span={16}>
             <AutoComplete
               // disabled={isSaved}
               onSearch={onSearch}
@@ -86,7 +90,7 @@ const ProductList = ({
               value={searchProduct}
             />
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <Button
               icon={<BarcodeOutlined />}
               onClick={() => {}}
@@ -106,7 +110,12 @@ const ProductList = ({
       </div>
       <ul className={ClassNames(styles.productList, styles.scrollbarPanelList)}>
         {map(
-          productItem(removeProduct, incrementQuantity, decrementQuantity, false),
+          productItem(
+            removeProduct,
+            incrementQuantity,
+            decrementQuantity,
+            false
+          ),
           productList
         )}
       </ul>

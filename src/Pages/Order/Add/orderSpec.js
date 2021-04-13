@@ -1,36 +1,14 @@
-import {
-  applySpec,
-  pipe,
-  ifElse,
-  always,
-  prop,
-  find,
-  propEq,
-  map,
-  omit,
-  isNil,
-  isEmpty
-} from 'ramda'
+import { applySpec, pipe, prop, map, omit, isNil, isEmpty, pathOr } from 'ramda'
 
-const getPendingReview = pipe(
-  prop('products'),
-  ifElse(find(propEq('analysis', true)), always(true), always(false))
-)
+const buildProduct = applySpec({
+  statusId: prop('statusId'),
+  productId: prop('productId'),
+  productName: prop('name'),
+  quantity: pipe(prop('quantity'), Number),
+  price: pipe(prop('price'), Number)
+})
 
-const buildProduct = (orderStatus) =>
-  applySpec({
-    statusId: ifElse(
-      propEq('analysis', true),
-      always('pending_analysis'),
-      always(orderStatus)
-    ),
-    productId: prop('productId'),
-    productName: prop('name'),
-    quantity: pipe(prop('quantity'), Number)
-  })
-
-const buildProducts = (values) =>
-  pipe(prop('products'), map(buildProduct(prop('statusId', values))))(values)
+const buildProducts = pipe(prop('products'), map(buildProduct))
 
 const getCustomerId = (values) => {
   let customerId = prop('customerId', values)
@@ -42,11 +20,11 @@ const getCustomerId = (values) => {
 }
 
 const buildOrder = applySpec({
-  pendingReview: getPendingReview,
   userId: prop('userId'),
   customerId: getCustomerId,
   statusId: prop('statusId'),
-  products: buildProducts
+  products: buildProducts,
+  originType: pathOr('pdv', ['originType'])
 })
 
 const removeCustomerIdNull = (payload) => {

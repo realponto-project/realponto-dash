@@ -9,6 +9,7 @@ import {
   Table,
   Typography
 } from 'antd'
+import { find, multiply, pipe, propEq, propOr } from 'ramda'
 
 const { Option } = Select
 const { Title } = Typography
@@ -53,7 +54,7 @@ const ProductStep = ({
 }) => {
   const OptionComponent = ({ id, name, balances }) => (
     <Option key={id} value={id}>
-      {name} - quantidade: {balances[0].quantity}
+      {name} - quantidade: {balances}
     </Option>
   )
 
@@ -70,6 +71,15 @@ const ProductStep = ({
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
               <Select
+                onChange={(productId) =>
+                  form.setFieldsValue({
+                    price: pipe(
+                      find(propEq('id', productId)),
+                      propOr(0, 'salePrice'),
+                      multiply(0.01)
+                    )(productList)
+                  })
+                }
                 placeholder="Selecione o produto"
                 notFoundContent="Nenhum produto encontrado!"
                 allowClear>
@@ -86,6 +96,17 @@ const ProductStep = ({
               <InputNumber style={{ width: '100%' }} min={1} />
             </Form.Item>
           </Col>
+
+          <Col span={6}>
+            <Form.Item
+              label="Preço"
+              name="price"
+              style={{ marginBottom: '4px' }}
+              rules={requiredRule}>
+              <InputNumber style={{ width: '100%' }} min={0} />
+            </Form.Item>
+          </Col>
+
           <Col span={4}>
             <Form.Item label=" ">
               <Button htmlType="submit" type="primary">

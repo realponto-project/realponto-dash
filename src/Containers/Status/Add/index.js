@@ -47,7 +47,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
                 setLoading(false)
               })
           }}>
-          Criar Status
+          Criar status
         </Button>
       ]}>
       <Form form={form} layout="vertical" name="form_in_modal">

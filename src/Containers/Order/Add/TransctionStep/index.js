@@ -35,10 +35,10 @@ const TransactionStep = ({
               notFoundContent="Nenhum tipo de ordem encontrado!">
               {statusList &&
                 statusList
-                  .filter((status) => status.label !== 'pending_analysis')
+                  .filter((status) => status.value !== 'initial_balance')
                   .map(({ value, label, id }) => (
                     <Option key={label} value={id}>
-                      {value}
+                      {label}
                     </Option>
                   ))}
             </Select>
