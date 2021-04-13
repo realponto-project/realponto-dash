@@ -64,11 +64,11 @@ const MyInfo = ({ loading, user, updateMyInfo }) => {
               <Title level={5}>Informações do usuário</Title>
             </Col>
             <Col span={12}>
-              <Text>Nome Completo</Text>
+              <Text strong>Nome completo</Text>
               <p>{user && user.name}</p>
             </Col>
             <Col span={12}>
-              <Text>Email</Text>
+              <Text strong>Email</Text>
               <p>{user && user.email}</p>
             </Col>
           </Row>

@@ -47,7 +47,7 @@ const Edit = ({ visible, onEdit, onCancel, statusSelected }) => {
                 setLoading(false)
               })
           }}>
-          Editar Status
+          Editar status
         </Button>
       ]}>
       <Form

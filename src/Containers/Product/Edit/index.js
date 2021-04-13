@@ -42,7 +42,7 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
                 setLoading(false)
               })
           }}>
-          Editar Produto
+          Editar produto
         </Button>
       ]}>
       <Form

@@ -8,17 +8,23 @@ const Upgrade = ({ visible, onCancel }) => {
 
   return (
     <Modal
-      width={450}
+      width={500}
       visible={visible}
-      title="LIMITE DE PRODUTO EXCEDIDO"
+      // title="LIMITE DE PRODUTO EXCEDIDO"
       onCancel={() => {
         onCancel()
       }}
       footer={false}>
-      <Row>
+      <Row justify="center">
         <Col align="center">
-          <Title level={4}>A quantidade limite de produto do seu plano já chegou, contrate outro plano que te atenda! </Title>
+          <Title level={4}>
+            A quantidade de produtos atingiu o limite!
+            </Title>
           <Image width={300} src={Denied} preview={false} style={{margin: '30px 0'}}/>
+
+          <Title level={5}>
+            Para cadastrar mais produtos faça um upgrade no seu plano.
+            </Title>
         </Col>
       </Row>
     </Modal>
