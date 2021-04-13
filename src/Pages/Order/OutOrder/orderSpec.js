@@ -9,7 +9,8 @@ import {
   map,
   omit,
   isNil,
-  isEmpty
+  isEmpty,
+  pathOr
 } from 'ramda'
 
 const getPendingReview = pipe(
@@ -26,7 +27,8 @@ const buildProduct = (orderStatus) =>
     ),
     productId: prop('productId'),
     productName: prop('name'),
-    quantity: pipe(prop('quantity'), Number)
+    quantity: pipe(prop('quantity'), Number),
+    price: pipe(prop('price'), Number)
   })
 
 const buildProducts = (values) =>
@@ -46,7 +48,8 @@ const buildOrder = applySpec({
   userId: prop('userId'),
   customerId: getCustomerId,
   statusId: prop('statusId'),
-  products: buildProducts
+  products: buildProducts,
+  originType: pathOr('pdv', ['originType'])
 })
 
 const removeCustomerIdNull = (payload) => {

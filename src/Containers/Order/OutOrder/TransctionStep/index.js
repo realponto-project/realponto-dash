@@ -36,7 +36,7 @@ const TransactionStep = ({
               {statusList &&
                 statusList.map(({ value, label, id }) => (
                   <Option key={id} value={id}>
-                    {value}
+                    {label}
                   </Option>
                 ))}
             </Select>
