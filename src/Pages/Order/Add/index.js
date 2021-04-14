@@ -67,7 +67,7 @@ const Add = ({ history, status }) => {
       customerList={customerList}
       userList={userList}
       productList={productList}
-      statusList={status.filter((s) => s.type === 'inputs')}
+      statusList={status.filter((s) => s.activated && s.type === 'inputs')}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={handleSubmit}
       goToOrder={goToOrder}

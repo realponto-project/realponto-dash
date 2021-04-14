@@ -11,13 +11,11 @@ import moment from 'moment'
 const { Step } = Steps
 const { Title } = Typography
 
-const columns = (
-  order,
-) => [
-   {
+const columns = (order) => [
+  {
     title: 'Descrição',
     dataIndex: 'product.name',
-    render: (_, record) => record.product.name,
+    render: (_, record) => record.product.name
   },
   {
     title: 'Quantidade',
@@ -83,7 +81,7 @@ const Detail = ({
 
       <Col span={24}>
         <Row gutter={[8, 16]}>
-        <Col span={24}>
+          <Col span={24}>
             <Card bordered={false}>
               <Row gutter={[8, 8]}>
                 <Col span={12}>
@@ -105,7 +103,7 @@ const Detail = ({
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    3821937198
+                    {order.customer && order.customer.document}
                   </Title>
                 </Col>
                 <Col span={8}>

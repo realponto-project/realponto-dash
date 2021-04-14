@@ -70,7 +70,7 @@ const OutOrder = ({ history, status }) => {
       customerList={customerList}
       userList={userList}
       productList={productList}
-      statusList={status.filter((s) => s.type === 'outputs')}
+      statusList={status.filter((s) => s.activated && s.type === 'outputs')}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={handleSubmit}
       goToOrder={goToOrder}

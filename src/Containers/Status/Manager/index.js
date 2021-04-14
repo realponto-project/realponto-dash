@@ -91,6 +91,8 @@ const Manager = ({
                 name="label"
                 value={filters.label}
                 onChange={handleOnChange}
+                onPressEnter={handleGetStatusByFilters}
+                allowClear
               />
             </Col>
             <Col span={3} style={{ paddingTop: '5px' }}>

@@ -1,6 +1,11 @@
-import { append, inc, merge } from 'ramda'
+import { adjust, append, findIndex, inc, merge, propEq, __ } from 'ramda'
 
-import { SET_STATUS, UNSET_STATUS, SET_NEW_STATUS } from '../actions/status'
+import {
+  SET_STATUS,
+  UNSET_STATUS,
+  SET_NEW_STATUS,
+  SET_UPDATE_STATUS
+} from '../actions/status'
 
 const initialState = {
   total: 0,
@@ -17,6 +22,14 @@ const statusReducer = (state = initialState, action) => {
       return merge(state, {
         source: append(action.payload, state.source),
         total: inc(state.total)
+      })
+    case SET_UPDATE_STATUS:
+      return merge(state, {
+        source: adjust(
+          findIndex(propEq('id', action.payload.id), state.source),
+          merge(__, { activated: action.payload.activated }),
+          state.source
+        )
       })
 
     default:

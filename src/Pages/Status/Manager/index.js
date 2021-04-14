@@ -19,7 +19,8 @@ const Status = ({
   statusSearch,
   setStatusSearch,
   cleanStatusSearch,
-  setNewStatusReducer
+  setNewStatusReducer,
+  setUpdateStatusReducer
 }) => {
   const [status, setStatus] = useState({})
   const [page, setPage] = useState(1)
@@ -87,6 +88,8 @@ const Status = ({
         typeLabel: values.type === 'outputs' ? 'Saída' : 'Entrada',
         value: values.label
       })
+
+      setUpdateStatusReducer(values)
       getAllStatuses()
     } catch (error) {
       console.log('error', error)
@@ -142,7 +145,9 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: 'SET_STATUS_GLOBAL_SEARCH', payload }),
   cleanStatusSearch: () => dispatch({ type: 'CLEAN_STATUS_GLOBAL_SEARCH' }),
   setNewStatusReducer: (payload) =>
-    dispatch({ type: 'SET_NEW_STATUS', payload })
+    dispatch({ type: 'SET_NEW_STATUS', payload }),
+  setUpdateStatusReducer: (payload) =>
+    dispatch({ type: 'SET_UPDATE_STATUS', payload })
 })
 
 const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))
