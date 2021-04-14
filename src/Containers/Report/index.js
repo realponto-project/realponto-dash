@@ -1,11 +1,14 @@
-import React, { Fragment, useState } from 'react'
-import { Row, Col, Typography, Card, DatePicker, Input, Button, Empty, Image } from 'antd'
+import React, { Fragment, useState, useEffect } from 'react'
+import { Row, Col, Typography, Card, DatePicker, Input, Button, Empty, Image, Select } from 'antd'
 import { SearchOutlined, PrinterOutlined } from '@ant-design/icons'
 import moment from 'moment'
 import Print from './Print'
 
 import NoData from '../../Assets/noData.svg'
 import styles from './style.module.css'
+import { isEmpty, not, type } from 'ramda'
+
+const { Option } = Select;
 
 const { Title } = Typography
 const { Paragraph } = Typography
@@ -16,15 +19,23 @@ const Report = ({
   orderSearch,
   handleChangeSearch,
   handleGetAllOrders,
-  datasource
+  datasource,
+  users
 }) => {
-  const [orderSelected, setOrderSelected] = useState(null)
+  const [orderSelected, setOrderSelected] = useState([])
 
   const HandleorderSelected = values => () => {
-    const data = values.lenth ? values : [values]
+    
+    const data = type(values) === 'Array' ? values : [values]
     setOrderSelected(data)
-    window.print()
   }
+
+  useEffect(() => {
+    if(not(isEmpty(orderSelected))){
+      window.print()
+    }
+
+  },[orderSelected])
 
   return (
     <Row>
@@ -60,19 +71,23 @@ const Report = ({
               />
             </Col>
             <Col span={13}>
-              <Input
-                name="user_name"
-                value={orderSearch.user_name}
-                placeholder="Filtre por colaborador"
-                prefix={<SearchOutlined />}
-                onChange={({ target: { value, name } }) => handleChangeSearch(name, value)}
-              />
+
+            <Select 
+              placeholder="Filtre por colaborador" 
+              style={{ width: '100%' }}
+              value={orderSearch.userId}
+              onChange={(value) => handleChangeSearch('userId', value)}
+            >
+              {users.map(({ id, name}) => (
+                <Option key={id} value={id}>{name}</Option>
+              ))}
+            </Select>
             </Col>
             <Col span={7} style={{ textAlign: 'right' }}>
               <Button style={{ marginRight: '16px' }} >
                 Limpar filtros
               </Button>
-              <Button type="primary" onClick={handleGetAllOrders}>
+              <Button type="primary" onClick={handleGetAllOrders} disabled={!orderSearch.userId}>
                 Filtrar
               </Button>
             </Col>
@@ -120,7 +135,7 @@ const Report = ({
           </Card>
         </Col>
       }
-      <Print orderSelected={orderSelected} />
+      <Print orderSelected={orderSelected} className={styles.print}/>
     </Row>
   )
 }

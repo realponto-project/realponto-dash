@@ -4,7 +4,14 @@
 }
 
 @media print {
-  .noPrint {
+  .noPrint{
     display: none;
+  }
+}
+
+@media print {
+  .print {
+    display: block;
+    margin: 0;
   }
 }

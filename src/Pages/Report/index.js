@@ -1,19 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Report from '../../Containers/Report'
 import { isEmpty } from 'ramda'
 import { getAllOrder } from '../../Services/Order'
+import { getAll } from '../../Services/User'
 
 const ReportManager = () => {
   const [datasource, setDatasource] = useState([])
+  const [users, setUsers] = useState([])
   const [orderSearch, setOrderSearch] = useState({
     user_name: '',
     initialDate: '',
     finalyDate:  '',
-    date: ''
+    date: '',
+    userId: ''
   })
 
+  useEffect(() => {
+    getAllUsers()
+  }, [])
+
   const handleGetAllOrders = async () => {
-    console.log(buildOrderSearch(orderSearch))
     try {
       const { data } = await getAllOrder(buildOrderSearch(orderSearch))
       setDatasource(data.source)
@@ -23,9 +29,10 @@ const ReportManager = () => {
   }
 
   const handleChangeSearch = (name, value) => setOrderSearch({...orderSearch, [name]: value })
+
   const buildOrderSearch = (data) => {
     // eslint-disable-next-line camelcase
-    const { user_name, date } = data
+    const { user_name, date, userId } = data
     const datesSpec = date
         ? {
             initialDate: date.toString(),
@@ -37,8 +44,21 @@ const ReportManager = () => {
     return {
       ...checkedName,
       ...datesSpec,
+      userId
     }
   }
+
+  const getAllUsers = async () => {
+    try {
+      const {
+        data: { source }
+      } = await getAll({activated: true})
+      setUsers(source)
+    }catch (error) {
+      console.log(error)
+    }
+  }
+
 
   return(
     <Report 
@@ -46,6 +66,7 @@ const ReportManager = () => {
       orderSearch={orderSearch}
       handleChangeSearch={handleChangeSearch}
       datasource={datasource}
+      users={users}
     />
   )
 }
