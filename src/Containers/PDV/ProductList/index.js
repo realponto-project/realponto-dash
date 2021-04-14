@@ -109,12 +109,12 @@ const ProductList = ({
         <h1 className={styles.productListTitle}>
           Total de itens
           <span className={styles.productListTitleQuantity}>
-            {length(productList)}
+            {productList ? length(productList) : 0}
           </span>
         </h1>
       </div>
       <ul className={ClassNames(styles.productList, styles.scrollbarPanelList)}>
-        {map(
+        {productList && map(
           productItem(
             removeProduct,
             incrementQuantity,

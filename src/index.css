@@ -12,8 +12,8 @@ body {
 
 @page {
   size: A4;
-  margin: 0;
-  padding: 0 0 30px 0;
+  margin: 10px 0;
+  padding: 30px;
 }
 
 @media print {

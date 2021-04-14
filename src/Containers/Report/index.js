@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Row, Col, Typography, Card, DatePicker, Input, Button, Empty, Image } from 'antd'
 import { SearchOutlined, PrinterOutlined } from '@ant-design/icons'
 import moment from 'moment'
-
+import Print from './Print'
 
 import NoData from '../../Assets/noData.svg'
 import styles from './style.module.css'
@@ -18,9 +18,17 @@ const Report = ({
   handleGetAllOrders,
   datasource
 }) => {
+  const [orderSelected, setOrderSelected] = useState(null)
+
+  const HandleorderSelected = values => () => {
+    const data = values.lenth ? values : [values]
+    setOrderSelected(data)
+    window.print()
+  }
+
   return (
     <Row>
-      <Col span={24} style={{ marginBottom: '16px' }}>
+      <Col span={24} style={{ marginBottom: '16px' }} className={styles.noPrint}>
         <Card bordered={false}>
           <Row>
             <Col span={12}>
@@ -33,6 +41,7 @@ const Report = ({
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button
+                onClick={HandleorderSelected(datasource)}
                 icon={<PrinterOutlined />}>
                 Imprimir ordens
               </Button>
@@ -40,7 +49,7 @@ const Report = ({
           </Row>
         </Card>
       </Col>
-      <Col span={24}>
+      <Col span={24} className={styles.noPrint}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
             <Col span={4}>
@@ -72,15 +81,15 @@ const Report = ({
       </Col>
 
       {datasource.length > 0 ? datasource.map(item => (
-        <Fragment key={item.id}>
-          <Col span={20} style={{ marginTop: '50px' }}>
+        <Fragment key={item.id} className={styles.noPrint}>
+          <Col span={20} style={{ marginTop: '50px' }} className={styles.noPrint}>
             <Title level={5}>{item.customer ? item.customer.name : 'Cliente não associado'}</Title>
           </Col>
-          <Col span={4} style={{ marginTop: '50px' }} align="end">
-            <Button type="link"><PrinterOutlined /></Button>
+          <Col span={4} style={{ marginTop: '50px' }} align="end" className={styles.noPrint}>
+            <Button type="link" onClick={HandleorderSelected(item)}>Imprimir ordem</Button>
           </Col>
           { item.transactions && item.transactions.map(transactionItem => (
-            <Col span={24} key={transactionItem.id}>
+            <Col span={24} key={transactionItem.id} className={styles.noPrint}>
               <Card>
                 <Row align="middle">
                   <Col span={2} align="center">
@@ -101,7 +110,7 @@ const Report = ({
           ))}
         </Fragment>
       )) :
-        <Col span={24} align="center" style={{marginTop: '16px'}}>
+        <Col span={24} align="center" style={{marginTop: '16px'}} className={styles.noPrint}>
           <Card>
             <Empty
               style={{color: 'rgb(114, 113, 113)'}}
@@ -111,6 +120,7 @@ const Report = ({
           </Card>
         </Col>
       }
+      <Print orderSelected={orderSelected} />
     </Row>
   )
 }
