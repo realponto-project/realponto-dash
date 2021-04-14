@@ -10,33 +10,21 @@ import {
   omit,
   isNil,
   isEmpty,
-  pathOr
+  pathOr,
+  replace
 } from 'ramda'
 
-const getPendingReview = pipe(
-  prop('products'),
-  ifElse(find(propEq('analysis', true)), always(true), always(false))
-)
-
-const buildProduct = (orderStatus) =>
+const buildProduct = (values) =>
   applySpec({
-    statusId: ifElse(
-      propEq('analysis', true),
-      always('pending_analysis'),
-      always(orderStatus)
-    ),
+    statusId: prop('statusId', values),
     productId: prop('productId'),
     productName: prop('name'),
     quantity: pipe(prop('quantity'), Number),
-    price: pipe(
-      pathOr('0', ['price']),
-      (value) => value.replace(/\D/g, ''), 
-      Number
-    )
+    price: pipe(pathOr('0', ['price']), String, replace(/\D/g, ''), Number)
   })
 
 const buildProducts = (values) =>
-  pipe(prop('products'), map(buildProduct(prop('statusId', values))))(values)
+  pipe(prop('products'), map(buildProduct(values)))(values)
 
 const getCustomerId = (values) => {
   let customerId = prop('customerId', values)
@@ -48,10 +36,10 @@ const getCustomerId = (values) => {
 }
 
 const buildOrder = applySpec({
-  pendingReview: getPendingReview,
   userId: prop('userId'),
   customerId: getCustomerId,
   statusId: prop('statusId'),
+  orderDate: prop('orderDate'),
   products: buildProducts,
   originType: pathOr('pdv', ['originType'])
 })

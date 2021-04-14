@@ -9,6 +9,7 @@ import Cupom from '../../Components/Cupom'
 
 import ModalNotFoundProduct from './ModalNotFoundProduct'
 import ModalSearchBarCode from './ModalSearchBarCode'
+import { propOr } from 'ramda'
 
 const { Step } = Steps
 const steps = [CustomerInfo, PaymentInfo, Detail]
@@ -47,7 +48,6 @@ const PDV = ({
 }) => {
   const ComponentStep = steps[step]
 
-  console.log('>>', orderCreated)
   return (
     <Row
       gutter={[16, 16]}
@@ -106,8 +106,7 @@ const PDV = ({
           className={styles.print}
           formData={formData}
           company={company}
-          // customer={{ name: 'Venda Rápida', document: '-' }}
-          customer={formData.customers}
+          customer={propOr({}, 'customer')(formData)}
           discount={0}
           items={orderCreated && orderCreated.transactions}
           payment={orderCreated && orderCreated.payment}

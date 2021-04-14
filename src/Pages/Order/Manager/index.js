@@ -26,7 +26,6 @@ const Manager = ({
   }, [page])
 
   const handleGetAllOrders = async () => {
-
     setLoading(true)
 
     try {
@@ -47,7 +46,7 @@ const Manager = ({
   const buildOrderSearch = (orderSearch) => {
     // eslint-disable-next-line camelcase
     const { user_name, dates, pendingReview } = orderSearch
-   
+
     const datesSpec =
       dates[0] && dates[1]
         ? {
@@ -65,7 +64,7 @@ const Manager = ({
     }
   }
 
-  const onChangeTable = ({current}) => {
+  const onChangeTable = ({ current }) => {
     setPage(current)
   }
 
@@ -89,7 +88,7 @@ const Manager = ({
   }
 
   const handleGetOrdersByFilters = () => {
-    if(page !== 1){
+    if (page !== 1) {
       setPage(1)
     } else {
       handleGetAllOrders()

@@ -61,7 +61,6 @@ const Cupom = ({
     }[length(value)]
   }
 
-  console.log('>>>', items)
   return (
     <table className={styles.printerTicket}>
       <tbody>

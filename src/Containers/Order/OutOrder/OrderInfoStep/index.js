@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Select, Typography } from 'antd'
+import { DatePicker, Form, Select, Typography } from 'antd'
 
 const { Option } = Select
 const { Title, Text } = Typography
@@ -56,6 +56,13 @@ const OrderInfoStep = ({
             allowClear>
             {customerList.map(OptionComponent)}
           </Select>
+        </Form.Item>
+
+        <Form.Item name="orderDate" label="Data" hasFeedback>
+          <DatePicker
+            onChange={changeFormValue('orderDate')}
+            style={{ width: '280px' }}
+          />
         </Form.Item>
       </Form>
     </>

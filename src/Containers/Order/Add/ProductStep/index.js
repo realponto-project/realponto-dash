@@ -7,10 +7,10 @@ import {
   Select,
   Row,
   Table,
-  Typography, 
+  Typography,
   Input
 } from 'antd'
-import { find, multiply, pipe, propEq, propOr } from 'ramda'
+import { find, pipe, propEq, propOr } from 'ramda'
 import { parseValuePTbr } from '../../../../utils/Masks/myInfoMasks'
 
 const { Option } = Select
@@ -85,7 +85,7 @@ const ProductStep = ({
                     price: pipe(
                       find(propEq('id', productId)),
                       propOr(0, 'buyPrice'),
-                      multiply(0.01)
+                      parseValuePTbr
                     )(productList)
                   })
                 }
@@ -112,10 +112,13 @@ const ProductStep = ({
               name="price"
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
-              <Input 
-                style={{ width: '100%' }} 
+              <Input
+                style={{ width: '100%' }}
                 placeholder="R$"
-                onChange={({ target: { value }}) => form.setFieldsValue({ price: `${parseValuePTbr(value)}` })}/>
+                onChange={({ target: { value } }) =>
+                  form.setFieldsValue({ price: `${parseValuePTbr(value)}` })
+                }
+              />
             </Form.Item>
           </Col>
           <Col span={4}>

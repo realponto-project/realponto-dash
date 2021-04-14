@@ -13,15 +13,15 @@ const Detail = ({
   productList,
   resetAll
 }) => {
-  const name = pathOr(null, ['customers', 'name'], formData)
+  const name = pathOr(null, ['customer', 'name'], formData)
   const installments = pathOr(null, ['payment', 'installments'], formData)
   const paymentMethod = pathOr(null, ['payment', 'paymentMethod'], formData)
-  const street = pathOr(null, ['customers', 'street'], formData)
-  const streetNumber = pathOr(null, ['customers', 'streetNumber'], formData)
-  const neighborhood = pathOr(null, ['customers', 'neighborhood'], formData)
-  const city = pathOr(null, ['customers', 'city'], formData)
-  const state = pathOr(null, ['customers', 'states'], formData)
-  const zipcode = pathOr(null, ['customers', 'zipcode'], formData)
+  const street = pathOr(null, ['customer', 'street'], formData)
+  const streetNumber = pathOr(null, ['customer', 'streetNumber'], formData)
+  const neighborhood = pathOr(null, ['customer', 'neighborhood'], formData)
+  const city = pathOr(null, ['customer', 'city'], formData)
+  const state = pathOr(null, ['customer', 'states'], formData)
+  const zipcode = pathOr(null, ['customer', 'zipcode'], formData)
   const paymentMethodLabel = {
     credit_card: 'Cartão de Crédito',
     debit_card: 'Cartão de Débito',
@@ -40,7 +40,6 @@ const Detail = ({
     map(({ quantity, salePrice }) => multiply(quantity, salePrice), productList)
   )
 
-  console.log(formData, productList, amount)
   return (
     <Row gutter={[6, 0]}>
       <Col span={24} style={{ paddingTop: '14px' }}>

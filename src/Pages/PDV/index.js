@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { compose, isEmpty, isNil } from 'ramda'
+import { applySpec, compose, isEmpty, isNil, not, pathEq, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
@@ -9,7 +9,7 @@ import {
   getProductById,
   getProductByBarCode
 } from '../../Services/Product'
-import { createOrder } from '../../Services/Order'
+import { createOrder, getOrderById } from '../../Services/Order'
 import PDVContainer from '../../Containers/PDV'
 
 const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
@@ -27,7 +27,9 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   const [orderCreated, setOrderCreated] = useState(null)
   const [formCustomer] = Form.useForm()
   const [formPayment] = Form.useForm()
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({
+    customer: {}
+  })
 
   const [searchProduct, setSearchProduct] = useState('')
   const [products, setProducts] = useState([])
@@ -45,7 +47,7 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
         await formCustomer.validateFields()
         setFormData({
           ...formData,
-          customers: values
+          customer: values
         })
       }
 
@@ -68,7 +70,7 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
       })
       return setStep(step + 1)
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -108,8 +110,9 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
         }))
       })
       setOrderCreated(data)
+      setFormPdv({ orderId: data.id })
     } catch (err) {
-      console.log('error', err)
+      console.error('error', err)
     }
   }
 
@@ -126,7 +129,6 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   }
 
   const handleSearchByBarcode = async (value) => {
-    console.log(value)
     setIsVisibleModalBarcode(false)
     try {
       const { data } = await getProductByBarCode(value)
@@ -134,7 +136,6 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
       if (isNil(data)) {
         setIsVisibleModalNotFound(true)
       } else {
-        console.log(data)
         onSelectProduct(data.id)
       }
     } catch (err) {
@@ -192,38 +193,62 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
         }
       ])
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
   useEffect(() => {
-    console.log(formPdv)
     setProductList(formPdv.productList)
-    formCustomer.setFieldsValue(formPdv.customers)
+    formCustomer.setFieldsValue(formPdv.customer)
     formPayment.setFieldsValue(formPdv.payment)
+
+    if (not(isEmpty(formPdv.orderId))) {
+      getOrderById(formPdv.orderId).then(({ data }) => {
+        setStep(2)
+        setOrderCreated(data)
+        setFormData({
+          payment: {
+            installments: pathOr('', ['installments'], data),
+            paymentMethod: pathOr('', ['payment'], data)
+          },
+          customer: applySpec({
+            name: pathOr('', ['customer', 'name']),
+            street: pathOr('', ['customer', 'address', 'street']),
+            streetNumber: pathOr('', ['customer', 'address', 'streetNumber']),
+            neighborhood: pathOr('', ['customer', 'address', 'neighborhood']),
+            city: pathOr('', ['customer', 'address', 'city']),
+            state: pathOr('', ['customer', 'address', 'state']),
+            zipcode: pathOr('', ['customer', 'address', 'zipcode'])
+          })(data)
+        })
+      })
+    }
 
     if (
       !isEmpty(formPdv.payment) &&
-      formPdv.payment.paymentMethod !== 'Dinheiro'
+      !pathEq(['payment', 'paymentMethod'], 'Dinheiro', formPdv)
     ) {
       setPaymentType({
         cash: false,
         creditCard: true
       })
     }
-    if (!isEmpty(formPdv.customers)) {
+
+    if (!pathEq(['customer', 'name'], undefined, formPdv)) {
       setSaleType({
         saleFast: false,
         saleFull: true
       })
     }
-  }, [formPdv])
+  }, [])
 
   const resetAll = () => {
     setStep(0)
     formCustomer.resetFields()
     formPayment.resetFields()
-    setFormData({})
+    setFormData({
+      customer: {}
+    })
     setProductList([])
     setOrderCreated(null)
     clearFormPdv()
@@ -248,8 +273,8 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
       paymentType={paymentType}
       formCustomer={formCustomer}
       formPayment={formPayment}
-      getCustomerAddress={getCustomerAddress}
       formData={formData}
+      getCustomerAddress={getCustomerAddress}
       handleSubmit={handleSubmit}
       onSearch={onSearch}
       onChange={onChange}
