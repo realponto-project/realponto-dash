@@ -34,7 +34,7 @@ const Print = ({ orderSelected }) => {
             <tbody>
               <tr className={styles.tr2}>
                 <td style={{ width: "40%" }}>
-                  {item.customer}
+                  {pathOr('-', ['customer', 'name'], item)}
                 </td>
                 <td style={{ width: "50%" }}>{transactionItem.product.name} </td>
                 <td style={{ textAlign: "center" }}>{`${transactionItem.quantity} und`}</td>

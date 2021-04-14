@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Row, Col, Typography, Card, DatePicker, Input, Button, Empty, Image, Select } from 'antd'
-import { SearchOutlined, PrinterOutlined } from '@ant-design/icons'
+import { Row, Col, Typography, Card, DatePicker, Button, Empty, Image, Select } from 'antd'
+import { PrinterOutlined } from '@ant-design/icons'
 import moment from 'moment'
 import Print from './Print'
 
@@ -32,7 +32,9 @@ const Report = ({
 
   useEffect(() => {
     if(not(isEmpty(orderSelected))){
-      window.print()
+      setTimeout(() => {
+        window.print()
+      }, 100)
     }
 
   },[orderSelected])
@@ -96,18 +98,18 @@ const Report = ({
       </Col>
 
       {datasource.length > 0 ? datasource.map(item => (
-        <Fragment key={item.id} className={styles.noPrint}>
+        <Fragment key={item.id}>
           <Col span={20} style={{ marginTop: '50px' }} className={styles.noPrint}>
-            <Title level={5}>{item.customer ? item.customer.name : 'Cliente não associado'}</Title>
+            <Title level={5} style={{color: 'rgb(70, 70, 70)'}}>{item.customer ? item.customer.name : 'Cliente não associado'}</Title>
           </Col>
           <Col span={4} style={{ marginTop: '50px' }} align="end" className={styles.noPrint}>
-            <Button type="link" onClick={HandleorderSelected(item)}>Imprimir ordem</Button>
+            <Button type="link" onClick={HandleorderSelected(item)}><PrinterOutlined style={{fontSize: '20px'}}/></Button>
           </Col>
           { item.transactions && item.transactions.map(transactionItem => (
             <Col span={24} key={transactionItem.id} className={styles.noPrint}>
               <Card>
                 <Row align="middle">
-                  <Col span={2} align="center">
+                  <Col span={2} align="center" >
                     <Paragraph className={styles.textParagraph}>{item.user && item.user.name}</Paragraph>
                   </Col>
                   <Col span={4} align="center">
@@ -118,6 +120,9 @@ const Report = ({
                   </Col>
                   <Col span={2} align="center">
                     <Paragraph className={styles.textParagraph}>{transactionItem.quantity}</Paragraph>
+                  </Col>
+                  <Col span={2} align="center">
+                    <Button type='link'>Movimentação</Button>
                   </Col>
                 </Row>
               </Card>

@@ -1,13 +1,16 @@
 .textParagraph{
   color: rgb(114, 113, 113);
   font-weight: bold;
+  margin: 0 !important;
 }
+
 
 @media print {
   .noPrint{
     display: none;
   }
 }
+
 
 @media print {
   .print {
