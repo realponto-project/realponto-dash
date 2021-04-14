@@ -22,23 +22,17 @@ const columns = (goToOrderDetail) => [
   },
   {
     title: 'Data da ordem',
-    dataIndex: 'createdAt',
-    key: 'createdAt',
+    dataIndex: 'orderDate',
+    key: 'orderDate',
     fixed: 'left',
     render: (text) => formattedDate(text, 'DD/MM/YY - HH:mm')
   },
   {
-    title: 'Funcionário',
+    title: 'Colaborador',
     dataIndex: 'user.name',
     key: 'user.name',
     fixed: 'left',
     render: (_, record) => record.user && record.user.name
-  },
-  {
-    title: 'Revisar?',
-    dataIndex: 'pendingReview',
-    fixed: 'left',
-    render: (text) => (text ? 'Sim' : 'Não')
   },
   {
     title: '',
@@ -51,13 +45,22 @@ const columns = (goToOrderDetail) => [
   }
 ]
 
-const OrderList = ({ datasource, goToOrderDetail, onChangeTable, total, loading, page }) => {
+const OrderList = ({
+  datasource,
+  goToOrderDetail,
+  onChangeTable,
+  total,
+  loading,
+  page
+}) => {
   return (
-    <ConfigProvider renderEmpty={() => <Empty
-      description="Não há dados"
-      image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
+    <ConfigProvider
+      renderEmpty={() => (
+        <Empty
+          description="Não há dados"
+          image={<Image width={85} src={NoData} preview={false} />}
+        />
+      )}>
       <Table
         loading={loading}
         columns={columns(goToOrderDetail)}

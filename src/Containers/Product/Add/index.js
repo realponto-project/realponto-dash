@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Modal, Form, Input, InputNumber, Row, Col, Button } from 'antd'
+import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 
-const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
+const Add = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
 
@@ -41,7 +42,7 @@ const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
                 setLoading(false)
               })
           }}>
-          Criar Produto
+          Criar produto
         </Button>
       ]}>
       <Form form={form} layout="vertical" name="form_in_modal">
@@ -82,19 +83,21 @@ const Add = ({ visible, onCreate, onCancel, currencyBRL }) => {
         <Row align="space-between">
           <Col span={12}>
             <Form.Item name="buyPrice" label="Preço custo">
-              <InputNumber
+              <Input
                 min={1}
                 style={{ width: '98%' }}
-                placeholder="Ex: 888.88"
+                placeholder="R$"
+                onChange={({ target: { value }}) => form.setFieldsValue({ buyPrice: `${parseValuePTbr(value)}` })}
               />
             </Form.Item>
           </Col>
           <Col span={11}>
             <Form.Item name="salePrice" label="Preço venda">
-              <InputNumber
+              <Input
                 min={1}
                 style={{ width: '98%' }}
-                placeholder="Ex: 888.88"
+                placeholder="R$" 
+                onChange={({ target: { value }}) => form.setFieldsValue({ salePrice: `${parseValuePTbr(value)}` })}
               />
             </Form.Item>
           </Col>

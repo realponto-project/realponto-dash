@@ -4,10 +4,10 @@ module.exports = {
     es2021: true
   },
   extends: [
-    // 'prettier',
-    // 'prettier-standard',
-    // 'plugin:react/recommended',
-    // 'standard'
+    'prettier',
+    'prettier-standard',
+    'plugin:react/recommended',
+    'standard'
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -16,10 +16,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module'
   },
-  plugins: [
-    // 'prettier',
-    'react'
-  ],
+  plugins: ['prettier', 'react'],
   rules: {
     'react/prop-types': [0],
     'react/display-name': [0]

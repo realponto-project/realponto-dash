@@ -1,18 +1,22 @@
 import React from 'react'
-import { Table, Tag, Button, Empty, ConfigProvider, Image } from 'antd'
+import { Table, Button, Empty, ConfigProvider, Image, Switch } from 'antd'
 import { map } from 'ramda'
 import NoData from '../../../../Assets/noData.svg'
 
-const columns = (chooseProduct) => [
+const columns = (chooseProduct, handleSubmitUpdate) => [
   {
     title: 'Status',
     dataIndex: 'activated',
     key: 'id',
     fixed: 'left',
-    render: (text) => (
-      <Tag color={text ? '#65A300' : '#DF285F'}>
-        {text ? 'Ativo' : 'Inativo'}
-      </Tag>
+    render: (__, record) => (
+      <Switch 
+        style={{width: '70px', backgroundColor: record.activated ? '#65A300' : 'rgba(0,0,0,.25)'}} 
+        checkedChildren="Ativo" 
+        unCheckedChildren="Inativo" 
+        defaultChecked={record.activated}
+        onChange={(activated) => handleSubmitUpdate({...record, activated, id: record.id})}
+      />
     )
   },
   {
@@ -41,14 +45,14 @@ const columns = (chooseProduct) => [
     key: 'id',
     fixed: 'left',
     render: (_, record) => (
-      <Button type="link" onClick={() => chooseProduct(record)}>
+      <Button type="link" onClick={() => chooseProduct(record)} disabled={!record.activated}>
         Editar
       </Button>
     )
   }
 ]
 
-const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total, page }) => {
+const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total, page, handleSubmitUpdate }) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty
       description="Não há dados"
@@ -58,7 +62,7 @@ const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total,
       <Table 
         pagination={{ total, current: page }}
         onChange={onChangeTable}
-        columns={columns(chooseProduct)} 
+        columns={columns(chooseProduct, handleSubmitUpdate)} 
         loading={loading} 
         dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
     </ConfigProvider>

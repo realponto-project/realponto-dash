@@ -65,10 +65,6 @@ const ConfirmStep = ({
           <Col span={4} style={{ textAlign: 'center' }}>
             <p style={{ marginBottom: 0 }}>Quantidade</p>
           </Col>
-
-          <Col span={4} style={{ textAlign: 'center' }}>
-            <p style={{ marginBottom: 0 }}>Análise?</p>
-          </Col>
         </Row>
         {formData.products.map((product) => (
           <Row key={product.key}>
@@ -78,10 +74,6 @@ const ConfirmStep = ({
 
             <Col span={4} style={{ textAlign: 'center' }}>
               <Title level={5}>{product.quantity}</Title>
-            </Col>
-
-            <Col span={4} style={{ textAlign: 'center' }}>
-              <Title level={5}>{product.statusProduct ? 'Sim' : 'Não'}</Title>
             </Col>
           </Row>
         ))}

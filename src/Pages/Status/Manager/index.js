@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { compose, isEmpty } from 'ramda'
+import { compose, filter, insert, isEmpty, length, map } from 'ramda'
 
 import StatusContainer from '../../../Containers/Status/Manager'
 
@@ -15,7 +15,13 @@ const initialFilterState = {
   name: ''
 }
 
-const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
+const Status = ({
+  statusSearch,
+  setStatusSearch,
+  cleanStatusSearch,
+  setNewStatusReducer,
+  setUpdateStatusReducer
+}) => {
   const [status, setStatus] = useState({})
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -43,12 +49,11 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
     }
   }
 
-  const onChangeTable = ({current}) => {
+  const onChangeTable = ({ current }) => {
     setPage(current)
   }
 
-  const getAllStatuses = async ( ) => {
-
+  const getAllStatuses = async () => {
     setLoading(true)
 
     try {
@@ -63,11 +68,13 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
 
   const handleSubmit = async (values) => {
     try {
-      await createStatus({
+      const { data } = await createStatus({
         ...values,
         typeLabel: values.type === 'outputs' ? 'Saída' : 'Entrada',
         value: values.label
       })
+
+      setNewStatusReducer(data)
       getAllStatuses()
     } catch (error) {
       console.log('error', error)
@@ -81,6 +88,8 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
         typeLabel: values.type === 'outputs' ? 'Saída' : 'Entrada',
         value: values.label
       })
+
+      setUpdateStatusReducer(values)
       getAllStatuses()
     } catch (error) {
       console.log('error', error)
@@ -103,10 +112,10 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
   }
 
   const handleGetStatusByFilters = () => {
-    if(page !== 1){
+    if (page !== 1) {
       setPage(1)
     } else {
-    getAllStatuses()
+      getAllStatuses()
     }
   }
 
@@ -126,14 +135,19 @@ const Status = ({ statusSearch, setStatusSearch, cleanStatusSearch }) => {
   )
 }
 
-const mapStateToProps = ({ statusSearch }) => ({
-  statusSearch
+const mapStateToProps = ({ statusSearch, status }) => ({
+  statusSearch,
+  statusReducer: status
 })
 
 const mapDispatchToProps = (dispatch) => ({
   setStatusSearch: (payload) =>
     dispatch({ type: 'SET_STATUS_GLOBAL_SEARCH', payload }),
-  cleanStatusSearch: () => dispatch({ type: 'CLEAN_STATUS_GLOBAL_SEARCH' })
+  cleanStatusSearch: () => dispatch({ type: 'CLEAN_STATUS_GLOBAL_SEARCH' }),
+  setNewStatusReducer: (payload) =>
+    dispatch({ type: 'SET_NEW_STATUS', payload }),
+  setUpdateStatusReducer: (payload) =>
+    dispatch({ type: 'SET_UPDATE_STATUS', payload })
 })
 
 const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))

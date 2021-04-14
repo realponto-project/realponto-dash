@@ -91,6 +91,8 @@ const Manager = ({
                 name="label"
                 value={filters.label}
                 onChange={handleOnChange}
+                onPressEnter={handleGetStatusByFilters}
+                allowClear
               />
             </Col>
             <Col span={3} style={{ paddingTop: '5px' }}>
@@ -117,6 +119,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <StatusList
+            handleSubmitUpdate={handleSubmitUpdate}
             onChangeTable={onChangeTable}
             loading={loading}
             datasource={status.source}

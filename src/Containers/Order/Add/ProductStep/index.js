@@ -5,11 +5,13 @@ import {
   Form,
   InputNumber,
   Select,
-  Radio,
   Row,
   Table,
-  Typography
+  Typography,
+  Input
 } from 'antd'
+import { find, pipe, propEq, propOr } from 'ramda'
+import { parseValuePTbr } from '../../../../utils/Masks/myInfoMasks'
 
 const { Option } = Select
 const { Title } = Typography
@@ -34,11 +36,11 @@ const columns = (handleRemoveItem) => [
     fixed: 'left'
   },
   {
-    title: 'Análise?',
-    dataIndex: 'analysis',
-    key: 'analysis',
+    title: 'Preço de compra',
+    dataIndex: 'price',
+    key: 'price',
     fixed: 'left',
-    render: (value) => <>{value ? 'Sim' : 'Não'}</>
+    render: (value) => parseValuePTbr(value)
   },
   {
     title: '',
@@ -78,6 +80,15 @@ const ProductStep = ({
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
               <Select
+                onChange={(productId) =>
+                  form.setFieldsValue({
+                    price: pipe(
+                      find(propEq('id', productId)),
+                      propOr(0, 'buyPrice'),
+                      parseValuePTbr
+                    )(productList)
+                  })
+                }
                 placeholder="Selecione o produto"
                 notFoundContent="Nenhum produto encontrado!"
                 allowClear>
@@ -94,16 +105,20 @@ const ProductStep = ({
               <InputNumber style={{ width: '100%' }} min={1} />
             </Form.Item>
           </Col>
-          <Col span={4}>
+
+          <Col span={6}>
             <Form.Item
-              name="analysis"
-              label="Análise?"
+              label="Preço"
+              name="price"
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
-              <Radio.Group name="analysis">
-                <Radio value={true}>Sim</Radio>
-                <Radio value={false}>Não</Radio>
-              </Radio.Group>
+              <Input
+                style={{ width: '100%' }}
+                placeholder="R$"
+                onChange={({ target: { value } }) =>
+                  form.setFieldsValue({ price: `${parseValuePTbr(value)}` })
+                }
+              />
             </Form.Item>
           </Col>
           <Col span={4}>

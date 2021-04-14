@@ -1,91 +1,81 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import print from 'print-js'
-import {
-  add,
-  adjust,
-  applySpec,
-  compose,
-  dec,
-  equals,
-  filter,
-  findIndex,
-  inc,
-  insert,
-  map,
-  max,
-  merge,
-  min,
-  multiply,
-  pathOr,
-  pipe,
-  prop,
-  propEq,
-  reduce,
-  __
-} from 'ramda'
+import React, { useEffect, useState } from 'react'
+import { applySpec, compose, isEmpty, isNil, not, pathEq, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form } from 'antd'
 import getAddress from '../../Services/Address'
-import { getAll, getProductById } from '../../Services/Product'
-
+import {
+  getAll,
+  getProductById,
+  getProductByBarCode
+} from '../../Services/Product'
+import { createOrder, getOrderById } from '../../Services/Order'
 import PDVContainer from '../../Containers/PDV'
 
-const PDV = ({ setFormPdv }) => {
+const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   const [step, setStep] = useState(0)
   const [saleType, setSaleType] = useState({
     saleFast: true,
-    saleFull: false,
+    saleFull: false
   })
 
   const [paymentType, setPaymentType] = useState({
     cash: true,
-    creditCard: false,
+    creditCard: false
   })
-  
+  const [productList, setProductList] = useState([])
+  const [orderCreated, setOrderCreated] = useState(null)
   const [formCustomer] = Form.useForm()
   const [formPayment] = Form.useForm()
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState({
+    customer: {}
+  })
+
   const [searchProduct, setSearchProduct] = useState('')
   const [products, setProducts] = useState([])
   const [optionSearch, setOptionSearch] = useState([])
-  const [productList, setProductList] = useState([])
+  const [isVisibleModalBarcode, setIsVisibleModalBarcode] = useState(false)
+  const [isVisibleModalNotFound, setIsVisibleModalNotFound] = useState(false)
 
   const handleNextStep = async (values) => {
     if (step === 2) {
-      return step 
-    } 
-    
-   try {
-    if (step === 0) {
-      await formCustomer.validateFields()
-      setFormData({
-        ...formData,
-        customers: values
-      })
+      return step
     }
 
-    if (step === 1) {
-      await formPayment.validateFields()
-      setFormData({
+    try {
+      if (step === 0) {
+        await formCustomer.validateFields()
+        setFormData({
+          ...formData,
+          customer: values
+        })
+      }
+
+      if (step === 1) {
+        await formPayment.validateFields()
+        setFormData({
+          ...formData,
+          payment:
+            paymentType.cash || values.paymentMethod === 'debit_card'
+              ? {
+                  paymentMethod: paymentType.cash ? 'Dinheiro' : 'debit_card',
+                  installments: 1
+                }
+              : values
+        })
+      }
+      setFormPdv({
         ...formData,
-        payment: (
-          paymentType.cash || values.paymentMethod === 'debit_card'
-            ? { paymentMethod: paymentType.cash ? 'Dinheiro' :  'debit_card', installments: 1 } 
-            : values
-        )
+        productList
       })
+      return setStep(step + 1)
+    } catch (error) {
+      console.error(error)
     }
-    setFormPdv({
-      ...formData,
-      productList
-    })
-    return setStep(step + 1)
-   } catch (error) {
-     console.log(error)
-   }
   }
-  const handlePrevStep = () => step === 0 ? step : setStep(step - 1)
+
+  const handlePrevStep = () => (step === 0 ? step : setStep(step - 1))
+
   const handleSaletype = (values) => {
     if (values.saleFast) {
       formCustomer.resetFields()
@@ -107,46 +97,89 @@ const PDV = ({ setFormPdv }) => {
     }
   }
 
-  const handleSubmit = () => {
-    console.log(formData)
+  const handleSubmit = async () => {
+    try {
+      const { data } = await createOrder({
+        ...formData,
+        ...formData.payment,
+        originType: 'pdv',
+        products: productList.map(({ id, quantity, salePrice }) => ({
+          productId: id,
+          quantity,
+          price: salePrice
+        }))
+      })
+      setOrderCreated(data)
+      setFormPdv({ orderId: data.id })
+    } catch (err) {
+      console.error('error', err)
+    }
   }
 
-  const onSearch = value => {
+  const onSearch = (value) => {
     if (value.length > 3) {
       getAll().then(({ data }) => {
-        const source = data.source.map(item => ({ label: `${item.name} - quantidade: ${item.balance }`, value: item.id }))
+        const source = data.source.map((item) => ({
+          label: `${item.name} - quantidade: ${item.balance}`,
+          value: item.id
+        }))
         setOptionSearch(source)
       })
     }
   }
 
-  const removeProduct = productId => {
-    setProductList(
-      productList.filter(product => product.id !== productId)
-    )
+  const handleSearchByBarcode = async (value) => {
+    setIsVisibleModalBarcode(false)
+    try {
+      const { data } = await getProductByBarCode(value)
+
+      if (isNil(data)) {
+        setIsVisibleModalNotFound(true)
+      } else {
+        onSelectProduct(data.id)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
-  const onChange = value => {
+  const removeProduct = (productId) => {
+    setProductList(productList.filter((product) => product.id !== productId))
+  }
+
+  const onChange = (value) => {
     setSearchProduct(value)
   }
 
-  const incrementQuantity = productId => {
+  const incrementQuantity = (productId) => {
     setProductList(
-      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity + 1 }) : product)
+      productList.map((product) =>
+        product.id === productId
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      )
     )
   }
 
-  const decrementQuantity = productId => {
+  const decrementQuantity = (productId) => {
     setProductList(
-      productList.map(product => product.id === productId ? ({...product, quantity: product.quantity === 1 ? product.quantity : product.quantity - 1 }) : product)
+      productList.map((product) =>
+        product.id === productId
+          ? {
+              ...product,
+              quantity:
+                product.quantity === 1 ? product.quantity : product.quantity - 1
+            }
+          : product
+      )
     )
   }
 
-  const onSelectProduct = async value => {
+  const onSelectProduct = async (value) => {
     setSearchProduct('')
-    const findProduct = productList.find(product => product.id === value)
+    const findProduct = productList.find((product) => product.id === value)
     if (findProduct) {
-      return;
+      return
     }
 
     try {
@@ -160,12 +193,77 @@ const PDV = ({ setFormPdv }) => {
         }
       ])
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
+  useEffect(() => {
+    setProductList(formPdv.productList)
+    formCustomer.setFieldsValue(formPdv.customer)
+    formPayment.setFieldsValue(formPdv.payment)
+
+    if (not(isEmpty(formPdv.orderId))) {
+      getOrderById(formPdv.orderId).then(({ data }) => {
+        setStep(2)
+        setOrderCreated(data)
+        setFormData({
+          payment: {
+            installments: pathOr('', ['installments'], data),
+            paymentMethod: pathOr('', ['payment'], data)
+          },
+          customer: applySpec({
+            name: pathOr('', ['customer', 'name']),
+            street: pathOr('', ['customer', 'address', 'street']),
+            streetNumber: pathOr('', ['customer', 'address', 'streetNumber']),
+            neighborhood: pathOr('', ['customer', 'address', 'neighborhood']),
+            city: pathOr('', ['customer', 'address', 'city']),
+            state: pathOr('', ['customer', 'address', 'state']),
+            zipcode: pathOr('', ['customer', 'address', 'zipcode'])
+          })(data)
+        })
+      })
+    }
+
+    if (
+      !isEmpty(formPdv.payment) &&
+      !pathEq(['payment', 'paymentMethod'], 'Dinheiro', formPdv)
+    ) {
+      setPaymentType({
+        cash: false,
+        creditCard: true
+      })
+    }
+
+    if (!pathEq(['customer', 'name'], undefined, formPdv)) {
+      setSaleType({
+        saleFast: false,
+        saleFull: true
+      })
+    }
+  }, [])
+
+  const resetAll = () => {
+    setStep(0)
+    formCustomer.resetFields()
+    formPayment.resetFields()
+    setFormData({
+      customer: {}
+    })
+    setProductList([])
+    setOrderCreated(null)
+    clearFormPdv()
+    setSaleType({
+      saleFast: true,
+      saleFull: false
+    })
+    setPaymentType({
+      cash: true,
+      creditCard: false
+    })
+  }
+
   return (
-    <PDVContainer 
+    <PDVContainer
       step={step}
       handleNextStep={handleNextStep}
       handlePrevStep={handlePrevStep}
@@ -175,8 +273,8 @@ const PDV = ({ setFormPdv }) => {
       paymentType={paymentType}
       formCustomer={formCustomer}
       formPayment={formPayment}
-      getCustomerAddress={getCustomerAddress}
       formData={formData}
+      getCustomerAddress={getCustomerAddress}
       handleSubmit={handleSubmit}
       onSearch={onSearch}
       onChange={onChange}
@@ -188,6 +286,14 @@ const PDV = ({ setFormPdv }) => {
       incrementQuantity={incrementQuantity}
       decrementQuantity={decrementQuantity}
       removeProduct={removeProduct}
+      orderCreated={orderCreated}
+      company={company}
+      handleSearchByBarcode={handleSearchByBarcode}
+      isVisibleModalBarcode={isVisibleModalBarcode}
+      setIsVisibleModalBarcode={setIsVisibleModalBarcode}
+      isVisibleModalNotFound={isVisibleModalNotFound}
+      setIsVisibleModalNotFound={setIsVisibleModalNotFound}
+      resetAll={resetAll}
     />
   )
 }

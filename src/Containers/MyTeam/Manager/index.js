@@ -116,6 +116,7 @@ const Manager = ({
       <Col span={24}>
         <Card bordered={false}>
           <UserList 
+            handleSubmitUpdate={handleSubmitUpdate}
             onChangeTable={onChangeTable}
             datasource={users} 
             chooseUser={handleChooseUser} 

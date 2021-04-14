@@ -20,11 +20,11 @@ import { validateCNPJ, validateEmail } from '../../../utils/validators'
 const { Title, Text, Paragraph } = Typography
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
 
-const Register = ({ handleClickContinue }) => (
+const Register = ({ handleClickContinue, loading }) => (
   <Row>
     <Col span={12}>
       <div className={styles.contentPublicity}>
-        <Image src={logo} preview={false} />
+        <Image width={160} src={logo} preview={false} />
         <h1>Tenha mais controle na sua empresa com o alxa!</h1>
         <h4>Aproveite todas as nossa funcionalidades</h4>
         <Space direction="vertical" style={{ margin: '0 0 170px 10px' }}>
@@ -112,6 +112,7 @@ const Register = ({ handleClickContinue }) => (
                   <Button
                     size="large"
                     htmlType="submit"
+                    loading={loading}
                     type="primary"
                     style={{ width: '100%' }}>
                     Continuar

@@ -54,8 +54,10 @@ const OutOrder = ({ history, status }) => {
   }
 
   const handleSubmit = async (values) => {
+    console.log(values)
+    // console.log(buildOrderSpec({ ...values, originType: 'order' }))
     try {
-      await createOrder(buildOrderSpec(values))
+      await createOrder(buildOrderSpec({ ...values, originType: 'order' }))
       setKey(key + 1)
     } catch (error) {}
   }
@@ -68,7 +70,7 @@ const OutOrder = ({ history, status }) => {
       customerList={customerList}
       userList={userList}
       productList={productList}
-      statusList={status.filter((s) => s.type === 'outputs')}
+      statusList={status.filter((s) => s.activated && s.type === 'outputs')}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={handleSubmit}
       goToOrder={goToOrder}

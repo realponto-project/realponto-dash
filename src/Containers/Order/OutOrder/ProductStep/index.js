@@ -6,9 +6,12 @@ import {
   InputNumber,
   Select,
   Row,
+  Input,
   Table,
   Typography
 } from 'antd'
+import { parseValuePTbr } from '../../../../utils/Masks/myInfoMasks'
+import { find, pipe, propEq, propOr } from 'ramda'
 
 const { Option } = Select
 const { Title } = Typography
@@ -33,6 +36,13 @@ const columns = (handleRemoveItem) => [
     fixed: 'left'
   },
   {
+    title: 'Preço de venda',
+    dataIndex: 'price',
+    key: 'price',
+    fixed: 'left',
+    render: (value) => parseValuePTbr(value)
+  },
+  {
     title: '',
     key: 'operation',
     fixed: 'right',
@@ -51,9 +61,9 @@ const ProductStep = ({
   productList,
   form
 }) => {
-  const OptionComponent = ({ id, name, balances }) => (
+  const OptionComponent = ({ id, name, balance }) => (
     <Option key={id} value={id}>
-      {name} - quantidade: {balances[0].quantity}
+      {name} - quantidade: {balance}
     </Option>
   )
 
@@ -70,6 +80,15 @@ const ProductStep = ({
               style={{ marginBottom: '4px' }}
               rules={requiredRule}>
               <Select
+                onChange={(productId) =>
+                  form.setFieldsValue({
+                    price: pipe(
+                      find(propEq('id', productId)),
+                      propOr(0, 'salePrice'),
+                      parseValuePTbr
+                    )(productList)
+                  })
+                }
                 placeholder="Selecione o produto"
                 notFoundContent="Nenhum produto encontrado!"
                 allowClear>
@@ -86,6 +105,23 @@ const ProductStep = ({
               <InputNumber style={{ width: '100%' }} min={1} />
             </Form.Item>
           </Col>
+
+          <Col span={6}>
+            <Form.Item
+              label="Preço"
+              name="price"
+              style={{ marginBottom: '4px' }}
+              rules={requiredRule}>
+              <Input
+                style={{ width: '100%' }}
+                placeholder="R$"
+                onChange={({ target: { value } }) =>
+                  form.setFieldsValue({ price: `${parseValuePTbr(value)}` })
+                }
+              />
+            </Form.Item>
+          </Col>
+
           <Col span={4}>
             <Form.Item label=" ">
               <Button htmlType="submit" type="primary">

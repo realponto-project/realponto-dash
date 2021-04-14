@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { applySpec, compose, pathOr } from 'ramda'
 import { withRouter } from 'react-router-dom'
 
@@ -22,17 +22,24 @@ const buildPayload = applySpec({
 })
 
 const Register = ({ history }) => {
+  const [loading, setLoading] = useState(false)
+
   const handleClickContinue = async (formData) => {
+    setLoading(true)
     try {
       await createCompany(buildPayload(formData))
 
+      setLoading(false)
       history.push('/register/sucess')
     } catch (err) {
+      setLoading(false)
       history.push('/register/sucess')
     }
   }
 
-  return <RegisterContainer handleClickContinue={handleClickContinue} />
+  return <RegisterContainer
+    handleClickContinue={handleClickContinue}
+    loading={loading}/>
 }
 
 const enhanced = compose(withRouter)

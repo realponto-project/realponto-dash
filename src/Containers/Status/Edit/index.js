@@ -47,7 +47,7 @@ const Edit = ({ visible, onEdit, onCancel, statusSelected }) => {
                 setLoading(false)
               })
           }}>
-          Editar Status
+          Editar status
         </Button>
       ]}>
       <Form
@@ -65,7 +65,7 @@ const Edit = ({ visible, onEdit, onCancel, statusSelected }) => {
           name="type"
           label="Tipo"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
-          <Select defaultValue="Selecionar tipo" onChange={handleChange}>
+          <Select defaultValue="Selecionar tipo" onChange={handleChange} disabled>
             <Option value="inputs">Entrada</Option>
             <Option value="outputs">Saída</Option>
           </Select>

@@ -16,6 +16,7 @@ const productItem = (
   handleClickDelete,
   handleClickUp,
   handleClickDown,
+  orderCreated,
   isSaved
 ) => ({ id, name, barCode, quantity, salePrice, balance }) => {
   return (
@@ -26,9 +27,13 @@ const productItem = (
           <p className={styles.productListSubtitle}>{barCode}</p>
         </Col>
         <Col span={4}>
-          { <DownOutlined onClick={() => handleClickDown(id)} /> }
+          {orderCreated && <DownOutlined onClick={() => handleClickDown(id)} />}
           <span className={styles.productListQuantity}>{quantity}</span>
-         { <UpOutlined onClick={() => quantity < balance ? handleClickUp(id) : null } /> }
+          {orderCreated && (
+            <UpOutlined
+              onClick={() => (quantity < balance ? handleClickUp(id) : null)}
+            />
+          )}
         </Col>
         <Col span={6} style={{ textAlign: 'center' }}>
           <p className={styles.productListSubtitle}>
@@ -41,12 +46,12 @@ const productItem = (
         <Col span={4}>
           <Row justify="center">
             <Col>
-             {(
+              {orderCreated && (
                 <DeleteOutlined
                   onClick={() => handleClickDelete(id)}
                   className={styles.removeProduct}
                 />
-             )}
+              )}
             </Col>
           </Row>
         </Col>
@@ -64,7 +69,9 @@ const ProductList = ({
   productList,
   incrementQuantity,
   decrementQuantity,
-  removeProduct
+  removeProduct,
+  openModalBarcode,
+  orderCreated
 }) => {
   return (
     <div>
@@ -74,7 +81,7 @@ const ProductList = ({
           <Col span={24}>
             <h4>Buscar produto</h4>
           </Col>
-          <Col span={20}>
+          <Col span={16}>
             <AutoComplete
               // disabled={isSaved}
               onSearch={onSearch}
@@ -84,12 +91,14 @@ const ProductList = ({
               placeholder="pequise um produto aqui!"
               style={{ width: '100%' }}
               value={searchProduct}
+              disabled={!!orderCreated}
             />
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <Button
+              disabled={!!orderCreated}
               icon={<BarcodeOutlined />}
-              onClick={() => {}}
+              onClick={openModalBarcode}
               type="primary">
               Buscar cód. barras
             </Button>
@@ -100,13 +109,19 @@ const ProductList = ({
         <h1 className={styles.productListTitle}>
           Total de itens
           <span className={styles.productListTitleQuantity}>
-            {length(productList)}
+            {productList ? length(productList) : 0}
           </span>
         </h1>
       </div>
       <ul className={ClassNames(styles.productList, styles.scrollbarPanelList)}>
-        {map(
-          productItem(removeProduct, incrementQuantity, decrementQuantity, false),
+        {productList && map(
+          productItem(
+            removeProduct,
+            incrementQuantity,
+            decrementQuantity,
+            (orderCreated = !orderCreated),
+            false
+          ),
           productList
         )}
       </ul>

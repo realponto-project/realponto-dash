@@ -54,7 +54,7 @@ const Add = ({ history, status }) => {
 
   const handleSubmit = async (values) => {
     try {
-      await createOrder(buildOrderSpec(values))
+      await createOrder(buildOrderSpec({ ...values, originType: 'order' }))
       setKey(key + 1)
     } catch (error) {}
   }
@@ -67,7 +67,7 @@ const Add = ({ history, status }) => {
       customerList={customerList}
       userList={userList}
       productList={productList}
-      statusList={status.filter((s) => s.type === 'inputs')}
+      statusList={status.filter((s) => s.activated && s.type === 'inputs')}
       goToManagerOrder={goToManagerOrder}
       handleSubmit={handleSubmit}
       goToOrder={goToOrder}

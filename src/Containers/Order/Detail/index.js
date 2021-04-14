@@ -11,65 +11,24 @@ import moment from 'moment'
 const { Step } = Steps
 const { Title } = Typography
 
-const columns = (
-  detail,
-  handleSerialNumber,
-  order,
-  associateSerialNumber,
-  serialOrderOuts
-) => [
-  {
-    title: 'Status',
-    dataIndex: 'status.value',
-    render: (text, record) => (
-      <Tag color={record.status.color}>{record.status.value}</Tag>
-    )
-  },
+const columns = (order) => [
   {
     title: 'Descrição',
-    dataIndex: 'productName'
+    dataIndex: 'product.name',
+    render: (_, record) => record.product.name
   },
   {
     title: 'Quantidade',
     dataIndex: 'quantity'
   },
   {
-    title: '',
-    dataIndex: 'productId',
-    key: 'action',
-    render: (productId, record) => {
-      let serialNumbersAdded = order.serialNumbers.filter(
-        (product) => product.product.id === productId
-      )
-      if (order.status.type === 'outputs') {
-        serialNumbersAdded = serialOrderOuts.filter(
-          (product) => product.product.id === productId
-        )
-      }
-
-      const quantityMax =
-        record.quantity - (serialNumbersAdded && serialNumbersAdded.length) || 0
-
-      return (
-        <>
-          <Button onClick={() => detail(record)} type="text">
-            Detalhes
-          </Button>
-          {quantityMax !== 0 && order.status.type === 'inputs' && (
-            <Button onClick={() => handleSerialNumber(record)} type="outline">
-              Adicionar Número Série
-            </Button>
-          )}
-          {quantityMax !== 0 && order.status.type === 'outputs' && (
-            <Button
-              onClick={() => associateSerialNumber(record)}
-              type="outline">
-              Associar Número Série
-            </Button>
-          )}
-        </>
-      )
-    }
+    title: 'Status',
+    dataIndex: 'statusId',
+    render: () => (
+      <Tag color={order.status && order.status.color}>
+        {order.status && order.status.label}
+      </Tag>
+    )
   }
 ]
 
@@ -92,75 +51,6 @@ const Detail = ({
       label: null
     }
   })
-  const [event, setEvent] = useState(false)
-  const [customerModal, setCustomerModal] = useState(false)
-
-  const [productSerialSelected, setProductSerialSelected] = useState({})
-  const [serial, setSerial] = useState(false)
-
-  const [
-    productSerialAssociateSelected,
-    setProductSerialAssociateSelected
-  ] = useState({})
-  const [associateSerial, setAssociateSerial] = useState(false)
-
-  const handleProductMovimentation = (productSelectedTable) => {
-    const movimentation = order.transactions.filter(
-      (product) => product.productId === productSelectedTable.productId
-    )
-    setProductMovimentation(movimentation)
-    setProductSelected(productSelectedTable)
-  }
-
-  const handleSerialNumber = (productSelectedTable) => {
-    setProductSerialSelected(productSelectedTable)
-    setSerial(true)
-  }
-
-  const associateSerialNumber = (productSelectedTable) => {
-    setProductSerialAssociateSelected(productSelectedTable)
-    setAssociateSerial(true)
-  }
-
-  const selectedProductFunction = () => {
-    setEvent(true)
-  }
-
-  const customerModalOpen = () => {
-    setCustomerModal(true)
-  }
-
-  const customerModalClose = () => {
-    setCustomerModal(false)
-  }
-
-  const closeModalEvent = () => {
-    setEvent(false)
-  }
-
-  const closeModalAssociateSerialNumber = () => {
-    setProductSerialAssociateSelected({})
-    setAssociateSerial(false)
-  }
-
-  const closeModalSerial = () => {
-    setSerial(false)
-    setProductSerialSelected({})
-  }
-
-  const customerDocument =
-    order.customer && order.customer.document ? order.customer.document : ''
-
-  let isAddEvent =
-    productMovimentation.length > 0 &&
-    productSelected.status.label === 'pending_analysis'
-
-  if (
-    productMovimentation.length > 0 &&
-    productSelected.status.label === 'booking'
-  ) {
-    isAddEvent = true
-  }
 
   return (
     <Row gutter={[16, 16]}>
@@ -168,14 +58,14 @@ const Detail = ({
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
             <Col span={6}>
-              <p style={{ marginBottom: '4px' }}>Usuário</p>
+              <p style={{ marginBottom: '4px' }}>Colaborador</p>
               <Title level={5}>{order.user && order.user.name}</Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
                 <Tag color={order.status && order.status.color}>
-                  {order.status && order.status.value}
+                  {order.status && order.status.label}
                 </Tag>
               </Title>
             </Col>
@@ -184,76 +74,17 @@ const Detail = ({
               <p style={{ marginBottom: '4px' }}>
                 Data de criação: {formattedDate(order.createdAt, 'DD/MM/YYYY')}
               </p>
-              {order.pendingReview && (
-                <Button onClick={finishedOrder}>Fechar Ordem</Button>
-              )}
             </Col>
           </Row>
         </Card>
       </Col>
 
-      <Col span={16}>
+      <Col span={24}>
         <Row gutter={[8, 16]}>
           <Col span={24}>
             <Card bordered={false}>
               <Row gutter={[8, 8]}>
-                <Col span={24}>
-                  <p>Produtos</p>
-                </Col>
-                <Col span={24}>
-                  <Table
-                    columns={columns(
-                      handleProductMovimentation,
-                      handleSerialNumber,
-                      order,
-                      associateSerialNumber,
-                      serialNumbersOuts
-                    )}
-                    dataSource={order.orderProducts}
-                    expandable={{
-                      expandedRowRender: (record) => {
-                        let items = order.serialNumbers
-                        if (order.status.type === 'outputs') {
-                          items = serialNumbersOuts
-                        }
-
-                        return items
-                          .filter(
-                            (serialNumber) =>
-                              serialNumber.product.id === record.productId
-                          )
-                          .map((serialNumber) => (
-                            <Row
-                              gutter={[8, 8]}
-                              key={serialNumber.serialNumber}>
-                              <Col span={8}>
-                                Número Serial:{' '}
-                                <b>{serialNumber.serialNumber}</b>
-                              </Col>
-                              <Col span={8}>
-                                Revisado por: <b>{serialNumber.user.name}</b>
-                              </Col>
-                              <Col span={8}>
-                                Data da Revisão:{' '}
-                                <b>
-                                  {moment(serialNumber.createdAt).format(
-                                    'DD/MM/YY - HH:mm'
-                                  )}
-                                </b>
-                              </Col>
-                            </Row>
-                          ))
-                      }
-                    }}
-                  />
-                </Col>
-              </Row>
-            </Card>
-          </Col>
-          <Col span={24}>
-            <Card bordered={false}>
-              <Row gutter={[8, 8]}>
-                <Col span={16}>
+                <Col span={12}>
                   <p>Detalhes do cliente</p>
                 </Col>
                 <Col span={8} style={{ textAlign: 'right' }}>
@@ -272,9 +103,7 @@ const Detail = ({
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {customerDocument.length > 11
-                      ? cnpj.format(customerDocument)
-                      : cpf.format(customerDocument)}
+                    {order.customer && order.customer.document}
                   </Title>
                 </Col>
                 <Col span={8}>
@@ -316,82 +145,24 @@ const Detail = ({
               </Row>
             </Card>
           </Col>
+          <Col span={24}>
+            <Card bordered={false}>
+              <Row gutter={[8, 8]}>
+                <Col span={12}>
+                  <p>Produtos</p>
+                </Col>
+                <Col span={24}>
+                  <Table
+                    columns={columns(order)}
+                    dataSource={order.transactions}
+                    pagination={false}
+                  />
+                </Col>
+              </Row>
+            </Card>
+          </Col>
         </Row>
       </Col>
-
-      <Col span={8}>
-        <Card bordered={false}>
-          <Row gutter={[8, 8]}>
-            <Col span={24}>
-              <p>Histório de Movimentação do Produto</p>
-            </Col>
-            <Col span={24}>
-              <Steps direction="vertical">
-                {productMovimentation.map(
-                  ({ id, status, product, createdAt, quantity }) => (
-                    <Step
-                      status="finish"
-                      key={id}
-                      title={status.value}
-                      description={
-                        <>
-                          {product.name} - Quatidade: <b>{quantity}</b>
-                          <br />
-                          {formattedDate(createdAt, 'DD/MM/YYYY - HH:mm')}{' '}
-                          <br />
-                        </>
-                      }
-                    />
-                  )
-                )}
-                {productMovimentation.length === 0 && (
-                  <Title level={5}>
-                    Para ver as operação selecione um produto ao lado
-                  </Title>
-                )}
-              </Steps>
-              {isAddEvent && (
-                <Button onClick={selectedProductFunction} block type="text">
-                  Adicionar Evento
-                </Button>
-              )}
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-      <AddEvent
-        visible={event}
-        users={users}
-        productSelected={productSelected}
-        productTransaction={productMovimentation}
-        statusList={statusList}
-        onCancel={closeModalEvent}
-        onCreate={updateOrderDetail}
-      />
-
-      <AddSerialNumber
-        visible={serial}
-        users={users}
-        productSelected={productSerialSelected}
-        onCancel={closeModalSerial}
-        onCreate={addSerialNumbers}
-        serialNumbers={order.serialNumbers}
-        serialNumberExistOrActivated={serialNumberExistOrActivated}
-      />
-      <AssociateSerialNumber
-        visible={associateSerial}
-        onCancel={closeModalAssociateSerialNumber}
-        productSelected={productSerialAssociateSelected}
-        serialNumbers={serialNumbersOuts}
-        onCreate={addAssociateSerialNumbers}
-      />
-
-      <AssociateCustomer
-        visible={customerModal}
-        onCancel={customerModalClose}
-        customers={customers}
-        onCreate={associateCustomerOrder}
-      />
     </Row>
   )
 }
