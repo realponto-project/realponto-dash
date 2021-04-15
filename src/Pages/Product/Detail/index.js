@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { compose } from 'ramda'
 import { withRouter } from 'react-router-dom'
 
 import DetailContainer from '../../../Containers/Product/Detail'
@@ -25,7 +26,7 @@ const Detail = ({ match }) => {
       product={product}
       pieChartData={[]}
       serialNumberData={[]}
-    /> 
+    />
   )
 }
 

@@ -117,15 +117,15 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   }
 
   const onSearch = (value) => {
-    if (value.length > 3) {
-      getAll().then(({ data }) => {
-        const source = data.source.map((item) => ({
-          label: `${item.name} - quantidade: ${item.balance}`,
-          value: item.id
-        }))
-        setOptionSearch(source)
-      })
-    }
+    // if (value.length > 3) {
+    getAll({ name: value }).then(({ data }) => {
+      const source = data.source.map((item) => ({
+        label: `${item.name} - quantidade: ${item.balance}`,
+        value: item.id
+      }))
+      setOptionSearch(source)
+    })
+    // }
   }
 
   const handleSearchByBarcode = async (value) => {

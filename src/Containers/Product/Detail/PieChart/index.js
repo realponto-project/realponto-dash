@@ -4,12 +4,11 @@ import { Row, Col, Typography } from 'antd'
 import styles from './style.module.css'
 
 const { Title } = Typography
-const PieChartProduct = ({
-  pieChartData,
-}) => {
-  const dataChart = [{ name: 'Entrada', value: 150 }, { name: 'Saída', value: 50 }]
-  let rightPie = dataChart && dataChart[0].value.length === 1 ? '166px' : '145px'
-  rightPie = dataChart && dataChart[0].value.length === 2 ? '156px' : rightPie
+const PieChartProduct = ({ pieChartData }) => {
+  const dataChart = [
+    { name: 'Entrada', value: 150 },
+    { name: 'Saída', value: 50 }
+  ]
 
   return (
     <Row gutter={[0, 16]}>
@@ -26,10 +25,16 @@ const PieChartProduct = ({
               outerRadius={125}
               fill="#E6E6E6"
               paddingAngle={0}
-              dataKey="value"
-            >
+              dataKey="value">
               {dataChart.map((item, index) => (
-                <Cell key={`cell-${index}`} fill={item.name === 'Entrada' ? "rgb(93, 160, 252)" : 'rgb(23, 201, 178)'} />
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    item.name === 'Entrada'
+                      ? 'rgb(93, 160, 252)'
+                      : 'rgb(23, 201, 178)'
+                  }
+                />
               ))}
             </Pie>
           </PieChart>
@@ -37,11 +42,17 @@ const PieChartProduct = ({
       </Col>
       <Col span={24}>
         <div className={styles.pieChartLegends}>
-          <span className={styles.spanCircle} style={{ background: 'rgb(93, 160, 252)' }}/>
+          <span
+            className={styles.spanCircle}
+            style={{ background: 'rgb(93, 160, 252)' }}
+          />
           <p className={styles.pieChartLegend}>Entrada</p>
         </div>
         <div className={styles.pieChartLegends}>
-          <span className={styles.spanCircle} style={{ background: 'rgb(23, 201, 178)' }}/>
+          <span
+            className={styles.spanCircle}
+            style={{ background: 'rgb(23, 201, 178)' }}
+          />
           <p className={styles.pieChartLegend}>Saida</p>
         </div>
       </Col>

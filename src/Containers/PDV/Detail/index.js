@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Image, Row, Col, Divider } from 'antd'
 import TruckGraySvg from './truck-gray.svg'
-import { add, map, multiply, pathOr, reduce } from 'ramda'
+import { add, length, map, multiply, pathOr, reduce } from 'ramda'
 import styles from './style.module.css'
 import { formatPrice } from '../../../utils'
 
@@ -28,11 +28,7 @@ const Detail = ({
     Dinheiro: 'Dinheiro'
   }
 
-  const amount = reduce(
-    add,
-    0,
-    map(({ quantity }) => quantity, productList)
-  )
+  const amount = length(productList)
 
   const subTotal = reduce(
     add,

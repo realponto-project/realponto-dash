@@ -10,14 +10,16 @@ const columns = [
     key: 'id',
     fixed: 'left',
     render: (activated) => (
-      <Tag color={activated ? '#65A300' : 'rgba(0,0,0,.25)'}>{activated? 'Disponível' : 'Associado' }</Tag>
+      <Tag color={activated ? '#65A300' : 'rgba(0,0,0,.25)'}>
+        {activated ? 'Disponível' : 'Associado'}
+      </Tag>
     )
   },
   {
     title: 'Número Série',
     dataIndex: 'serialNumber',
     key: 'serialNumber',
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: 'Criado em',
@@ -32,28 +34,50 @@ const columns = [
     key: 'id',
     fixed: 'left',
     render: (_, record) => (
-      <Button 
-        disabled={!record.activated} 
+      <Button
+        disabled={!record.activated}
         onClick={() => console.log(record.id)}
-        type="link"
-      >
+        type="link">
         Editar
       </Button>
     )
-  },
+  }
 ]
 
 const datasource = [
-  { id: 1, serialNumber: '372198769831', createdAt: '11/03/21 - 14:21', activated: true },
-  { id: 2, serialNumber: '372198769831', createdAt: '11/03/21 - 14:21', activated: false },
-  { id: 3, serialNumber: '372198769831', createdAt: '11/03/21 - 14:21', activated: false },
-  { id: 4, serialNumber: '372198769831', createdAt: '11/03/21 - 14:21', activated: true },
-  { id: 5, serialNumber: '372198769831', createdAt: '11/03/21 - 14:21', activated: false },
+  {
+    id: 1,
+    serialNumber: '372198769831',
+    createdAt: '11/03/21 - 14:21',
+    activated: true
+  },
+  {
+    id: 2,
+    serialNumber: '372198769831',
+    createdAt: '11/03/21 - 14:21',
+    activated: false
+  },
+  {
+    id: 3,
+    serialNumber: '372198769831',
+    createdAt: '11/03/21 - 14:21',
+    activated: false
+  },
+  {
+    id: 4,
+    serialNumber: '372198769831',
+    createdAt: '11/03/21 - 14:21',
+    activated: true
+  },
+  {
+    id: 5,
+    serialNumber: '372198769831',
+    createdAt: '11/03/21 - 14:21',
+    activated: false
+  }
 ]
 
-const OrderList = ({
-  serialNumberData,
-}) => {
+const OrderList = ({ serialNumberData }) => {
   return (
     <ConfigProvider
       renderEmpty={() => (

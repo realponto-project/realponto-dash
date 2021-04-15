@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
 import ClassNames from 'classnames'
-import { add, length, map, multiply, reduce } from 'ramda'
+import { add, isEmpty, length, map, multiply, reduce } from 'ramda'
 
 import styles from './style.module.css'
 import { formatPrice } from '../../utils'
@@ -48,10 +48,10 @@ const Cupom = ({
   )
 
   const maskDocument = (value) => {
-    if (length(value) <= 11) {
-      return mask('###.###.###-##')(value)
-    }
-    return mask('##.###.###/####-##')(value)
+    return {
+      11: mask('###.###.###-##')(value),
+      14: mask('##.###.###/####-##')(value)
+    }[length(value)]
   }
 
   const maskPhone = (value) => {
@@ -84,14 +84,16 @@ const Cupom = ({
         <tr className={styles.top3}>
           <td colSpan="3">Endereço</td>
         </tr>
-        <tr className={ClassNames(styles.ttu)}>
-          <td colSpan="3">
-            {customer.street}, {customer.streetNumber},
-            <br />
-            {customer.neighborhood}, {customer.city} - {customer.states}
-            <br /> {customer.zipcode}
-          </td>
-        </tr>
+        {!isEmpty(customer.street) && (
+          <tr className={ClassNames(styles.ttu)}>
+            <td colSpan="3">
+              {customer.street}, {customer.streetNumber},
+              <br />
+              {customer.neighborhood}, {customer.city} - {customer.states}
+              <br /> {customer.zipcode}
+            </td>
+          </tr>
+        )}
         <tr style={{ borderBottom: 'none' }}>
           <th
             className={styles.ttu}
