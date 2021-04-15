@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Image, Row, Col, Divider } from 'antd'
 import TruckGraySvg from './truck-gray.svg'
-import { add, length, map, multiply, pathOr, reduce } from 'ramda'
+import { add, equals, length, map, multiply, pathOr, reduce } from 'ramda'
 import styles from './style.module.css'
 import { formatPrice } from '../../../utils'
 
@@ -10,7 +10,7 @@ const Detail = ({
   formData,
   handleSubmit,
   orderCreated,
-  productList,
+  productList = [],
   resetAll
 }) => {
   const name = pathOr(null, ['customer', 'name'], formData)
@@ -33,7 +33,10 @@ const Detail = ({
   const subTotal = reduce(
     add,
     0,
-    map(({ quantity, salePrice }) => multiply(quantity, salePrice), productList)
+    map(
+      ({ quantity, salePrice }) => multiply(quantity, salePrice),
+      productList || []
+    )
   )
 
   return (
@@ -133,7 +136,11 @@ const Detail = ({
             </Button>
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
-            <Button onClick={handleSubmit} type="primary" block>
+            <Button
+              disabled={equals(length(productList), 0)}
+              onClick={handleSubmit}
+              type="primary"
+              block>
               Salvar
             </Button>
           </Col>

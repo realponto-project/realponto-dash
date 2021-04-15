@@ -21,8 +21,8 @@ const PieChartProduct = ({ pieChartData }) => {
             <Tooltip cursor={{ fillOpacity: 0.3 }} />
             <Pie
               data={dataChart}
-              innerRadius={100}
-              outerRadius={125}
+              innerRadius={70}
+              outerRadius={90}
               fill="#E6E6E6"
               paddingAngle={0}
               dataKey="value">
@@ -46,14 +46,14 @@ const PieChartProduct = ({ pieChartData }) => {
             className={styles.spanCircle}
             style={{ background: 'rgb(93, 160, 252)' }}
           />
-          <p className={styles.pieChartLegend}>Entrada</p>
+          <p className={styles.pieChartLegend}>Entrada: {150}</p>
         </div>
         <div className={styles.pieChartLegends}>
           <span
             className={styles.spanCircle}
             style={{ background: 'rgb(23, 201, 178)' }}
           />
-          <p className={styles.pieChartLegend}>Saida</p>
+          <p className={styles.pieChartLegend}>Saida: {50}</p>
         </div>
       </Col>
     </Row>
