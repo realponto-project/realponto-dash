@@ -19,8 +19,8 @@ const PieChartHome = ({
           <PieChart width={800} height={200}>
             <Pie
               data={dataChart}
-              innerRadius={100}
-              outerRadius={125}
+              innerRadius={70}
+              outerRadius={90}
               fill="rgb(93, 160, 252)"
               paddingAngle={0}
               dataKey="value"
