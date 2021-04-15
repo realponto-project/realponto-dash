@@ -4,7 +4,9 @@ import { Row, Col, Typography } from 'antd'
 import styles from './style.module.css'
 
 const { Title } = Typography
-const PieChartProduct = () => {
+const PieChartProduct = ({
+  pieChartData,
+}) => {
   const dataChart = [{ name: 'Entrada', value: 150 }, { name: 'Saída', value: 50 }]
   let rightPie = dataChart && dataChart[0].value.length === 1 ? '166px' : '145px'
   rightPie = dataChart && dataChart[0].value.length === 2 ? '156px' : rightPie

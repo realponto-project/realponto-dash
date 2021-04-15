@@ -3,10 +3,21 @@ import { Card, Button, Typography, Row, Col, Tag } from 'antd'
 import PieChart from './PieChart'
 import SerialNumberList from './SerialNumberList'
 import { PlusOutlined } from '@ant-design/icons'
+import { pathOr } from 'ramda'
+import moment from 'moment'
 
 const { Title } = Typography
 
-const Detail = () => {
+const Detail = ({
+  product,
+  serialNumberData,
+  pieChartData,
+}) => {
+  const productStatus = pathOr(false, ['activated'], product)
+  const createdAt = moment(
+    pathOr('', ['createdAt'], product)
+  ).format('DD/MM/YYYY - HH:mm')
+
   return (
     <Row gutter={[16, 16]}>   
       <Col span={24}>
@@ -14,23 +25,23 @@ const Detail = () => {
           <Row gutter={[8, 8]}>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Produto</p>
-              <Title level={5}>Relogio Tommy </Title>
+              <Title level={5}>{pathOr(null, ['name'], product)}</Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
-                <Tag color={true ? '#65A300' : 'rgba(0,0,0,.25)'}>
-                  Ativo
+                <Tag color={productStatus ? '#65A300' : 'rgba(0,0,0,.25)'}>
+                  {productStatus ?  'Ativo' : 'Inativo'}
                 </Tag>
               </Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Quantidade disponível</p>
-              <Title level={5}>100 und </Title>
+              <Title level={5}>{pathOr(null, ['balance'], product)} und </Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Criado em</p>
-              <Title level={5}>22/03/2021</Title>
+              <Title level={5}>{createdAt}</Title>
             </Col>
           </Row>
         </Card>
@@ -45,7 +56,7 @@ const Detail = () => {
                 Número de série
               </Title>
               <p style={{ marginBottom: 0 }}>
-                Adicione e edite os seus números de séries
+                Adicione e edite os números de séries
               </p>
             </Col>
             <Col span={12} style={{ textAlign: 'right' }}>
@@ -60,14 +71,14 @@ const Detail = () => {
             </Col>
             <Col span={24}>
               <Card bordered={false}>
-                <SerialNumberList />
+                <SerialNumberList serialNumberData={serialNumberData} />
               </Card>
             </Col>
           </Row>
       </Col>
       <Col span={6}>
         <Card bordered={false} style={{ height: '608px'}}>
-          <PieChart />
+          <PieChart pieChartData />
         </Card>
       </Col>
     </Row>

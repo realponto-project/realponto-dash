@@ -31,7 +31,15 @@ const columns = [
     dataIndex: 'operation',
     key: 'id',
     fixed: 'left',
-    render: (_, record) => <Button disabled={!record.activated} onClick={() => console.log(record.id)} type="link">Editar</Button>
+    render: (_, record) => (
+      <Button 
+        disabled={!record.activated} 
+        onClick={() => console.log(record.id)}
+        type="link"
+      >
+        Editar
+      </Button>
+    )
   },
 ]
 
@@ -43,7 +51,9 @@ const datasource = [
   { id: 5, serialNumber: '372198769831', createdAt: '11/03/21 - 14:21', activated: false },
 ]
 
-const OrderList = () => {
+const OrderList = ({
+  serialNumberData,
+}) => {
   return (
     <ConfigProvider
       renderEmpty={() => (
@@ -56,6 +66,7 @@ const OrderList = () => {
         columns={columns}
         dataSource={datasource}
         pagination={{ total: 25, current: 1 }}
+        serialNumberData={serialNumberData}
       />
     </ConfigProvider>
   )

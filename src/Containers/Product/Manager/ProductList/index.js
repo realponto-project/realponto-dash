@@ -34,10 +34,9 @@ const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
   },
   {
     title: 'Qtd estoque',
-    dataIndex: 'record.balance',
+    dataIndex: 'balance',
     key: 'balance',
-    fixed: 'left',
-    render: (_, record) => record.balance
+    fixed: 'left'
   },
   {
     title: '',
