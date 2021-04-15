@@ -30,7 +30,6 @@ const productPayload = applySpec({
   name: pathOr(null, ['name']),
   salePrice: pipe(pathOr('0', ['salePrice']), parsePrice),
   activated: pathOr(true, ['activated'])
-
 })
 
 const Manager = ({

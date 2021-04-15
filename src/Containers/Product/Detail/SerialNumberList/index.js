@@ -2,8 +2,9 @@ import React from 'react'
 import { Button, Table, Tag, Empty, ConfigProvider, Image } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
 import NoData from '../../../../Assets/noData.svg'
+import EditSerial from '../../../../Containers/Product/Detail/Edit'
 
-const columns = [
+const columns = (openSerialEdit) => [
   {
     title: 'Status',
     dataIndex: 'activated',
@@ -16,7 +17,7 @@ const columns = [
     )
   },
   {
-    title: 'Número Série',
+    title: 'Número série',
     dataIndex: 'serialNumber',
     key: 'serialNumber',
     fixed: 'left'
@@ -36,7 +37,7 @@ const columns = [
     render: (_, record) => (
       <Button
         disabled={!record.activated}
-        onClick={() => console.log(record.id)}
+        onClick={() => openSerialEdit(record)}
         type="link">
         Editar
       </Button>
@@ -44,40 +45,8 @@ const columns = [
   }
 ]
 
-const datasource = [
-  {
-    id: 1,
-    serialNumber: '372198769831',
-    createdAt: '11/03/21 - 14:21',
-    activated: true
-  },
-  {
-    id: 2,
-    serialNumber: '372198769831',
-    createdAt: '11/03/21 - 14:21',
-    activated: false
-  },
-  {
-    id: 3,
-    serialNumber: '372198769831',
-    createdAt: '11/03/21 - 14:21',
-    activated: false
-  },
-  {
-    id: 4,
-    serialNumber: '372198769831',
-    createdAt: '11/03/21 - 14:21',
-    activated: true
-  },
-  {
-    id: 5,
-    serialNumber: '372198769831',
-    createdAt: '11/03/21 - 14:21',
-    activated: false
-  }
-]
 
-const OrderList = ({ serialNumberData }) => {
+const OrderList = ({ serialNumberData, openSerialEdit, serialVisibleEdit, serialNumberSelected, onCancel, onOk }) => {
   return (
     <ConfigProvider
       renderEmpty={() => (
@@ -86,9 +55,10 @@ const OrderList = ({ serialNumberData }) => {
           image={<Image width={85} src={NoData} preview={false} />}
         />
       )}>
+        <EditSerial visible={serialVisibleEdit} serialNumber={serialNumberSelected} onCancel={onCancel} onOk={onOk}/>
       <Table
-        columns={columns}
-        dataSource={datasource}
+        columns={columns(openSerialEdit)}
+        dataSource={serialNumberData}
         pagination={{ total: 25, current: 1 }}
         serialNumberData={serialNumberData}
       />

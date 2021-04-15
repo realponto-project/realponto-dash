@@ -6,9 +6,22 @@ import { PlusOutlined } from '@ant-design/icons'
 import { pathOr } from 'ramda'
 import moment from 'moment'
 
+import AddSerial from './Add'
+
 const { Title } = Typography
 
-const Detail = ({ product, serialNumberData, pieChartData }) => {
+const Detail = ({ 
+  product, 
+  serialData, 
+  openSerial, 
+  serialVisible, 
+  handleCancel, 
+  handleOkSerial, 
+  serialVisibleEdit, 
+  openSerialEdit, 
+  serialNumberSelected, 
+  handleOkSerialEdit}) => {
+
   const productStatus = pathOr(false, ['activated'], product)
   const createdAt = moment(pathOr('', ['createdAt'], product)).format(
     'DD/MM/YYYY - HH:mm'
@@ -56,16 +69,24 @@ const Detail = ({ product, serialNumberData, pieChartData }) => {
                   </p>
                 </Col>
                 <Col span={12} style={{ textAlign: 'right' }}>
-                  <Button onClick={() => console.log()} icon={<PlusOutlined />}>
+                  <Button onClick={openSerial} icon={<PlusOutlined />}>
                     Adicionar
                   </Button>
                 </Col>
+                {<AddSerial visible={serialVisible} onCancel={handleCancel} onOk={handleOkSerial}/>}
               </Row>
             </Card>
           </Col>
           <Col span={24}>
             <Card bordered={false}>
-              <SerialNumberList serialNumberData={serialNumberData} />
+              <SerialNumberList 
+                serialNumberData={serialData} 
+                serialVisibleEdit={serialVisibleEdit}  
+                openSerialEdit={openSerialEdit} 
+                serialNumberSelected={serialNumberSelected}
+                onCancel={handleCancel} 
+                onOk={handleOkSerialEdit}
+              />
             </Card>
           </Col>
         </Row>
