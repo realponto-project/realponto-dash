@@ -26,7 +26,8 @@ const Manager = ({
   loading,
   onChangeTable,
   page,
-  company
+  company,
+  goToDetail
 }) => {
   const [visible, setVisible] = useState(false)
   const [visibleEdit, setVisibleEdit] = useState(false)
@@ -163,6 +164,7 @@ const Manager = ({
             datasource={products.source}
             chooseProduct={handleChooseProduct}
             page={page}
+            goToDetail={goToDetail}
           />
         </Card>
       </Col>

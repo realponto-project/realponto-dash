@@ -12,6 +12,7 @@ import MyInfo from '../Pages/MyInfo'
 import Home from '../Pages/Home'
 import PDV from '../Pages/PDV'
 import Report from '../Pages/Report'
+import ProductDetail from '../Pages/Product/Detail'
 
 const RootRoutes = [
   {
@@ -81,6 +82,13 @@ const RootRoutes = [
     path: '/logged/product/manager',
     exact: true,
     goBack: false
+  },
+  {
+    component: ProductDetail,
+    title: 'DETALHES DO PRODUTO',
+    path: '/logged/product/detail/:id',
+    exact: true,
+    goBack: true
   },
   {
     component: CustomerManager,

@@ -10,6 +10,7 @@ import {
   always,
   prop
 } from 'ramda'
+import { withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../Containers/Product/Manager'
 import { createProduct, getAll, updateProduct } from '../../../Services/Product'
@@ -35,7 +36,8 @@ const productPayload = applySpec({
 const Manager = ({
   productSearch,
   setProductSearch,
-  cleanProductSearch
+  cleanProductSearch,
+  history
 }) => {
   const [products, setProducts] = useState({})
   const [page, setPage] = useState(1)
@@ -62,6 +64,10 @@ const Manager = ({
       page,
       limit: 10
     }
+  }
+
+  const goToDetail = (productId) => {
+    history.push(`/logged/product/detail/${productId}`)
   }
 
   const onChangeTable = ({current}) => {
@@ -145,6 +151,7 @@ const Manager = ({
       loading={loading}
       onChangeTable={onChangeTable}
       page={page}
+      goToDetail={goToDetail}
     />
   )
 }
@@ -159,6 +166,9 @@ const mapDispatchToProps = (dispatch) => ({
   cleanProductSearch: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' })
 })
 
-const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))
+const enhanced = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter
+)
 
 export default enhanced(Manager)
