@@ -7,7 +7,7 @@ const { Title } = Typography
 const PieChartHome = ({
   data = []
 }) => {
-  const dataChart = data.length && data.map(item => ({...item, value: item && item.total}))
+  const dataChart = data.length && data.map(item => item && ({...item, value: item && item.total}) )
 
   return (
     <Row gutter={[0, 16]}>
