@@ -10,20 +10,17 @@ import Plan from '../../Containers/Plans'
 import Deliveries from './deliveries.svg'
 
 const { Title } = Typography
-const AdSide = ({
-  plans,
-}) => {
+const AdSide = ({ plans }) => {
   const [isVisible, setIsVisible] = useState(false)
 
   const handleCancel = () => {
     setIsVisible(false)
-  }  
+  }
 
-  const price = (
+  const price =
     plans.length > 0
       ? `R$ ${plans[0].amount.toString().replace(/(\d)(\d{2})$/, '$1,$2')}/mês`
       : ''
-  )
 
   return (
     <div className={styles.adSideContainer}>
@@ -59,9 +56,6 @@ const mapStateToProps = ({ plans }) => ({
   plans
 })
 
-const enhanced = compose(
-  connect(mapStateToProps),
-  withRouter
-)
+const enhanced = compose(connect(mapStateToProps), withRouter)
 
 export default enhanced(AdSide)

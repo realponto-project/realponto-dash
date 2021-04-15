@@ -13,7 +13,7 @@ import Success from './Pages/Accreditation/Register/Success'
 import Logged from './Pages/Logged'
 import reducers from './Redux/reducers'
 import Onboarding from './Pages/Onboarding'
-import PDV  from './Pages/PDV'
+import PDV from './Pages/PDV'
 
 const persistConfig = {
   key: 'root',
