@@ -5,11 +5,9 @@ import styles from './style.module.css'
 
 const { Title } = Typography
 const PieChartHome = ({
-  data
+  data = []
 }) => {
-  const dataChart = data.map(item => ({...item, value: Number(item.value)}))
-  let rightPie = data && data[0].value.length === 1 ? '166px' : '145px'
-  rightPie = data && data[0].value.length === 2 ? '156px' : rightPie
+  const dataChart = data.length && data.map(item => ({...item, value: item.total}))
 
   return (
     <Row gutter={[0, 16]}>
@@ -23,29 +21,21 @@ const PieChartHome = ({
               data={dataChart}
               innerRadius={100}
               outerRadius={125}
-              fill="#E6E6E6"
+              fill="rgb(93, 160, 252)"
               paddingAngle={0}
               dataKey="value"
             >
               {data.map((_, index) => (
-                <Cell key={`cell-${index}`} fill="#E6E6E6" />
+                <Cell key={`cell-${index}`} fill="rgb(93, 160, 252)" />
               ))}
             </Pie>
           </PieChart>
         </ResponsiveContainer>
-        <h1 
-          className={styles.totalValueSales}
-          style={{
-            right: rightPie,
-          }}
-        >
-          {dataChart && dataChart[0].value}
-        </h1>
       </Col>
       <Col span={24}>
         <div className={styles.pieChartLegends}>
-          <span className={styles.spanCircle} />
-          <p className={styles.pieChartLegend}>Vendas</p>
+          <span className={styles.spanCircle} style={{background: 'rgb(93, 160, 252)'}}/>
+          <p className={styles.pieChartLegend}>Vendas: {dataChart && dataChart[0].value}</p>
         </div>
       </Col>
     </Row>
