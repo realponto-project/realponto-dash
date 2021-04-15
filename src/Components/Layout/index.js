@@ -46,7 +46,7 @@ const menuItems = [
   },
   {
     icon: <DiffOutlined />,
-    label: 'Relatórios',
+    label: 'Ordens consolidadas',
     key: '/logged/order/report'
   }
 ]
