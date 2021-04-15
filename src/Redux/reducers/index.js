@@ -10,8 +10,9 @@ import orderSearchReducer from './orderSearch'
 import formPdvReducer from './formPdv'
 import SubscriptionReducer from './subscription'
 import MyTeamReducer from './myTeam'
+import PlansReducer from './plans'
 
-const appReducer =  combineReducers({
+const appReducer = combineReducers({
   user: userReducer,
   company: companyReducer,
   status: statusReducer,
@@ -21,7 +22,8 @@ const appReducer =  combineReducers({
   statusSearch: statusSearchReducer,
   orderSearch: orderSearchReducer,
   subscription: SubscriptionReducer,
-  myTeamSearch: MyTeamReducer
+  myTeamSearch: MyTeamReducer,
+  plans: PlansReducer,
 })
 
 

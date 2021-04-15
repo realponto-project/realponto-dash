@@ -1,18 +1,29 @@
 import React, { useState } from 'react'
 import { Image, Typography, Button } from 'antd'
 import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { compose } from 'ramda'
+
 import styles from './style.module.css'
 import Plan from '../../Containers/Plans'
 
 import Deliveries from './deliveries.svg'
 
 const { Title } = Typography
-const AdSide = () => {
+const AdSide = ({
+  plans,
+}) => {
   const [isVisible, setIsVisible] = useState(false)
 
   const handleCancel = () => {
     setIsVisible(false)
-  }
+  }  
+
+  const price = (
+    plans.length > 0
+      ? `R$ ${plans[0].amount.toString().replace(/(\d)(\d{2})$/, '$1,$2')}/mês`
+      : ''
+  )
 
   return (
     <div className={styles.adSideContainer}>
@@ -38,10 +49,19 @@ const AdSide = () => {
         <b>manutenções</b>
       </p>
       <Button onClick={() => setIsVisible(true)} type="primary" block>
-        Assine Agora <b> R$9,99/mês</b>
+        Assine Agora <b> {price}</b>
       </Button>
     </div>
   )
 }
 
-export default withRouter(AdSide)
+const mapStateToProps = ({ plans }) => ({
+  plans
+})
+
+const enhanced = compose(
+  connect(mapStateToProps),
+  withRouter
+)
+
+export default enhanced(AdSide)
