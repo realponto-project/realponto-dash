@@ -32,7 +32,10 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   })
 
   const [searchProduct, setSearchProduct] = useState('')
-  const [products, setProducts] = useState([])
+  const [
+    products
+    // setProducts
+  ] = useState([])
   const [optionSearch, setOptionSearch] = useState([])
   const [isVisibleModalBarcode, setIsVisibleModalBarcode] = useState(false)
   const [isVisibleModalNotFound, setIsVisibleModalNotFound] = useState(false)
@@ -64,10 +67,6 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
               : values
         })
       }
-      setFormPdv({
-        ...formData,
-        productList
-      })
       return setStep(step + 1)
     } catch (error) {
       console.error(error)
@@ -185,6 +184,10 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
     try {
       const { data } = await getProductById(value)
 
+      const balance = pathOr(false, ['balance'], data)
+
+      if (!balance) throw new Error('insufficient balance')
+
       setProductList([
         ...productList,
         {
@@ -241,6 +244,13 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
       })
     }
   }, [])
+
+  useEffect(() => {
+    setFormPdv({
+      ...formData,
+      productList
+    })
+  }, [productList, formData])
 
   const resetAll = () => {
     setStep(0)
