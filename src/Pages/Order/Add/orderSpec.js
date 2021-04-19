@@ -27,6 +27,7 @@ const buildOrder = applySpec({
   userId: prop('userId'),
   customerId: getCustomerId,
   statusId: prop('statusId'),
+  note: prop('note'),
   products: buildProducts,
   originType: pathOr('pdv', ['originType'])
 })

@@ -17,6 +17,7 @@ const initialFormData = {
   customerId: '',
   userId: '',
   statusId: '',
+  note: '',
   products: []
 }
 
@@ -127,6 +128,10 @@ const Add = ({
     return form.resetFields()
   }
 
+  const handleNote = (values) => {
+    setFormData({...formData, note: values})
+  } 
+
   const handleRemoveItem = (productRemove) => {
     const notEqual = (productItem) => {
       if (
@@ -173,6 +178,7 @@ const Add = ({
                 statusList={statusList}
                 userSelected={userSelected}
                 navigationStep={navigationStep}
+                handleNote={handleNote}
               />
             </Col>
           </Row>

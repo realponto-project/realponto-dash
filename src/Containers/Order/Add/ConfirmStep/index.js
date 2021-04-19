@@ -1,14 +1,23 @@
 import React from 'react'
-import { Divider, Typography, Row, Col, Button } from 'antd'
-import { translateStatus } from '../../../../utils/orderStatus'
+import { Divider, Typography, Row, Col, Button, Input } from 'antd'
+import { find, propEq } from 'ramda'
+
+import styles from './style.module.css'
+
 const { Title } = Typography
+const { TextArea } = Input
 
 const ConfirmStep = ({
   formData,
   customerSelected,
   userSelected,
-  navigationStep
+  navigationStep,
+  handleNote, 
+  statusList
 }) => {
+
+  const status = find(propEq('id', formData.statusId))(statusList)
+
   return (
     <Row gutter={[8, 8]}>
       <Col span={24}>
@@ -44,7 +53,7 @@ const ConfirmStep = ({
 
       <Col span={20}>
         <p style={{ marginBottom: 0 }}>Tipo de Ordem</p>
-        <Title level={5}>{translateStatus[formData.status]}</Title>
+        <Title level={5}>{status.label}</Title>
       </Col>
 
       <Col span={4} style={{ textAlign: 'right' }}>
@@ -82,6 +91,20 @@ const ConfirmStep = ({
         <Button type="text" onClick={() => navigationStep(2)}>
           Editar
         </Button>
+      </Col>
+
+      <Divider />
+
+      <Col span={24}>
+        <p style={{ marginBottom: 0 }}>Observação</p>
+          <TextArea 
+            className={styles.textarea}
+            placeholder="Digite a observação" 
+            bordered={false}
+            autoSize
+            value={formData.note}
+            onChange={({target: {value}}) => handleNote(value)}
+          />
       </Col>
 
       <Divider />
