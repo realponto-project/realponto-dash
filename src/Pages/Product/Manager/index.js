@@ -20,7 +20,7 @@ const initialFilterState = {
   name: ''
 }
 
-const parsePrice = (value) => value ? value.replace(/\D/g, '') : value
+const parsePrice = (value) => value ? String(value).replace(/\D/g, '') : value
 const productPayload = applySpec({
   id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
   balance: pathOr(0, ['balance']),
@@ -97,6 +97,7 @@ const Manager = ({
   }
 
   const handleSubmitUpdate = async (values) => {
+    console.log(values)
     try {
       await updateProduct(productPayload(values))
       getAllProducts()
