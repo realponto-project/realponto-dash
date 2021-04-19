@@ -53,6 +53,7 @@ const Add = ({ history, status }) => {
   }
 
   const handleSubmit = async (values) => {
+    console.log('values',values)
     try {
       await createOrder(buildOrderSpec({ ...values, originType: 'order' }))
       setKey(key + 1)
