@@ -8,7 +8,7 @@ import Upgrade from '../Upgrade'
 import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
-import { applySpec, divide, compose, pipe, prop, __ } from 'ramda'
+import { applySpec, compose, prop, __ } from 'ramda'
 const CheckboxGroup = Checkbox.Group
 import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 
@@ -49,6 +49,7 @@ const Manager = ({
   const handleChooseProduct = (product) => {
     const buildProductChoosed = applySpec({
       name: prop('name'),
+      category: prop('category'),
       minQuantity: prop('minQuantity'),
       barCode: prop('barCode'),
       id: prop('id'),

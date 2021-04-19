@@ -52,6 +52,9 @@ const Add = ({ visible, onCreate, onCancel }) => {
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input placeholder="Insira o nome do produto" />
         </Form.Item>
+        <Form.Item name="category" label="Categoria">
+          <Input placeholder="Insira a categoria" />
+        </Form.Item>
         <Row align="space-between">
           <Col span={12}>
             <Form.Item name="balance" label="Qtd estoque">
