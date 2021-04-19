@@ -14,7 +14,7 @@ const columns = (chooseUser, handleSubmitUpdate) => [
         style={{width: '70px', backgroundColor: record.activated ? '#65A300' : 'rgba(0,0,0,.25)'}} 
         checkedChildren="Ativo" 
         unCheckedChildren="Inativo" 
-        defaultChecked={record.activated}
+        checked={record.activated}
         onChange={(activated) => handleSubmitUpdate({activated, id: record.id})}
       />
     )
