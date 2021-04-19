@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Row, Col, Steps } from 'antd'
 import CustomerInfo from './CustomerInfo'
 import PaymentInfo from './PaymentInfo'
