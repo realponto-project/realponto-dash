@@ -35,7 +35,7 @@ const PieChartHome = ({
       <Col span={24}>
         <div className={styles.pieChartLegends}>
           <span className={styles.spanCircle} style={{background: 'rgb(93, 160, 252)'}}/>
-          <p className={styles.pieChartLegend}>Vendas: {dataChart && dataChart[0].value}</p>
+          <p className={styles.pieChartLegend}>Vendas: {dataChart.length && dataChart[0] && dataChart[0].value}</p>
         </div>
       </Col>
     </Row>
