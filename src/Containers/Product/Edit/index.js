@@ -56,6 +56,9 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input />
         </Form.Item>
+        <Form.Item name="category" label="Categoria">
+          <Input placeholder="Insira a categoria" />
+        </Form.Item>
         <Form.Item
           name="minQuantity"
           label="Qtd mínima"

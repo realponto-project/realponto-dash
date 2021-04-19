@@ -25,7 +25,12 @@ const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
     key: 'name',
     fixed: 'left'
   },
-
+  {
+    title: 'Categoria',
+    dataIndex: 'category',
+    key: 'category',
+    fixed: 'left'
+  },
   {
     title: 'Qtd mínima',
     dataIndex: 'minQuantity',

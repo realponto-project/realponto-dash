@@ -29,6 +29,7 @@ const productPayload = applySpec({
   minQuantity: pathOr(null, ['minQuantity']),
   name: pathOr(null, ['name']),
   salePrice: pipe(pathOr('0', ['salePrice']), parsePrice),
+  category: pathOr(null, ['category']),
   activated: pathOr(true, ['activated'])
 })
 
