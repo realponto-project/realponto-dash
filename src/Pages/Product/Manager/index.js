@@ -97,7 +97,6 @@ const Manager = ({
   }
 
   const handleSubmitUpdate = async (values) => {
-    console.log(values)
     try {
       await updateProduct(productPayload(values))
       getAllProducts()
