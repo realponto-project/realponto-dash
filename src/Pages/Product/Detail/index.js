@@ -1,10 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import { compose } from 'ramda'
+import {
+  add,
+  append,
+  applySpec,
+  compose,
+  keys,
+  map,
+  path,
+  pipe,
+  reduceBy
+} from 'ramda'
 import { withRouter } from 'react-router-dom'
-import { createSerialNumbers, getAll, updateSerial } from '../../../Services/SerialNumber'
+import {
+  createSerialNumbers,
+  getAll,
+  updateSerial
+} from '../../../Services/SerialNumber'
 
 import DetailContainer from '../../../Containers/Product/Detail'
-import { getProductById } from '../../../Services/Product'
+import {
+  getProductById,
+  getTransactionsToChart
+} from '../../../Services/Product'
+
+const colorsLabel = {
+  Saída: 'rgb(23, 201, 178)',
+  Entrada: 'rgb(93, 160, 252)'
+}
 
 const Detail = ({ match }) => {
   const [product, setProduct] = useState(null)
@@ -12,11 +34,40 @@ const Detail = ({ match }) => {
   const [serialVisibleEdit, setSerialVisibleEdit] = useState(false)
   const [serialData, setSerialData] = useState([])
   const [serialNumberSelected, setSerialNumberEdit] = useState({})
+  const [pieChartData, setPieChartData] = useState([])
 
   useEffect(() => {
     getAllSerial()
     getProduct()
+    getTransactions()
   }, [])
+
+  const getTransactions = async () => {
+    try {
+      const { data } = await getTransactionsToChart(match.params.id)
+
+      setPieChartData(
+        pipe(
+          reduceBy(
+            ({ count }, { countItems }) => ({ count: add(count, countItems) }),
+            { count: 0 },
+            path(['status.typeLabel'])
+          ),
+          (values) =>
+            pipe(
+              keys,
+              map((name) => ({
+                name,
+                value: path([name, 'count'], values),
+                color: colorsLabel[name]
+              }))
+            )(values)
+        )(data)
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const openSerial = () => {
     setSerialVisible(true)
@@ -44,7 +95,7 @@ const Detail = ({ match }) => {
   const handleOkSerial = async (values) => {
     const serialNumbers = [values.serialNumber]
     try {
-     await createSerialNumbers({serialNumbers, productId: match.params.id })
+      await createSerialNumbers({ serialNumbers, productId: match.params.id })
       setSerialVisible(false)
       await getAllSerial()
     } catch (error) {
@@ -70,7 +121,6 @@ const Detail = ({ match }) => {
       console.log(error)
     }
   }
-
   return (
     <DetailContainer
       openSerial={openSerial}
@@ -83,6 +133,7 @@ const Detail = ({ match }) => {
       serialData={serialData}
       serialNumberSelected={serialNumberSelected}
       handleOkSerialEdit={handleOkSerialEdit}
+      pieChartData={pieChartData}
     />
   )
 }

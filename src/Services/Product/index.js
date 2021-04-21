@@ -20,10 +20,16 @@ const updateProduct = async (values) => {
   return await axiosIntance.put(`/products/${values.id}`, values)
 }
 
+const getTransactionsToChart = async (id) => {
+  return await axiosIntance.get(`/products-transactions/${id}`)
+}
+
+
 export {
   createProduct,
   getAll,
   getProductByBarCode,
   getProductById,
-  updateProduct
+  updateProduct,
+  getTransactionsToChart
 }

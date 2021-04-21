@@ -10,18 +10,19 @@ import AddSerial from './Add'
 
 const { Title } = Typography
 
-const Detail = ({ 
-  product, 
-  serialData, 
-  openSerial, 
-  serialVisible, 
-  handleCancel, 
-  handleOkSerial, 
-  serialVisibleEdit, 
-  openSerialEdit, 
-  serialNumberSelected, 
-  handleOkSerialEdit}) => {
-
+const Detail = ({
+  product,
+  serialData,
+  openSerial,
+  serialVisible,
+  handleCancel,
+  handleOkSerial,
+  serialVisibleEdit,
+  openSerialEdit,
+  serialNumberSelected,
+  pieChartData,
+  handleOkSerialEdit
+}) => {
   const productStatus = pathOr(false, ['activated'], product)
   const createdAt = moment(pathOr('', ['createdAt'], product)).format(
     'DD/MM/YYYY - HH:mm'
@@ -73,18 +74,24 @@ const Detail = ({
                     Adicionar
                   </Button>
                 </Col>
-                {<AddSerial visible={serialVisible} onCancel={handleCancel} onOk={handleOkSerial}/>}
+                {
+                  <AddSerial
+                    visible={serialVisible}
+                    onCancel={handleCancel}
+                    onOk={handleOkSerial}
+                  />
+                }
               </Row>
             </Card>
           </Col>
           <Col span={24}>
             <Card bordered={false}>
-              <SerialNumberList 
-                serialNumberData={serialData} 
-                serialVisibleEdit={serialVisibleEdit}  
-                openSerialEdit={openSerialEdit} 
+              <SerialNumberList
+                serialNumberData={serialData}
+                serialVisibleEdit={serialVisibleEdit}
+                openSerialEdit={openSerialEdit}
                 serialNumberSelected={serialNumberSelected}
-                onCancel={handleCancel} 
+                onCancel={handleCancel}
                 onOk={handleOkSerialEdit}
               />
             </Card>
@@ -93,7 +100,7 @@ const Detail = ({
       </Col>
       <Col span={6}>
         <Card bordered={false} style={{ height: '608px' }}>
-          <PieChart pieChartData />
+          <PieChart pieChartData={pieChartData} />
         </Card>
       </Col>
     </Row>
