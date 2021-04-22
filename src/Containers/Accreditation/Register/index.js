@@ -105,8 +105,6 @@ const Register = ({ handleClickContinue, loading }) => (
                 </Form.Item>
               </Card>
 
-              <br />
-
               <Row justify="center">
                 <Form.Item style={{ width: '100%' }}>
                   <Button

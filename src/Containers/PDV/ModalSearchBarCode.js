@@ -10,7 +10,7 @@ const ModalSearchBarCode = ({ isVisible, handleCancel, handleSearch }) => {
 
   useEffect(() => {
     setValue('')
-  }, [isVisible])
+  }, [])
 
   return (
     <Modal visible={isVisible} footer={null} onCancel={handleCancel}>

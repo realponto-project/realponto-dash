@@ -25,12 +25,12 @@ const TransactionStep = ({
         <div style={{ height: '88px', marginBottom: '20px' }}>
           <Form.Item
             name="statusId"
-            label="Tipo da ordem"
+            label="Status"
             validateStatus={formErrors && formErrors.statusId ? 'error' : ''}
             hasFeedback
             style={{ marginBottom: '4px' }}>
             <Select
-              placeholder="Selecione o tipo da ordem"
+              placeholder="Selecione o status da ordem"
               onChange={changeFormValue('statusId')}
               notFoundContent="Nenhum tipo de ordem encontrado!">
               {statusList &&

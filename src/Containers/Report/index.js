@@ -36,7 +36,6 @@ const Report = ({
         window.print()
       }, 100)
     }
-
   },[orderSelected])
 
   return (
@@ -55,7 +54,8 @@ const Report = ({
             <Col span={12} style={{ textAlign: 'right' }}>
               <Button
                 onClick={HandleorderSelected(datasource)}
-                icon={<PrinterOutlined />}>
+                icon={<PrinterOutlined />}
+                disabled={!orderSearch.userId}>
                 Imprimir ordens
               </Button>
             </Col>
@@ -68,7 +68,7 @@ const Report = ({
             <Col span={4}>
               <DatePicker
                 format={dateFormat}
-                placeholder="20/11/2021"
+                placeholder="DD/MM/AAAA"
                 onChange={(value) => handleChangeSearch('date', value)}
               />
             </Col>
@@ -99,29 +99,29 @@ const Report = ({
 
       {datasource.length > 0 ? datasource.map(item => (
         <Fragment key={item.id}>
-          <Col span={20} style={{ marginTop: '50px' }} className={styles.noPrint}>
+          <Col span={20} style={{ marginTop: '20px' }} className={styles.noPrint}>
             <Title level={5} style={{color: 'rgb(70, 70, 70)'}}>{item.customer ? item.customer.name : 'Cliente não associado'}</Title>
           </Col>
-          <Col span={4} style={{ marginTop: '50px' }} align="end" className={styles.noPrint}>
+          <Col span={4} style={{ marginTop: '20px' }} align="end" className={styles.noPrint}>
             <Button type="link" onClick={HandleorderSelected(item)}><PrinterOutlined style={{fontSize: '20px'}}/></Button>
           </Col>
           { item.transactions && item.transactions.map(transactionItem => (
             <Col span={24} key={transactionItem.id} className={styles.noPrint}>
               <Card>
                 <Row align="middle">
-                  <Col span={2} align="center" >
+                  <Col span={4}>
                     <Paragraph className={styles.textParagraph}>{item.user && item.user.name}</Paragraph>
                   </Col>
-                  <Col span={4} align="center">
+                  <Col span={2}>
                     <Paragraph className={styles.textParagraph}>{moment(transactionItem.createdAt).format('DD/MM/YYYY')}</Paragraph>
                   </Col>
-                  <Col span={12} align="center">
+                  <Col span={12}>
                     <Paragraph className={styles.textParagraph}>{transactionItem.product && transactionItem.product.name}</Paragraph>
                   </Col>
-                  <Col span={2} align="center">
+                  <Col span={2}>
                     <Paragraph className={styles.textParagraph}>{transactionItem.quantity}</Paragraph>
                   </Col>
-                  <Col span={2} align="center">
+                  <Col span={2}>
                     <Button type='link'>Movimentação</Button>
                   </Col>
                 </Row>

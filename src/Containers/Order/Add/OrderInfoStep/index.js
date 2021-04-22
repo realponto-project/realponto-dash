@@ -28,13 +28,13 @@ const OrderInfoStep = ({
   return (
     <>
       <Title level={4}>IDENTIFICAÇÃO</Title>
-      <p>Preecha os campos do usuário ou cliente para está ordem</p>
+      <p>Preecha os campos do usuário e cliente para está ordem</p>
       <Form layout="vertical" initialValues={formData}>
         <div style={{ height: '88px', marginBottom: '20px' }}>
           <Form.Item
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}
             name="userId"
-            label="Usuário"
+            label="Usuário responsável"
             validateStatus={formErrors && formErrors.userId ? 'error' : ''}
             style={{ marginBottom: '4px' }}
             hasFeedback>
