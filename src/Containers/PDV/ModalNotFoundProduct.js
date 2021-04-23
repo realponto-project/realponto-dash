@@ -29,7 +29,7 @@ const ModalNotFoundProduct = ({
             onClick={handleClickTryAgain}
             style={{ width: '100%' }}
             type="primary">
-            Tenta novamente
+            Tentar novamente
           </Button>
         </Col>
       </Row>

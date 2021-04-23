@@ -61,7 +61,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
               <InputNumber
                 min={1}
                 style={{ width: '98%' }}
-                placeholder="Ex: 88"
+                placeholder="Ex: 1"
               />
             </Form.Item>
           </Col>
@@ -75,7 +75,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
               <InputNumber
                 min={1}
                 style={{ width: '98%' }}
-                placeholder="Ex: 88"
+                placeholder="Ex: 1"
               />
             </Form.Item>
           </Col>

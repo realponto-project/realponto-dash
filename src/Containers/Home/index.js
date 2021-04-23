@@ -47,7 +47,7 @@ const Home = ({
       <Col span={6}>
         <div className={styles.cardTotalValues}>
           <div>
-            <h1 className={styles.cardTotalTitle}>Total de Clientes</h1>
+            <h1 className={styles.cardTotalTitle}>Total de clientes</h1>
             <h1 className={styles.cardTotalValue}>{customers && customers.value > 0 ? customers.value : '-' }</h1>
           </div>
           <Image src={customers && customers.value > 0 ? CustomersSvg : EmptyStateCustomersSvg } preview={false} alt="customers" />

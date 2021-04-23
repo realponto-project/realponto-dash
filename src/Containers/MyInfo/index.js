@@ -95,7 +95,7 @@ const MyInfo = ({ loading, user, updateMyInfo }) => {
                   rules={[
                     { required: true, message: 'Este campo é obrigatório!' }
                   ]}>
-                  <Input maxLength={11} />
+                  <Input maxLength={11} placeholder="Insira a sua identidade"/>
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -105,7 +105,7 @@ const MyInfo = ({ loading, user, updateMyInfo }) => {
                   rules={[
                     { required: true, message: 'Este campo é obrigatório!' }
                   ]}>
-                  <Input addonBefore="+55 " maxLength={17} />
+                  <Input addonBefore="+55 " maxLength={17}  placeholder="Insira seu telefone"/>
                 </Form.Item>
               </Col>
               <Col span={8}>
@@ -118,7 +118,7 @@ const MyInfo = ({ loading, user, updateMyInfo }) => {
                   <DatePicker
                     format="DD/MM/YYYY"
                     style={{ width: '100%' }}
-                    placeholder="Data de Nascimento"
+                    placeholder="Data de nascimento"
                   />
                 </Form.Item>
               </Col>

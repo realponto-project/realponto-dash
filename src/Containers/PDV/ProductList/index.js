@@ -17,7 +17,7 @@ const productItem = (
   handleClickUp,
   handleClickDown,
   orderCreated,
-  isSaved
+  // isSaved
 ) => ({ id, name, barCode, quantity, salePrice, balance }) => {
   return (
     <li key={id} className={styles.productItem}>
@@ -75,26 +75,25 @@ const ProductList = ({
 }) => {
   return (
     <div>
-      <h2>Ponto de Venda</h2>
       <div className={styles.searchProduct}>
         <Row gutter={[8, 8]}>
           <Col span={24}>
-            <h4>Buscar produto</h4>
+            <h4>Busca por produto:</h4>
           </Col>
-          <Col span={16}>
+          <Col span={19}>
             <AutoComplete
               // disabled={isSaved}
               onSearch={onSearch}
               onChange={onChange}
               onSelect={onSelectProduct}
               options={optionSearch}
-              placeholder="pequise um produto aqui!"
+              placeholder="Pesquise por um produto"
               style={{ width: '100%' }}
               value={searchProduct}
               disabled={!!orderCreated}
             />
           </Col>
-          <Col span={8}>
+          <Col span={5}>
             <Button
               disabled={!!orderCreated}
               icon={<BarcodeOutlined />}

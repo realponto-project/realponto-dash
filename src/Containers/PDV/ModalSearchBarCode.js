@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Col, Image, Input, Modal, Row, Typography } from 'antd'
+import { Col, Image, Input, Modal, Row, Typography, Form } from 'antd'
 
 import barCodeScanner from '../../Assets/barCodeScanner.svg'
 
@@ -25,9 +25,10 @@ const ModalSearchBarCode = ({ isVisible, handleCancel, handleSearch }) => {
           </Text>
         </Col>
         <Col span={24}>
-          <Text>Scannear código de barra</Text>
+          <Text>Scannear código de barras:</Text>
           <Input
             autoFocus
+            style={{marginTop: '15px'}}
             value={value}
             onChange={({ target }) => setValue(target.value)}
             onPressEnter={() => handleSearch(value)}
