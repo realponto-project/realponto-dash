@@ -1,14 +1,26 @@
 import React, { Fragment, useState, useEffect } from 'react'
-import { Row, Col, Typography, Card, DatePicker, Button, Empty, Image, Select } from 'antd'
+import {
+  Row,
+  Col,
+  Typography,
+  Card,
+  DatePicker,
+  Button,
+  Empty,
+  Image,
+  Select,
+  Tag
+} from 'antd'
 import { PrinterOutlined } from '@ant-design/icons'
 import moment from 'moment'
-import Print from './Print'
-
-import NoData from '../../Assets/noData.svg'
-import styles from './style.module.css'
 import { isEmpty, not, type } from 'ramda'
 
-const { Option } = Select;
+import Print from './Print'
+import ModalMovement from './ModalMovement'
+import NoData from '../../Assets/noData.svg'
+import styles from './style.module.css'
+
+const { Option } = Select
 
 const { Title } = Typography
 const { Paragraph } = Typography
@@ -16,31 +28,38 @@ const { Paragraph } = Typography
 const dateFormat = 'DD/MM/YYYY'
 
 const Report = ({
-  orderSearch,
-  handleChangeSearch,
-  handleGetAllOrders,
+  closeModal,
   datasource,
+  handleChangeSearch,
+  handleClickMovement,
+  handleGetAllOrders,
+  handleSubmitMovement,
+  isVisible,
+  movementData,
+  orderSearch,
   users
 }) => {
   const [orderSelected, setOrderSelected] = useState([])
 
-  const HandleorderSelected = values => () => {
-    
+  const HandleorderSelected = (values) => () => {
     const data = type(values) === 'Array' ? values : [values]
     setOrderSelected(data)
   }
 
   useEffect(() => {
-    if(not(isEmpty(orderSelected))){
+    if (not(isEmpty(orderSelected))) {
       setTimeout(() => {
         window.print()
       }, 100)
     }
-  },[orderSelected])
+  }, [orderSelected])
 
   return (
     <Row>
-      <Col span={24} style={{ marginBottom: '16px' }} className={styles.noPrint}>
+      <Col
+        span={24}
+        style={{ marginBottom: '16px' }}
+        className={styles.noPrint}>
         <Card bordered={false}>
           <Row>
             <Col span={12}>
@@ -73,23 +92,24 @@ const Report = ({
               />
             </Col>
             <Col span={13}>
-
-            <Select 
-              placeholder="Filtre por colaborador" 
-              style={{ width: '100%' }}
-              value={orderSearch.userId}
-              onChange={(value) => handleChangeSearch('userId', value)}
-            >
-              {users.map(({ id, name}) => (
-                <Option key={id} value={id}>{name}</Option>
-              ))}
-            </Select>
+              <Select
+                placeholder="Filtre por colaborador"
+                style={{ width: '100%' }}
+                value={orderSearch.userId}
+                onChange={(value) => handleChangeSearch('userId', value)}>
+                {users.map(({ id, name }) => (
+                  <Option key={id} value={id}>
+                    {name}
+                  </Option>
+                ))}
+              </Select>
             </Col>
             <Col span={7} style={{ textAlign: 'right' }}>
-              <Button style={{ marginRight: '16px' }} >
-                Limpar filtros
-              </Button>
-              <Button type="primary" onClick={handleGetAllOrders} disabled={!orderSearch.userId}>
+              <Button style={{ marginRight: '16px' }}>Limpar filtros</Button>
+              <Button
+                type="primary"
+                onClick={handleGetAllOrders}
+                disabled={!orderSearch.userId}>
                 Filtrar
               </Button>
             </Col>
@@ -97,50 +117,109 @@ const Report = ({
         </Card>
       </Col>
 
-      {datasource.length > 0 ? datasource.map(item => (
-        <Fragment key={item.id}>
-          <Col span={20} style={{ marginTop: '20px' }} className={styles.noPrint}>
-            <Title level={5} style={{color: 'rgb(70, 70, 70)'}}>{item.customer ? item.customer.name : 'Cliente não associado'}</Title>
-          </Col>
-          <Col span={4} style={{ marginTop: '20px' }} align="end" className={styles.noPrint}>
-            <Button type="link" onClick={HandleorderSelected(item)}><PrinterOutlined style={{fontSize: '20px'}}/></Button>
-          </Col>
-          { item.transactions && item.transactions.map(transactionItem => (
-            <Col span={24} key={transactionItem.id} className={styles.noPrint}>
-              <Card>
-                <Row align="middle">
-                  <Col span={4}>
-                    <Paragraph className={styles.textParagraph}>{item.user && item.user.name}</Paragraph>
+      {datasource.length > 0 ? (
+        <>
+          {datasource.map((item) => (
+            <Fragment key={item.id}>
+              <Col
+                span={20}
+                style={{ marginTop: '20px' }}
+                className={styles.noPrint}>
+                <Title level={5} style={{ color: 'rgb(70, 70, 70)' }}>
+                  {item.customer ? item.customer.name : 'Cliente não associado'}
+                </Title>
+              </Col>
+              <Col
+                span={4}
+                style={{ marginTop: '20px' }}
+                align="end"
+                className={styles.noPrint}>
+                <Button type="link" onClick={HandleorderSelected(item)}>
+                  <PrinterOutlined style={{ fontSize: '20px' }} />
+                </Button>
+              </Col>
+
+              {item.transactions &&
+                item.transactions.map((transactionItem) => (
+                  <Col
+                    span={24}
+                    key={transactionItem.id}
+                    className={styles.noPrint}>
+                    <Card>
+                      <Row align="middle">
+                        <Col span={2} align="center">
+                          <Paragraph className={styles.textParagraph}>
+                            {item.user && item.user.name}
+                          </Paragraph>
+                        </Col>
+
+                        <Col span={3} align="center">
+                          <Tag color={transactionItem.status.color}>
+                            {transactionItem.status.label}
+                          </Tag>
+                        </Col>
+                        <Col span={3} align="center">
+                          <Paragraph className={styles.textParagraph}>
+                            {moment(transactionItem.createdAt).format(
+                              'DD/MM/YYYY'
+                            )}
+                          </Paragraph>
+                        </Col>
+                        <Col span={10} align="center">
+                          <Paragraph className={styles.textParagraph}>
+                            {transactionItem.product &&
+                              transactionItem.product.name}
+                          </Paragraph>
+                        </Col>
+                        <Col span={2} align="center">
+                          <Paragraph className={styles.textParagraph}>
+                            {transactionItem.quantity}
+                          </Paragraph>
+                        </Col>
+                        {transactionItem.status.type === 'outputs' && (
+                          <Col span={2} align="center">
+                            <Button
+                              onClick={() =>
+                                handleClickMovement({
+                                  ...transactionItem,
+                                  protocol: item.protocol
+                                })
+                              }
+                              type="link">
+                              Movimentação
+                            </Button>
+                          </Col>
+                        )}
+                      </Row>
+                    </Card>
                   </Col>
-                  <Col span={2}>
-                    <Paragraph className={styles.textParagraph}>{moment(transactionItem.createdAt).format('DD/MM/YYYY')}</Paragraph>
-                  </Col>
-                  <Col span={12}>
-                    <Paragraph className={styles.textParagraph}>{transactionItem.product && transactionItem.product.name}</Paragraph>
-                  </Col>
-                  <Col span={2}>
-                    <Paragraph className={styles.textParagraph}>{transactionItem.quantity}</Paragraph>
-                  </Col>
-                  <Col span={2}>
-                    <Button type='link'>Movimentação</Button>
-                  </Col>
-                </Row>
-              </Card>
-            </Col>
+                ))}
+            </Fragment>
           ))}
-        </Fragment>
-      )) :
-        <Col span={24} align="center" style={{marginTop: '16px'}} className={styles.noPrint}>
+        </>
+      ) : (
+        <Col
+          span={24}
+          align="center"
+          style={{ marginTop: '16px' }}
+          className={styles.noPrint}>
           <Card>
             <Empty
-              style={{color: 'rgb(114, 113, 113)'}}
+              style={{ color: 'rgb(114, 113, 113)' }}
               description="Não há dados"
               image={<Image width={85} src={NoData} preview={false} />}
             />
           </Card>
         </Col>
-      }
-      <Print orderSelected={orderSelected} className={styles.print}/>
+      )}
+      <Print orderSelected={orderSelected} className={styles.print} />
+      <ModalMovement
+        handleCancel={closeModal}
+        handleSubmit={handleSubmitMovement}
+        movementData={movementData}
+        userList={users}
+        visible={isVisible}
+      />
     </Row>
   )
 }
