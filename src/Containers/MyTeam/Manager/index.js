@@ -85,7 +85,7 @@ const Manager = ({
           <Row gutter={[8, 8]}>
             <Col span={13}>
               <Input
-                placeholder="Filtre por nome ou "
+                placeholder="Filtre por nome ou email"
                 prefix={<SearchOutlined />}
                 name="name"
                 value={filters.name}
