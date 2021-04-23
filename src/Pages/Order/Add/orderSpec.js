@@ -34,7 +34,6 @@ const buildOrder = applySpec({
 
 const removeCustomerIdNull = (payload) => {
   if (!prop('customerId', payload)) {
-    console.log(payload, 'vai vendo')
     return omit(['customerId'], payload)
   }
 

@@ -76,9 +76,13 @@ const Manager = ({
     }
   }
 
-  useEffect(() => {
+  const quantityProductSeting = () => {
     setQuantityProduct(company.subscription.plan.quantityProduct)
-  }, [company])
+  } 
+
+  useEffect(() => {
+    quantityProductSeting()
+  }, [])
 
   return (
     <Row gutter={[8, 16]}>

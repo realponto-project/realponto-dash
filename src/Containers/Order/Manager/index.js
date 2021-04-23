@@ -98,7 +98,7 @@ const Manager = ({
             </Col>
             <Col span={13}>
               <Input
-                placeholder="Filtre por nome."
+                placeholder="Filtre por colaborador"
                 prefix={<SearchOutlined />}
                 onChange={handleOnChange}
                 name="user_name"

@@ -61,17 +61,17 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
     setPlanId(id)
   }
 
-  useEffect(() => {
-    const getAllPlans = () => {
-      getAll({ activated: true, description: 'Anual' }).then(({ data: { source } }) => {
-        const sourceFormated = map(buildPlan, source)
-        setPlans(sourceFormated)
-        setPlanId(
-          prop('key', find(propEq('description', 'Anual'), sourceFormated))
-        )
-      })
-    }
+  const getAllPlans = () => {
+    getAll({ activated: true, description: 'Anual' }).then(({ data: { source } }) => {
+      const sourceFormated = map(buildPlan, source)
+      setPlans(sourceFormated)
+      setPlanId(
+        prop('key', find(propEq('description', 'Anual'), sourceFormated))
+      )
+    })
+  }
 
+  useEffect(() => {
     getAllPlans()
   }, [])
 
