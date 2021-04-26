@@ -39,7 +39,7 @@ const CustomerInfo = ({
                 alt="card sale type"
                 preview={false}
               />
-              <h3>Venda Rápida</h3>
+              <h3>Venda rápida</h3>
             </div>
           </Col>
           <Col span={12}>
@@ -60,7 +60,7 @@ const CustomerInfo = ({
                 alt="card sale type"
                 preview={false}
               />
-              <h3>Venda Completa</h3>
+              <h3>Venda completa</h3>
             </div>
           </Col>
         </Row>
@@ -116,6 +116,14 @@ const CustomerInfo = ({
             ]}>
             <Input disabled={saleType.saleFast} placeholder="Insira o telefone do cliente"/>
           </Form.Item>
+        </Form.Item>
+        <h3>
+          <b>Dados da transportadora</b>
+        </h3>
+        <Form.Item
+          label="Nome da transportadora"
+          name="transportadora">
+          <Input placeholder="Insira o nome da transportadora" disabled={saleType.saleFast} />
         </Form.Item>
         <h3>
           <b>Endereço do cliente</b>

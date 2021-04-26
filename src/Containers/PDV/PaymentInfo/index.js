@@ -17,7 +17,6 @@ const PaymentInfo = ({
   handlePaymentType,
   paymentType,
   formPayment,
-  formCustomer
 }) => {
   return (
     <>
