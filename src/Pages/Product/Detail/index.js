@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
   add,
-  append,
-  applySpec,
   compose,
   keys,
   map,
@@ -35,12 +33,15 @@ const Detail = ({ match }) => {
   const [serialData, setSerialData] = useState([])
   const [serialNumberSelected, setSerialNumberEdit] = useState({})
   const [pieChartData, setPieChartData] = useState([])
+  const [page, setPage] = useState(1)
+  const [total, setTotal] = useState(10)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     getAllSerial()
     getProduct()
     getTransactions()
-  }, [])
+  }, [page])
 
   const getTransactions = async () => {
     try {
@@ -63,10 +64,14 @@ const Detail = ({ match }) => {
               }))
             )(values)
         )(data)
-      )
+        )
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const onChangeTable = ({current}) => {
+    setPage(current)
   }
 
   const openSerial = () => {
@@ -114,12 +119,17 @@ const Detail = ({ match }) => {
   }
 
   const getAllSerial = async () => {
+    setLoading(true)
     try {
-      const { data } = await getAll()
-      setSerialData(data)
+      const { data } = await getAll({ page, limit: 10 })
+      console.log('data', data)
+      setSerialData(data.rows)
+      setTotal(data.count)
     } catch (error) {
       console.log(error)
     }
+
+    setLoading(false)
   }
   return (
     <DetailContainer
@@ -134,6 +144,10 @@ const Detail = ({ match }) => {
       serialNumberSelected={serialNumberSelected}
       handleOkSerialEdit={handleOkSerialEdit}
       pieChartData={pieChartData}
+      onChangeTable={onChangeTable}
+      page={page}
+      total={total}
+      loading={loading}
     />
   )
 }

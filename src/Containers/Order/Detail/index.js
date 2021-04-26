@@ -97,19 +97,19 @@ const Detail = ({
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Nome do cliente</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer.name}
+                    {order.customer && order.customer ? order.customer.name : '-'}
                   </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer.document}
+                    {order.customer && order.customer ? order.customer.document : '-'}
                   </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Telefone</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer.phone}
+                    {order.customer && order.customer ? order.customer.phone : '-'}
                   </Title>
                 </Col>
 
