@@ -21,7 +21,11 @@ const Detail = ({
   openSerialEdit,
   serialNumberSelected,
   pieChartData,
-  handleOkSerialEdit
+  handleOkSerialEdit,
+  total,
+  onChangeTable,
+  loading,
+  page
 }) => {
   const productStatus = pathOr(false, ['activated'], product)
   const createdAt = moment(pathOr('', ['createdAt'], product)).format(
@@ -92,7 +96,11 @@ const Detail = ({
                 openSerialEdit={openSerialEdit}
                 serialNumberSelected={serialNumberSelected}
                 onCancel={handleCancel}
+                onChangeTable={onChangeTable}
                 onOk={handleOkSerialEdit}
+                total={total}
+                loading={loading}
+                page={page}
               />
             </Card>
           </Col>

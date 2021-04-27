@@ -46,24 +46,37 @@ const columns = (openSerialEdit) => [
 ]
 
 
-const OrderList = ({ serialNumberData, openSerialEdit, serialVisibleEdit, serialNumberSelected, onCancel, onOk }) => {
-  return (
-    <ConfigProvider
-      renderEmpty={() => (
-        <Empty
-          description="Não há dados"
-          image={<Image width={85} src={NoData} preview={false} />}
+const OrderList = ({ 
+    serialNumberData, 
+    onChangeTable, 
+    openSerialEdit, 
+    serialVisibleEdit, 
+    serialNumberSelected, 
+    onCancel, 
+    onOk, 
+    page, 
+    total,
+    loading
+  }) => {
+    return (
+      <ConfigProvider
+        renderEmpty={() => (
+          <Empty
+            description="Não há dados"
+            image={<Image width={85} src={NoData} preview={false} />}
+          />
+        )}>
+          <EditSerial visible={serialVisibleEdit} serialNumber={serialNumberSelected} onCancel={onCancel} onOk={onOk}/>
+        <Table
+          loading={loading}
+          columns={columns(openSerialEdit)}
+          dataSource={serialNumberData}
+          pagination={{ total, current: page}}
+          serialNumberData={serialNumberData}
+          onChange={onChangeTable}
         />
-      )}>
-        <EditSerial visible={serialVisibleEdit} serialNumber={serialNumberSelected} onCancel={onCancel} onOk={onOk}/>
-      <Table
-        columns={columns(openSerialEdit)}
-        dataSource={serialNumberData}
-        pagination={{ total: 25, current: 1 }}
-        serialNumberData={serialNumberData}
-      />
-    </ConfigProvider>
-  )
+      </ConfigProvider>
+    )
 }
 
 export default OrderList
