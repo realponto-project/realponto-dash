@@ -77,28 +77,28 @@ const Report = ({
               <DatePicker
                 format={dateFormat}
                 placeholder="DD/MM/AAAA"
+                style={{ width: '100%' }}
                 onChange={(value) => handleChangeSearch('date', value)}
               />
             </Col>
-            <Col span={13}>
-              <Select
-                placeholder="Filtre por colaborador"
-                style={{ width: '100%' }}
-                value={orderSearch.userId}
-                onChange={(value) => handleChangeSearch('userId', value)}>
-                {users.map(({ id, name }) => (
-                  <Option key={id} value={id}>
-                    {name}
-                  </Option>
-                ))}
-              </Select>
+            <Col span={14}>
+
+            <Select 
+              placeholder="Filtre por colaborador" 
+              style={{ width: '100%' }}
+              value={orderSearch.userId}
+              onChange={(value) => handleChangeSearch('userId', value)}
+            >
+              {users.map(({ id, name}) => (
+                <Option key={id} value={id}>{name}</Option>
+              ))}
+            </Select>
             </Col>
-            <Col span={7} style={{ textAlign: 'right' }}>
-              <Button style={{ marginRight: '16px' }}>Limpar filtros</Button>
-              <Button
-                type="primary"
-                onClick={handleGetAllOrders}
-                disabled={!orderSearch.userId}>
+            <Col span={6} style={{ textAlign: 'right' }}>
+              <Button style={{ marginRight: '16px' }} >
+                Limpar filtros
+              </Button>
+              <Button type="primary" onClick={handleGetAllOrders} disabled={!orderSearch.userId}>
                 Filtrar
               </Button>
             </Col>

@@ -54,7 +54,7 @@ const Manager = ({
           <Col span={16}>
             <Input
               name="search_name_or_document"
-              placeholder="Filtre por nome ou documento."
+              placeholder="Filtre por nome ou documento"
               prefix={<SearchOutlined />}
               value={filters.search_name_or_document}
               onChange={onChangeSearch}

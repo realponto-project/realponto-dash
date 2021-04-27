@@ -46,7 +46,7 @@ const AdSide = ({ plans }) => {
         <b>manutenções</b>
       </p>
       <Button onClick={() => setIsVisible(true)} type="primary" block>
-        Assine Agora <b> {price}</b>
+        Assine agora <b> {price}</b>
       </Button>
     </div>
   )
