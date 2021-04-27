@@ -44,11 +44,11 @@ const menuItems = [
     label: 'Ordens',
     key: '/logged/order/manager'
   },
-  {
-    icon: <DiffOutlined />,
-    label: 'Ordens consolidadas',
-    key: '/logged/order/report'
-  }
+  // {
+  //   icon: <DiffOutlined />,
+  //   label: 'Ordens consolidadas',
+  //   key: '/logged/order/report'
+  // }
 ]
 
 const LayoutComponent = ({ children, history, location, company, subscription }) => {
