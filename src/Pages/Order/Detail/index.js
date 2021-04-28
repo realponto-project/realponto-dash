@@ -10,7 +10,7 @@ import {
   finished,
   customerAssocite
 } from '../../../Services/Order'
-import { getAll } from '../../../Services/User'
+import { getAll, getByIdUser } from '../../../Services/User'
 import { getAll as getAllCustomers } from '../../../Services/Customer'
 
 import {
@@ -78,7 +78,9 @@ const Detail = ({ match, status }) => {
   const getOrder = async () => {
     try {
       const { data } = await getOrderById(match.params.id)
-      setOrder(data)
+      const orderData = pathOr({}, ['order'], data)
+      const responsible = pathOr({}, ['responsible'], data)
+      setOrder({ ...orderData, responsible })
       if (order.status.type === 'outputs') {
         const { data } = await getSerialOrderOutputs({
           transactionOutId: match.params.id,

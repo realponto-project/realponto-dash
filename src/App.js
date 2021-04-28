@@ -35,9 +35,9 @@ const App = () => {
           <Route path="/login" component={Login} />
           <Route exact path="/register/sucess" component={Success} />
           <Route path="/register" component={Register} />
-          <Route path="/logged" component={Logged} />
-          <Route path="/pdv" component={PDV} />
           <Route exact path="/user/onboarding" component={Onboarding} />
+          <Route exact path="/logged/pdv" component={PDV} />
+          <Route path="/logged" component={Logged} />
           <Redirect from="*" to="/login" />
         </Switch>
       </PersistGate>
