@@ -169,7 +169,7 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
           ? {
               ...product,
               quantity:
-                product.quantity === 1 ? product.quantity : product.quantity - 1
+              product.quantity === 1 ? product.quantity : product.quantity - 1
             }
           : product
       )
