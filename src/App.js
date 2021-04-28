@@ -14,6 +14,7 @@ import Logged from './Pages/Logged'
 import reducers from './Redux/reducers'
 import Onboarding from './Pages/Onboarding'
 import PDV from './Pages/PDV'
+import Catalog from './Pages/Catalog'
 
 const persistConfig = {
   key: 'root',
@@ -32,6 +33,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
         <Switch>
+          <Route path="/catalog/:companyId" component={Catalog} />
           <Route path="/login" component={Login} />
           <Route exact path="/register/sucess" component={Success} />
           <Route path="/register" component={Register} />
