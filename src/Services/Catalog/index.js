@@ -7,4 +7,10 @@ const getProducts = async (companyId, params = {}) => {
   })
 }
 
-export { getProducts }
+const getProductById = async (producId, params = {}) => {
+  return await axios.get(`${baseURL}/catalog/get-product/${producId}`, {
+    params
+  })
+}
+
+export { getProducts, getProductById }

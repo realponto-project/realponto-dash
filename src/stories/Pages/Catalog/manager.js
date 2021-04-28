@@ -1,11 +1,11 @@
 import React from 'react'
 import fake, { random, commerce, company, address, phone } from 'faker'
 
-import CatalogContainer from '../../../Containers/Catalog'
+import CatalogManagerContainer from '../../../Containers/Catalog/Manager'
 
 export default {
   title: 'Pages/Catalog',
-  component: CatalogContainer
+  component: CatalogManagerContainer
 }
 
 fake.locale = 'pt_PT'
@@ -30,9 +30,9 @@ const myCompany = {
   phone: phone.phoneNumber()
 }
 
-const Template = () => {
+const TemplateManager = () => {
   return (
-    <CatalogContainer
+    <CatalogManagerContainer
       productList={productList}
       company={myCompany}
       count={40}
@@ -40,4 +40,4 @@ const Template = () => {
   )
 }
 
-export const Defaul = Template.bind({})
+export const Manager = TemplateManager.bind({})

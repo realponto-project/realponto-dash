@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { applySpec, compose, map, path, pathOr, pipe } from 'ramda'
 import { withRouter, useLocation } from 'react-router-dom'
 
-import CatalogContainer from '../../Containers/Catalog'
+import CatalogManagerContainer from '../../Containers/Catalog/Manager'
 import { getProducts } from '../../Services/Catalog'
 import { getCompanyById } from '../../Services/Company'
 import { parseValuePTbr } from '../../utils/Masks/myInfoMasks'
 
-function useQuery () {
+const useQuery = () => {
   return new URLSearchParams(useLocation().search)
 }
 
@@ -21,7 +21,7 @@ const formatProductList = map(
   })
 )
 
-const Catalog = ({ match, history }) => {
+const CatalogManager = ({ match, history }) => {
   const query = useQuery()
 
   const [productList, setProductList] = useState([])
@@ -73,8 +73,12 @@ const Catalog = ({ match, history }) => {
     setPage(1)
   }
 
+  const handleClickCard = (productId) => {
+    history.push(`/catalog-product/${productId}`)
+  }
+
   return (
-    <CatalogContainer
+    <CatalogManagerContainer
       handleClickFilter={handleClickFilter}
       productList={formatProductList(productList)}
       company={company}
@@ -83,10 +87,11 @@ const Catalog = ({ match, history }) => {
       handleSearch={setSearchValue}
       handleChangePage={(page) => setPage(page)}
       page={page}
+      handleClickCard={handleClickCard}
     />
   )
 }
 
 const enhanced = compose(withRouter)
 
-export default enhanced(Catalog)
+export default enhanced(CatalogManager)

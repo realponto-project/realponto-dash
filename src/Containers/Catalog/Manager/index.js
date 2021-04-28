@@ -3,9 +3,9 @@ import { Card, Col, Dropdown, Image, Input, Menu, Pagination, Row } from 'antd'
 import { map } from 'ramda'
 import { DownOutlined } from '@ant-design/icons'
 
-import emptySvg from '../../Assets/empty.svg'
+import emptySvg from '../../../Assets/empty.svg'
+import logo from '../../../Assets/logo.svg'
 
-import logo from '../../Assets/logo.svg'
 import style from './style.module.css'
 
 const cardHeaderStyle = {
@@ -13,10 +13,19 @@ const cardHeaderStyle = {
   borderRadius: 8
 }
 
-const CardProduct = ({ id, price, name, description, urlImage }) => (
+const CardProduct = (handleClickCard) => ({
+  id,
+  price,
+  name,
+  description,
+  urlImage
+}) => (
   <Col span={6} xs={24} sm={12} md={8} lg={6} key={id}>
     <div className={style.wrapperCard}>
-      <Card hoverable style={{ width: 250 }}>
+      <Card
+        onClick={() => handleClickCard(id)}
+        hoverable
+        style={{ width: 250 }}>
         <div className={style.cardContent}>
           <div className={style.wrapperImage}>
             <Image preview={false} src={urlImage || emptySvg} alt="product" />
@@ -48,6 +57,7 @@ const Catalog = ({
   count,
   searchValue,
   handleChangePage,
+  handleClickCard,
   handleSearch,
   page,
   handleClickFilter
@@ -103,7 +113,7 @@ const Catalog = ({
         </Row>
       </Col>
 
-      {map(CardProduct, productList)}
+      {map(CardProduct(handleClickCard), productList)}
 
       <Col span={24}>
         <Row align="end">
