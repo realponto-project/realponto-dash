@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { applySpec, compose, isEmpty, isNil, not, pathEq, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Form } from 'antd'
+import { Form, Row, Col } from 'antd'
 import getAddress from '../../Services/Address'
 import {
   getAll,
@@ -11,6 +11,8 @@ import {
 } from '../../Services/Product'
 import { createOrder, getOrderById } from '../../Services/Order'
 import PDVContainer from '../../Containers/PDV'
+import Header from '../../Components/Header'
+import rootRoutes from '../../Routes/root'
 
 const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   const [step, setStep] = useState(0)
@@ -273,6 +275,11 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   }
 
   return (
+  <Row gutter={[8, 8]}>
+    <Col span={24}>
+      <Header rootRoutes={rootRoutes} />
+    </Col>
+    <Col span={24}>
     <PDVContainer
       step={step}
       handleNextStep={handleNextStep}
@@ -305,6 +312,8 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
       setIsVisibleModalNotFound={setIsVisibleModalNotFound}
       resetAll={resetAll}
     />
+    </Col>
+  </Row>
   )
 }
 

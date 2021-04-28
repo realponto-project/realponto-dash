@@ -13,6 +13,7 @@ const Header = ({
   loggoutUser,
   user,
   unSubscribe,
+  showSettings,
 }) => {
   const handleNavegator = ({ key }) => {
     if (key === 'loggout') {
@@ -66,15 +67,19 @@ const Header = ({
         </div>
       </Col>
       <Col span={12} style={{ textAlign: 'right' }}>
-        <Dropdown
-          key="1"
-          overlay={menu}
-          trigger={['click']}
-          onClick={(e) => e.preventDefault()}>
-          <Button type="link" style={{ fontSize: '14px' }}>
-            {user.name || 'Minha Conta'} <DownOutlined />
-          </Button>
-        </Dropdown>
+        {
+          showSettings && (
+            <Dropdown
+              key="1"
+              overlay={menu}
+              trigger={['click']}
+              onClick={(e) => e.preventDefault()}>
+              <Button type="link" style={{ fontSize: '14px' }}>
+                {user.name || 'Minha Conta'} <DownOutlined />
+              </Button>
+            </Dropdown>
+          )
+        }
       </Col>
     </Row>
   )
