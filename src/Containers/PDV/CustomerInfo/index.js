@@ -122,7 +122,7 @@ const CustomerInfo = ({
         </h3>
         <Form.Item
           label="Nome da transportadora"
-          name="transportadora">
+          name="shippingCompany">
           <Input placeholder="Insira o nome da transportadora" disabled={saleType.saleFast} />
         </Form.Item>
         <h3>
