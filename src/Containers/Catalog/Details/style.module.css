@@ -1,0 +1,80 @@
+.contentDetails h3{
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.contentDetails h3{
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.contentDetails h2{
+  font-size: 1.6875rem;
+  line-height: 2.25rem;
+  color: #1890FF;
+}
+
+.contentDetails p{
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+}
+
+.contentDetails label{
+  font-size: 1.25rem;
+  line-height: 1.675rem;
+}
+
+.cardContent{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  height: 200px;
+  overflow: hidden;
+}
+
+.cardContent .wrapperImage{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  margin-bottom: 10px;
+}
+
+.cardContent label{
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  margin: 0.125rem 0
+}
+
+.cardContent p{
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.75rem;
+  line-height: 0.875rem; 
+}
+
+.wrapperCard{
+  display: flex;
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.otherTitle{
+  font-family: Lato, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
