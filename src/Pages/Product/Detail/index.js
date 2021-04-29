@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {
   add,
+  always,
+  applySpec,
   compose,
   keys,
   map,
@@ -18,8 +20,12 @@ import {
 import DetailContainer from '../../../Containers/Product/Detail'
 import {
   getProductById,
-  getTransactionsToChart
+  getTransactionsToChart,
+  getAllImagesByProductId,
+  addImage,
+  removeImage
 } from '../../../Services/Product'
+import { message } from 'antd'
 
 const colorsLabel = {
   Saída: 'rgb(23, 201, 178)',
@@ -28,6 +34,7 @@ const colorsLabel = {
 
 const Detail = ({ match }) => {
   const [product, setProduct] = useState(null)
+  const [productImages, setProductImages] = useState([])
   const [serialVisible, setSerialVisible] = useState(false)
   const [serialVisibleEdit, setSerialVisibleEdit] = useState(false)
   const [serialData, setSerialData] = useState([])
@@ -131,9 +138,61 @@ const Detail = ({ match }) => {
 
     setLoading(false)
   }
+
+  const fetchImages = async () => {
+
+    const formatFileList = applySpec({
+      url: path(['url']),
+      uid: path(['id']),
+      name: path(['id']),
+      status: always('done')
+    })
+    const { data } = await getAllImagesByProductId(match.params.id)
+    setProductImages(map(formatFileList, data))
+  }
+
+    useEffect(() => {
+      fetchImages()
+    }, [])
+
+  const handleRemoveImage = async (productImageId) => {
+    try {
+      await removeImage(productImageId)
+      await fetchImages()
+    }catch (err){
+      console.error(err)
+    }
+  } 
+
+  const handleChangeUpload = async(info) => {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if(info.file.status === "removed") {
+      await handleRemoveImage(info.file.uid)
+      
+      message.success(`${info.file.name} deletado com sucesso`);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} atualizado com sucesso`);
+    } else if (info.file.status === 'error') {
+      message.error(`Erro ao atualizar ${info.file.name}`);
+    }
+  }
+
+  const handleUpload =  async (file) => {
+    const data = new FormData()
+    data.append('file', file)
+    data.append('productId', product.id)
+    await addImage(data)
+    await fetchImages()
+  }
+
   return (
     <DetailContainer
+      handleUpload={handleUpload}
       openSerial={openSerial}
+      handleChangeUpload={handleChangeUpload}
       openSerialEdit={openSerialEdit}
       serialVisible={serialVisible}
       serialVisibleEdit={serialVisibleEdit}
@@ -148,6 +207,7 @@ const Detail = ({ match }) => {
       page={page}
       total={total}
       loading={loading}
+      productImages={productImages}
     />
   )
 }

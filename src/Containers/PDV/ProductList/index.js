@@ -1,5 +1,5 @@
 import React from 'react'
-import { AutoComplete, Button, Col, Row } from 'antd'
+import { AutoComplete, Button, Col, Row, Typography } from 'antd'
 import {
   BarcodeOutlined,
   DeleteOutlined,
@@ -11,6 +11,9 @@ import ClassNames from 'classnames'
 
 import styles from './style.module.css'
 import { formatPrice } from '../../../utils'
+
+
+const { Title } = Typography
 
 const productItem = (
   handleClickDelete,
@@ -78,9 +81,9 @@ const ProductList = ({
       <div className={styles.searchProduct}>
         <Row gutter={[8, 8]}>
           <Col span={24}>
-            <h4>Busca por produto:</h4>
+            <Title level={5}>Busca por produto:</Title>
           </Col>
-          <Col span={19}>
+          <Col span={18}>
             <AutoComplete
               // disabled={isSaved}
               onSearch={onSearch}
@@ -93,13 +96,13 @@ const ProductList = ({
               disabled={!!orderCreated}
             />
           </Col>
-          <Col span={5}>
+          <Col span={6}>
             <Button
               disabled={!!orderCreated}
               icon={<BarcodeOutlined />}
               onClick={openModalBarcode}
               type="primary">
-              Buscar cód. barras
+              Código de barras
             </Button>
           </Col>
         </Row>
