@@ -35,7 +35,6 @@ const CatalogDetails = ({ match, history }) => {
         setProduct(formatProduct(data))
         setCompany(data.company)
       })
-      .then((e) => console.log('::::>>', e))
   }, [])
 
   useEffect(() => {

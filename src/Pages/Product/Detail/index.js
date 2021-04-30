@@ -129,7 +129,6 @@ const Detail = ({ match }) => {
     setLoading(true)
     try {
       const { data } = await getAll({ page, limit: 10 })
-      console.log('data', data)
       setSerialData(data.rows)
       setTotal(data.count)
     } catch (error) {
@@ -165,9 +164,6 @@ const Detail = ({ match }) => {
   } 
 
   const handleChangeUpload = async(info) => {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
     if(info.file.status === "removed") {
       await handleRemoveImage(info.file.uid)
       
