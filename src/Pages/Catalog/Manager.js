@@ -17,7 +17,11 @@ const formatProductList = map(
     price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
     name: path(['name']),
     description: pathOr('', ['description']),
-    urlImage: pathOr(false, ['urlImage'])
+    urlImage: pathOr(false, ['urlImage']),
+    images: pipe(
+      pathOr([], ['productImages']),
+      map(applySpec({ url: path(['url']), alt: path(['name']) }))
+    )
   })
 )
 
