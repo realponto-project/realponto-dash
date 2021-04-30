@@ -29,20 +29,25 @@ const formatProduct = applySpec({
   companyId: pathOr('', ['companyId'])
 })
 
-const formatOutherProducts = map(
-  applySpec({
-    id: path(['id']),
-    price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
-    name: path(['name']),
-    description: pathOr('', ['description']),
-    images: pipe(
-      pathOr([], ['productImages']),
-      map(applySpec({ url: path(['url']), alt: path(['name']) })),
-      append({ url: emptySvg, alt: 'empty' }),
-      (images) => [images[0]]
-    )
-  })
-)
+const formatOutherProducts = ({ history }) =>
+  map(
+    applySpec({
+      id: path(['id']),
+      price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
+      name: path(['name']),
+      // description: pathOr('', ['description']),
+      description: always(''),
+      images: pipe(
+        pathOr([], ['productImages']),
+        map(applySpec({ url: path(['url']), alt: path(['name']) })),
+        append({ url: emptySvg, alt: 'empty' }),
+        (images) => [images[0]]
+      ),
+      onClick: pipe(path(['id']), (id) => () =>
+        history.push(`/catalog-product/${id}`)
+      )
+    })
+  )
 
 const CatalogDetails = ({ match, history }) => {
   const [product, setProduct] = useState(formatProduct({}))
@@ -61,20 +66,16 @@ const CatalogDetails = ({ match, history }) => {
       getProducts(product.companyId, {
         limit: 4,
         category: product.category
-      }).then(({ data }) => setOutherProducts(formatOutherProducts(data.rows)))
+      }).then(({ data }) =>
+        setOutherProducts(formatOutherProducts({ history })(data.rows))
+      )
     }
   }, [product])
-
-  const handleClickCard = (productId) => {
-    history.push(`/catalog-product/${productId}`)
-  }
-
   return (
     <CatalogDetailsContainer
       product={product}
       company={company}
       outherProducts={outherProducts}
-      handleClickCard={handleClickCard}
     />
   )
 }

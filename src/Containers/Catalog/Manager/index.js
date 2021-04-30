@@ -4,7 +4,7 @@ import { map } from 'ramda'
 import { DownOutlined } from '@ant-design/icons'
 
 import logo from '../../../Assets/logo.svg'
-import CardProduct from '../../../Components/ProdcutCard'
+import ProductCard from '../../../Components/ProductCard'
 
 import styles from './style.module.css'
 
@@ -30,7 +30,6 @@ const Catalog = ({
   count,
   searchValue,
   handleChangePage,
-  handleClickCard,
   handleSearch,
   page,
   handleClickFilter
@@ -39,7 +38,7 @@ const Catalog = ({
     <Row style={{ backgroundColor: '#F2F2F3', minHeight: '100vh' }}>
       <Row
         gutter={[35, 20]}
-        style={{ maxWidth: 1200, margin: 'auto', marginTop: 10 }}>
+        style={{ maxWidth: 1200, margin: '10px auto' }}>
         <Col span={24}>
           <Image src={logo} alt="logo-alxa" preview={false} width={160} />
         </Col>
@@ -89,7 +88,7 @@ const Catalog = ({
           </Card>
         </Col>
 
-        {map(CardProduct(handleClickCard), productList)}
+        {map(ProductCard, productList)}
 
         <Col span={24}>
           <Row align="end">

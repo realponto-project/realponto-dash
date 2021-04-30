@@ -1,29 +1,36 @@
 import React, { useEffect, useState } from 'react'
-import { applySpec, compose, map, path, pathOr, pipe } from 'ramda'
+import { always, append, applySpec, compose, map, path, pathOr, pipe } from 'ramda'
 import { withRouter, useLocation } from 'react-router-dom'
 
 import CatalogManagerContainer from '../../Containers/Catalog/Manager'
-import { getProducts } from '../../Services/Catalog'
-import { getCompanyById } from '../../Services/Company'
+import { getProducts, getCompanyById } from '../../Services/Catalog'
 import { parseValuePTbr } from '../../utils/Masks/myInfoMasks'
+import emptySvg from '../../Assets/empty.svg'
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search)
 }
 
-const formatProductList = map(
-  applySpec({
-    id: path(['id']),
-    price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
-    name: path(['name']),
-    description: pathOr('', ['description']),
-    urlImage: pathOr(false, ['urlImage']),
-    images: pipe(
-      pathOr([], ['productImages']),
-      map(applySpec({ url: path(['url']), alt: path(['name']) }))
-    )
-  })
-)
+const formatProductList = ({ history }) =>
+  map(
+    applySpec({
+      id: path(['id']),
+      price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
+      name: path(['name']),
+      // description: pathOr('', ['description']),
+      description: always(''),
+      urlImage: pathOr(false, ['urlImage']),
+      images: pipe(
+        pathOr([], ['productImages']),
+        map(applySpec({ url: path(['url']), alt: path(['name']) })),
+        append({ url: emptySvg, alt: 'empty' }),
+        (images) => [images[0]]
+      ),
+      onClick: pipe(path(['id']), (id) => () =>
+        history.push(`/catalog-product/${id}`)
+      )
+    })
+  )
 
 const CatalogManager = ({ match, history }) => {
   const query = useQuery()
@@ -77,21 +84,16 @@ const CatalogManager = ({ match, history }) => {
     setPage(1)
   }
 
-  const handleClickCard = (productId) => {
-    history.push(`/catalog-product/${productId}`)
-  }
-
   return (
     <CatalogManagerContainer
       handleClickFilter={handleClickFilter}
-      productList={formatProductList(productList)}
+      productList={formatProductList({ history })(productList)}
       company={company}
       count={count}
       searchValue={searchValue}
       handleSearch={setSearchValue}
       handleChangePage={(page) => setPage(page)}
       page={page}
-      handleClickCard={handleClickCard}
     />
   )
 }

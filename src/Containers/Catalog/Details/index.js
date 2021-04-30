@@ -4,19 +4,14 @@ import { length, map } from 'ramda'
 
 import emptySvg from '../../../Assets/empty.svg'
 import logo from '../../../Assets/logo.svg'
-import CardProduct from '../../../Components/ProdcutCard'
+import ProductCard from '../../../Components/ProductCard'
 
 import styles from './style.module.css'
 
-const CatalogDetails = ({
-  company,
-  product,
-  outherProducts,
-  handleClickCard
-}) => {
+const CatalogDetails = ({ company, product, outherProducts }) => {
   return (
     <Row style={{ backgroundColor: '#F2F2F3', minHeight: '100vh' }}>
-      <Row gutter={[35, 20]} style={{ maxWidth: 1200, margin: 'auto' }}>
+      <Row gutter={[35, 20]} style={{ maxWidth: 1200, margin: '10px auto' }}>
         <Col span={24} style={{ marginBottom: 20 }}>
           <Image src={logo} alt="logo-alxa" preview={false} width={160} />
         </Col>
@@ -114,7 +109,7 @@ const CatalogDetails = ({
           <h1 className={styles.otherTitle}>Outros produtos dessa loja:</h1>
         </Col>
 
-        {map(CardProduct(handleClickCard), outherProducts)}
+        {map(ProductCard, outherProducts)}
       </Row>
     </Row>
   )

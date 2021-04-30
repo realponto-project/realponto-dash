@@ -6,13 +6,7 @@ import emptySvg from '../../Assets/empty.svg'
 
 import styles from './style.module.css'
 
-const CardProduct = (handleClickCard) => ({
-  id,
-  price,
-  name,
-  description,
-  images
-}) => {
+const ProductCard = ({ id, price, name, description, images, onClick }) => {
   const [loaded, setLoaded] = useState(false)
 
   const imageStyle = loaded
@@ -27,7 +21,7 @@ const CardProduct = (handleClickCard) => ({
   return (
     <Col span={6} xs={24} sm={12} md={8} lg={8} xl={6} key={id}>
       <Card
-        onClick={() => handleClickCard(id)}
+        onClick={onClick}
         hoverable
         className={styles.wrapperCard}
         bodyStyle={{
@@ -78,4 +72,4 @@ const CardProduct = (handleClickCard) => ({
   )
 }
 
-export default CardProduct
+export default ProductCard
