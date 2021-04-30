@@ -171,12 +171,12 @@ const Detail = ({ match }) => {
     if(info.file.status === "removed") {
       await handleRemoveImage(info.file.uid)
       
-      message.success(`${info.file.name} deletado com sucesso`);
+      message.success(`Imagem deletada com sucesso`);
     }
     if (info.file.status === 'done') {
-      message.success(`${info.file.name} atualizado com sucesso`);
+      message.success(`Imagem atualizada com sucesso`);
     } else if (info.file.status === 'error') {
-      message.error(`Erro ao atualizar ${info.file.name}`);
+      message.error(`Erro ao atualizar imagem`);
     }
   }
 
