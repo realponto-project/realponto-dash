@@ -59,19 +59,19 @@ const Detail = ({
           <Row gutter={[8, 8]}>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Colaborador</p>
-              <Title level={5}>{order.user && order.user.name}</Title>
+              <Title level={5}>{order.user?.name}</Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
-                <Tag color={order.status && order.status.color}>
-                  {order.status && order.status.label}
+                <Tag color={order.status?.color}>
+                  {order.status?.label}
                 </Tag>
               </Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Responsável</p>
-              <Title level={5}>{order.responsible && order.responsible.name}</Title>
+              <Title level={5}>{order.responsibleUser?.name}</Title>
             </Col>
             <Col span={6} style={{textAlign: 'right'}}>
             <p>
@@ -104,19 +104,19 @@ const Detail = ({
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Nome do cliente</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer ? order.customer.name : '-'}
+                    {order.customer?.name ?? '-'}
                   </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer ? order.customer.document : '-'}
+                    {order.customer?.document ?? '-'}
                   </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Telefone</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer ? order.customer.phone : '-'}
+                    {order.customer?.phone ?? '-'}
                   </Title>
                 </Col>
 

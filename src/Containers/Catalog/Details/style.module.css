@@ -35,8 +35,19 @@
 .wrapperImageMain{
   display: flex !important;
   width: 100%;
-  justify-content: center;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.wrapperCarousel{
+  width: 450px;
+  height: 450px;
+}
+
+.wrapperCarousel:first-child{
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .otherTitle{
