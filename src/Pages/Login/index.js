@@ -58,6 +58,7 @@ const Login = ({
       isVisibleMessageError={isVisibleMessageError}
       loading={loading}
       registerPath="register"
+      forgotPassPath="forgotPass"
     />
   )
 }
