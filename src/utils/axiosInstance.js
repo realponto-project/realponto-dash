@@ -7,8 +7,8 @@ const axiosInstance = axios.create({ baseURL: `${baseURL}/api` })
 axiosInstance.interceptors.request.use((config) => ({
   ...config,
   headers: {
-    ...config.headers,
-    Authorization: `Bearer ${localStorage.getItem('token')}`
+    Authorization: `Bearer ${localStorage.getItem('token')}`,
+    ...config.headers
   }
 }))
 

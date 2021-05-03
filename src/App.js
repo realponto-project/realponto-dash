@@ -41,6 +41,7 @@ const App = () => {
             path="/catalog-product/:productId"
             component={CatalogDetails}
           />
+          <Route exact path="/welcome-member/:token" component={Onboarding} />
           <Route path="/login" component={Login} />
           <Route exact path="/register/sucess" component={Success} />
           <Route path="/register" component={Register} />
@@ -48,9 +49,6 @@ const App = () => {
           <Route path="/reset-password/:token" component={ResetPass} />
           <Route path="/logged" component={Logged} />
           <Route path="/pdv" component={PDV} />
-          <Route exact path="/user/onboarding" component={Onboarding} />
-          <Route exact path="/logged/pdv" component={PDV} />
-          <Route path="/logged" component={Logged} />
           <Redirect from="*" to="/login" />
         </Switch>
       </PersistGate>
