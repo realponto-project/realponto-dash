@@ -20,13 +20,13 @@ const Onboarding = ({ history, match }) => {
     try {
       await resetPassword(match.params.token, values)
       setLoading(false)
-      history.push('/logged/dashboard')
+      history.push('/login')
     } catch (error) {
       updateMyInfoService(
         user.id,
         { firstAccess: true },
         { headers: match.params.token }
-      ).then(() => history.push('/logged/dashboard'))
+      ).then(() => history.push('/login'))
       console.log(error)
     }
   }
