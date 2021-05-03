@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Modal, Form, Input, InputNumber, Col, Row, Button } from 'antd'
 import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 
+const { TextArea } = Input
+
 const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
@@ -52,12 +54,18 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
         initialValues={productSelected}>
         <Form.Item
           name="name"
-          label="Descrição"
+          label="Nome"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input />
         </Form.Item>
         <Form.Item name="category" label="Categoria">
           <Input placeholder="Insira a categoria" />
+        </Form.Item>
+        <Form.Item name="description" label="Descrição">
+        <TextArea 
+            placeholder="Digite a descrição" 
+            autoSize
+          />
         </Form.Item>
         <Form.Item
           name="minQuantity"

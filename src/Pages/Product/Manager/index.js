@@ -30,6 +30,7 @@ const productPayload = applySpec({
   name: pathOr(null, ['name']),
   salePrice: pipe(pathOr('0', ['salePrice']), parsePrice),
   category: pathOr(null, ['category']),
+  description: pathOr(null, ['description']),
   activated: pathOr(true, ['activated'])
 })
 

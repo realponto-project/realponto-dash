@@ -1,16 +1,16 @@
 import React from 'react'
-import { Card, Button, Typography, Row, Col, Tag } from 'antd'
+import { Card, Button, Typography, Row, Col, Tag, Upload, message, Image } from 'antd'
 import PieChart from './PieChart'
 import SerialNumberList from './SerialNumberList'
-import { PlusOutlined } from '@ant-design/icons'
-import { pathOr } from 'ramda'
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
+import { length, pathOr } from 'ramda'
 import moment from 'moment'
 
 import AddSerial from './Add'
-
 const { Title } = Typography
 
 const Detail = ({
+  productImages,
   product,
   serialData,
   openSerial,
@@ -24,6 +24,8 @@ const Detail = ({
   handleOkSerialEdit,
   total,
   onChangeTable,
+  handleChangeUpload,
+  handleUpload,
   loading,
   page
 }) => {
@@ -37,11 +39,11 @@ const Detail = ({
       <Col span={24}>
         <Card bordered={false}>
           <Row gutter={[8, 8]}>
-            <Col span={6}>
+            <Col span={11}>
               <p style={{ marginBottom: '4px' }}>Produto</p>
               <Title level={5}>{pathOr(null, ['name'], product)}</Title>
             </Col>
-            <Col span={6}>
+            <Col span={5}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
                 <Tag color={productStatus ? '#65A300' : 'rgba(0,0,0,.25)'}>
@@ -49,21 +51,52 @@ const Detail = ({
                 </Tag>
               </Title>
             </Col>
-            <Col span={6}>
-              <p style={{ marginBottom: '4px' }}>Quantidade disponível</p>
-              <Title level={5}>{pathOr(null, ['balance'], product)} und </Title>
+            <Col span={4}>
+              <p style={{ marginBottom: '4px' }}>Qtd disponível</p>
+              <Title level={5}>{pathOr(null, ['balance'], product)} </Title>
             </Col>
-            <Col span={6}>
+            <Col span={4}>
               <p style={{ marginBottom: '4px' }}>Criado em</p>
               <Title level={5}>{createdAt}</Title>
             </Col>
           </Row>
         </Card>
       </Col>
+
+
       <Col span={18} style={{ height: '550px' }}>
         <Row gutter={[8, 8]}>
-          <Col span={24}>
+          <Col span={12}>
             <Card bordered={false}>
+              <Row gutter={[8, 8]}>
+                <Col span={24}>
+                  <Title style={{ marginBottom: 0 }} level={4}>
+                    Imagens
+                  </Title>
+                </Col>
+                <Col span={24}>
+                  <Row gutter={[10]} style={{ marginTop: '20px' }}>
+                    <Col>
+                      <Upload 
+                        name='file'
+                        listType="picture-card"
+                        accept='image/jpg, image/jpeg, image/png'
+                        headers={{ authorization: 'authorization-text' }}
+                        fileList={productImages}
+                        action={handleUpload} 
+                        onChange={handleChangeUpload}
+                      >
+                        {length(productImages) <= 2 && <UploadOutlined />}
+                      </Upload>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+
+          <Col span={12} >
+            <Card bordered={false} style={{height: '100%'}}>
               <Row gutter={[8, 8]}>
                 <Col span={12}>
                   <Title style={{ marginBottom: 0 }} level={4}>

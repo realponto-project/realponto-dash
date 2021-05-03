@@ -20,7 +20,7 @@ const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
     )
   },
   {
-    title: 'Descrição',
+    title: 'Produto',
     dataIndex: 'name',
     key: 'name',
     fixed: 'left'

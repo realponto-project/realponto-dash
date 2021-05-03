@@ -78,7 +78,7 @@ const PaymentInfo = ({
           <b>Dados do pagamento</b>
         </h3>
         <Form.Item
-          label="Tipo de cartão"
+          label="Tipo de cartão:"
           name="paymentMethod"
           rules={[
             {
@@ -94,7 +94,7 @@ const PaymentInfo = ({
           </Select>
         </Form.Item>
         <Form.Item
-          label="Quantidade de parcelas"
+          label="Quantidade de parcelas:"
           name="installments"
           rules={[
             {

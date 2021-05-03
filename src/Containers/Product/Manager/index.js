@@ -50,6 +50,7 @@ const Manager = ({
     const buildProductChoosed = applySpec({
       name: prop('name'),
       category: prop('category'),
+      description: prop('description'),
       minQuantity: prop('minQuantity'),
       barCode: prop('barCode'),
       id: prop('id'),

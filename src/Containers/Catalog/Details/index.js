@@ -1,82 +1,113 @@
 import React from 'react'
-import { Card, Col, Image, Row } from 'antd'
-import { map } from 'ramda'
+import { Card, Carousel, Col, Image, Row } from 'antd'
+import { length, map } from 'ramda'
 
 import emptySvg from '../../../Assets/empty.svg'
-
 import logo from '../../../Assets/logo.svg'
-import style from './style.module.css'
+import ProductCard from '../../../Components/ProductCard'
 
-const CardProduct = (handleClickCard) => ({
-  id,
-  price,
-  name,
-  description,
-  urlImage
-}) => (
-  <Col span={6} xs={24} sm={12} md={6} lg={6} key={id}>
-    <div className={style.wrapperCard}>
-      <Card
-        onClick={() => handleClickCard(id)}
-        hoverable
-        style={{ width: 200 }}>
-        <div className={style.cardContent}>
-          <div className={style.wrapperImage}>
-            <Image preview={false} src={urlImage || emptySvg} alt="product" />
-          </div>
+import styles from './style.module.css'
 
-          <label>{price}</label>
-          <label>{name}</label>
-          <p>{description}</p>
-        </div>
-      </Card>
-    </div>
-  </Col>
-)
-
-const CatalogDetails = ({
-  company,
-  product,
-  outherProducts,
-  handleClickCard
-}) => {
+const CatalogDetails = ({ company, product, outherProducts }) => {
   return (
-    <Row gutter={[35, 20]} style={{ maxWidth: 968, margin: 'auto' }}>
-      <Col span={24}>
-        <Image src={logo} alt="logo-alxa" preview={false} width={160} />
-      </Col>
+    <Row style={{ backgroundColor: '#F2F2F3', minHeight: '100vh' }}>
+      <Row gutter={[35, 20]} style={{ maxWidth: 1200, margin: '10px auto' }}>
+        <Col span={24} style={{ marginBottom: 20 }}>
+          <Image src={logo} alt="logo-alxa" preview={false} width={160} />
+        </Col>
 
-      <Col span={24} sm={12}>
-        <Image
-          src={product?.imageUrl ?? emptySvg}
-          alt="product"
-          preview={false}
-        />
-      </Col>
+        <Col span={24}>
+          <Card>
+            <Row>
+              <Col span={24} md={12}>
+                {length(product.images) === 0 ? (
+                  <Row
+                    justify="center"
+                    align="middle"
+                    style={{
+                      width: '100%',
+                      height: 450
+                    }}>
+                    <Image
+                      style={{
+                        maxWidth: 256,
+                        maxHeight: 256,
+                        width: 'auto',
+                        height: 'auto'
+                      }}
+                      src={emptySvg}
+                      alt="empty"
+                      preview={false}
+                    />
+                  </Row>
+                ) : (
+                  <div
+                    className={styles.wrapperCarousel}>
+                    <Carousel autoplay>
+                      {map(
+                        ({ url, alt }) => (
+                          <div className={styles.wrapperImageMain}>
+                            <Image
+                              style={{
+                                maxWidth: 450,
+                                maxHeight: 450,
+                                width: 'auto',
+                                height: 'auto'
+                              }}
+                              src={url}
+                              alt={alt}
+                              preview={false}
+                            />
+                          </div>
+                        ),
+                        product.images
+                      )}
+                    </Carousel>
+                  </div>
+                )}
+              </Col>
 
-      <Col span={24} sm={12}>
-        <div className={style.contentDetails}>
-          <h3>{product?.name}</h3>
-          <h2>{product?.price}</h2>
-          <p>{product?.description}</p>
+              <Col span={24} md={12}>
+                <Row
+                  justify="space-between"
+                  align="end"
+                  style={{ height: '100%' }}>
+                  <Col span={24}>
+                    <h3 className={styles.productName}>{product?.name}</h3>
+                    <h2 className={styles.productPrice}>{product?.price}</h2>
+                    <p className={styles.productDescription}>
+                      {product?.description}
+                    </p>
+                  </Col>
 
-          <label>{company?.name}</label>
-          <br />
-          {company?.address && (
-            <p>
-              {company.address.street}, {company.address.streetNumber},{' '}
-              {company.address.neighborhood}, {company.address.city} -{' '}
-              {company.address.state}, {company.address.zipcode},
-            </p>
-          )}
-        </div>
-      </Col>
+                  <Col span={24}>
+                    <Row align="bottom" style={{ height: '100%' }}>
+                      <label className={styles.companyName}>
+                        {company?.name}
+                      </label>
+                      <br />
+                      {company?.address && (
+                        <p className={styles.companyAddress}>
+                          {company.address.street},{' '}
+                          {company.address.streetNumber},{' '}
+                          {company.address.neighborhood}, {company.address.city}{' '}
+                          - {company.address.state}, {company.address.zipcode},
+                        </p>
+                      )}
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
 
-      <Col span={24}>
-        <h1 className={style.otherTitle}>Outros produtos dessa loja</h1>
-      </Col>
+        <Col span={24}>
+          <h1 className={styles.otherTitle}>Outros produtos dessa loja:</h1>
+        </Col>
 
-      {map(CardProduct(handleClickCard), outherProducts)}
+        {map(ProductCard, outherProducts)}
+      </Row>
     </Row>
   )
 }

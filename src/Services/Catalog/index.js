@@ -13,4 +13,11 @@ const getProductById = async (producId, params = {}) => {
   })
 }
 
-export { getProducts, getProductById }
+
+const getCompanyById = async (companyId, params = {}) => {
+  return await axios.get(`${baseURL}/catalog/get-company/${companyId}`, {
+    params
+  })
+}
+
+export { getProducts, getProductById, getCompanyById }

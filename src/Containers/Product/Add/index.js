@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { Modal, Form, Input, InputNumber, Row, Col, Button } from 'antd'
 import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 
+const { TextArea } = Input
+
 const Add = ({ visible, onCreate, onCancel }) => {
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
@@ -48,12 +50,18 @@ const Add = ({ visible, onCreate, onCancel }) => {
       <Form form={form} layout="vertical" name="form_in_modal">
         <Form.Item
           name="name"
-          label="Descrição"
+          label="Nome"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input placeholder="Insira o nome do produto" />
         </Form.Item>
         <Form.Item name="category" label="Categoria">
           <Input placeholder="Insira a categoria" />
+        </Form.Item>
+        <Form.Item name="description" label="Descrição">
+        <TextArea 
+            placeholder="Digite a descrição" 
+            autoSize
+          />
         </Form.Item>
         <Row align="space-between">
           <Col span={12}>

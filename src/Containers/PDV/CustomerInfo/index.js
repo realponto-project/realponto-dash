@@ -77,7 +77,7 @@ const CustomerInfo = ({
           <b>Dados do cliente</b>
         </h3>
         <Form.Item
-          label="Nome do cliente"
+          label="Nome:"
           name="name"
           rules={[
             {
@@ -89,7 +89,7 @@ const CustomerInfo = ({
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item
-            label="CPF"
+            label="CPF:"
             name="document"
             style={{ display: 'inline-block', width: 'calc(50% - 8px)' }}
             rules={[
@@ -101,7 +101,7 @@ const CustomerInfo = ({
             <Input disabled={saleType.saleFast} placeholder="Insira o cpf do cliente"/>
           </Form.Item>
           <Form.Item
-            label="Telefone"
+            label="Telefone:"
             name="phone"
             style={{
               display: 'inline-block',
@@ -121,7 +121,7 @@ const CustomerInfo = ({
           <b>Dados da transportadora</b>
         </h3>
         <Form.Item
-          label="Nome da transportadora"
+          label="Transportadora:"
           name="shippingCompany">
           <Input placeholder="Insira o nome da transportadora" disabled={saleType.saleFast} />
         </Form.Item>
@@ -130,7 +130,7 @@ const CustomerInfo = ({
         </h3>
         <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item
-            label="Cep"
+            label="Cep:"
             name="zipcode"
             style={{ display: 'inline-block', width: 'calc(20% - 8px)' }}
             rules={[
@@ -142,7 +142,7 @@ const CustomerInfo = ({
             <Input disabled={saleType.saleFast} name="zipcode" placeholder="88888-888"/>
           </Form.Item>
           <Form.Item
-            label="Rua"
+            label="Rua:"
             name="street"
             style={{
               display: 'inline-block',
@@ -158,7 +158,7 @@ const CustomerInfo = ({
             <Input disabled={saleType.saleFast} placeholder="Insira a rua"/>
           </Form.Item>
           <Form.Item
-            label="Número"
+            label="Número:"
             name="streetNumber"
             style={{
               display: 'inline-block',
@@ -176,7 +176,7 @@ const CustomerInfo = ({
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item
-            label="Bairro"
+            label="Bairro:"
             name="neighborhood"
             style={{ display: 'inline-block', width: 'calc(40% - 8px)' }}
             rules={[
@@ -188,7 +188,7 @@ const CustomerInfo = ({
             <Input disabled={saleType.saleFast} placeholder="Insira o bairro"/>
           </Form.Item>
           <Form.Item
-            label="Cidade"
+            label="Cidade:"
             name="city"
             style={{
               display: 'inline-block',
@@ -204,7 +204,7 @@ const CustomerInfo = ({
             <Input disabled={saleType.saleFast} placeholder="Insira a cidade"/>
           </Form.Item>
           <Form.Item
-            label="UF"
+            label="UF:"
             name="states"
             style={{
               display: 'inline-block',
