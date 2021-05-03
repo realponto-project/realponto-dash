@@ -21,28 +21,7 @@ import {
 } from '../../../Services/SerialNumber'
 
 const Detail = ({ match, status }) => {
-  const [order, setOrder] = useState({
-    user: {
-      name: ''
-    },
-    status: {
-      color: '',
-      value: ''
-    },
-    customer: {
-      name: '',
-      document: '',
-      phone: '',
-      address: {
-        street: '',
-        streetNumber: '',
-        zipcode: '',
-        city: '',
-        state: '',
-        neighborhood: ''
-      }
-    }
-  })
+  const [order, setOrder] = useState({})
   const [users, setUsers] = useState([])
   const [serialNumbersOuts, setSerialNumbersOuts] = useState([])
   const [customers, setCustomers] = useState([])
@@ -78,9 +57,7 @@ const Detail = ({ match, status }) => {
   const getOrder = async () => {
     try {
       const { data } = await getOrderById(match.params.id)
-      const orderData = pathOr({}, ['order'], data)
-      const responsible = pathOr({}, ['responsible'], data)
-      setOrder({ ...orderData, responsible })
+      setOrder(data)
       if (order.status.type === 'outputs') {
         const { data } = await getSerialOrderOutputs({
           transactionOutId: match.params.id,

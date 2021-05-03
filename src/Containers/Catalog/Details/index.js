@@ -42,10 +42,7 @@ const CatalogDetails = ({ company, product, outherProducts }) => {
                   </Row>
                 ) : (
                   <div
-                    style={{
-                      width: 450,
-                      height: 450
-                    }}>
+                    className={styles.wrapperCarousel}>
                     <Carousel autoplay>
                       {map(
                         ({ url, alt }) => (
