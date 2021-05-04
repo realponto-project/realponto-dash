@@ -22,7 +22,6 @@ import {
   getProductById,
   getTransactionsToChart,
   getAllImagesByProductId,
-  addImage,
   removeImage
 } from '../../../Services/Product'
 import { message } from 'antd'
@@ -164,24 +163,22 @@ const Detail = ({ match }) => {
   } 
 
   const handleChangeUpload = async(info) => {
+
     if(info.file.status === "removed") {
       await handleRemoveImage(info.file.uid)
       
       message.success(`Imagem deletada com sucesso`);
     }
     if (info.file.status === 'done') {
+      await fetchImages()
       message.success(`Imagem atualizada com sucesso`);
     } else if (info.file.status === 'error') {
       message.error(`Erro ao atualizar imagem`);
     }
   }
 
-  const handleUpload =  async (file) => {
-    const data = new FormData()
-    data.append('file', file)
-    data.append('productId', product.id)
-    await addImage(data)
-    await fetchImages()
+  const handleUpload = () => {
+    return `${process.env.REACT_APP_API_URL}/api/insert-image/`
   }
 
   return (

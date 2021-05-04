@@ -24,10 +24,6 @@ const getTransactionsToChart = async (id) => {
   return await axiosIntance.get(`/products-transactions/${id}`)
 }
 
-const addImage = async (values) => {
-  return await axiosIntance.post(`/insert-image`, values)
-}
-
 const removeImage = async (productImageId) => {
   return await axiosIntance.delete(`/remove-image/${productImageId}`)
 }
@@ -43,7 +39,6 @@ export {
   getProductById,
   updateProduct,
   getTransactionsToChart,
-  addImage,
   removeImage,
   getAllImagesByProductId
 }

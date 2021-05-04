@@ -79,9 +79,10 @@ const Detail = ({
                     <Col>
                       <Upload 
                         name='file'
+                        data={{ productId: product?.id }}
                         listType="picture-card"
                         accept='image/jpg, image/jpeg, image/png'
-                        headers={{ authorization: 'authorization-text' }}
+                        headers={{ Authorization: `Bearer ${localStorage.getItem('token')}` }}
                         fileList={productImages}
                         action={handleUpload} 
                         onChange={handleChangeUpload}
