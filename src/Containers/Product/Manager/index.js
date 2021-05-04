@@ -53,6 +53,7 @@ const Manager = ({
       name: prop('name'),
       category: prop('category'),
       description: prop('description'),
+      showOnCatalog: prop('showOnCatalog'),
       minQuantity: prop('minQuantity'),
       barCode: prop('barCode'),
       id: prop('id')

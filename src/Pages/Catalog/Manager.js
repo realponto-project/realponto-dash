@@ -69,7 +69,8 @@ const CatalogManager = ({ match, history }) => {
           limit: 24,
           page,
           order,
-          name: searchValue
+          name: searchValue,
+          showOnCatalog: true
         })
         setProductList(data.rows)
         setCount(data.count)

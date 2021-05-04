@@ -26,6 +26,7 @@ const formatProduct = applySpec({
   name: pathOr('', ['name']),
   price: pipe(pathOr('', ['salePrice']), parseValuePTbr),
   description: pathOr('', ['description']),
+  showOnCatalog: pathOr(false, ['showOnCatalog']),
   companyId: pathOr('', ['companyId'])
 })
 
@@ -35,7 +36,6 @@ const formatOutherProducts = ({ history }) =>
       id: path(['id']),
       price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
       name: path(['name']),
-      // description: pathOr('', ['description']),
       description: always(''),
       images: pipe(
         pathOr([], ['productImages']),
@@ -62,10 +62,15 @@ const CatalogDetails = ({ match, history }) => {
   }, [match])
 
   useEffect(() => {
-    if (!isEmpty(product)) {
+    if (!isEmpty(product.name)) {
+      if (!product.showOnCatalog) {
+        return history.push(`/catalog/${product.companyId}`)
+      }
+
       getProducts(product.companyId, {
         limit: 4,
-        category: product.category
+        category: product.category,
+        showOnCatalog: true
       }).then(({ data }) =>
         setOutherProducts(formatOutherProducts({ history })(data.rows))
       )
