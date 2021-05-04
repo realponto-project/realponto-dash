@@ -89,11 +89,11 @@ const Catalog = ({
                 />
               </Col>
               <Col>
-                <Dropdown overlay={menu(handleClickFilter)}>
+                <Dropdown trigger={['click']} overlay={menu(handleClickFilter)}>
                   <a
                     className="ant-dropdown-link"
                     onClick={(e) => e.preventDefault()}>
-                    Filtrar <DownOutlined />
+                    Ordenar <DownOutlined />
                   </a>
                 </Dropdown>
               </Col>
