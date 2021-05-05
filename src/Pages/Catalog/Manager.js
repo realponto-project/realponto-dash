@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { always, append, applySpec, compose, map, path, pathOr, pipe } from 'ramda'
+import {
+  always,
+  append,
+  applySpec,
+  compose,
+  map,
+  path,
+  pathOr,
+  pipe
+} from 'ramda'
 import { withRouter, useLocation } from 'react-router-dom'
 
 import CatalogManagerContainer from '../../Containers/Catalog/Manager'
-import { getProducts, getCompanyById } from '../../Services/Catalog'
+import { getProducts, getCompanyByNickName } from '../../Services/Catalog'
 import { parseValuePTbr } from '../../utils/Masks/myInfoMasks'
 import emptySvg from '../../Assets/empty.svg'
 
@@ -17,7 +26,6 @@ const formatProductList = ({ history }) =>
       id: path(['id']),
       price: pipe(pathOr(0, ['salePrice']), parseValuePTbr),
       name: path(['name']),
-      // description: pathOr('', ['description']),
       description: always(''),
       urlImage: pathOr(false, ['urlImage']),
       images: pipe(
@@ -48,7 +56,7 @@ const CatalogManager = ({ match, history }) => {
 
   useEffect(() => {
     const getCompany = async () => {
-      const { data } = await getCompanyById(match.params.companyId)
+      const { data } = await getCompanyByNickName(match.params.nickName)
       setCompany(data)
     }
     getCompany()
@@ -57,7 +65,7 @@ const CatalogManager = ({ match, history }) => {
   useEffect(() => {
     const getAllProducts = async () => {
       try {
-        const { data } = await getProducts(match.params.companyId, {
+        const { data } = await getProducts(match.params.nickName, {
           limit: 24,
           page,
           order,
@@ -71,7 +79,7 @@ const CatalogManager = ({ match, history }) => {
     }
 
     history.push(
-      `${match.params.companyId}?page=${page}&order=${JSON.stringify(
+      `${match.params.nickName}?page=${page}&order=${JSON.stringify(
         order
       )}&name=${searchValue}`
     )
