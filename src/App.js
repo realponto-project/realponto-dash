@@ -14,6 +14,7 @@ import ResetPass from './Pages/Accreditation/Register/ResetPass'
 import Success from './Pages/Accreditation/Register/Success'
 import Logged from './Pages/Logged'
 import reducers from './Redux/reducers'
+import HomePage from './Pages/HomePage'
 import Onboarding from './Pages/Onboarding'
 import PDV from './Pages/PDV'
 import CatalogManager from './Pages/Catalog/Manager'
@@ -41,6 +42,7 @@ const App = () => {
             path="/catalog-product/:productId"
             component={CatalogDetails}
           />
+          <Route exact path="/homepage" component={HomePage} />
           <Route exact path="/welcome-member/:token" component={Onboarding} />
           <Route path="/login" component={Login} />
           <Route exact path="/register/sucess" component={Success} />
