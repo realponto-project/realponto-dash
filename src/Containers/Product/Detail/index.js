@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Button, Typography, Row, Col, Tag, Upload, message, Image } from 'antd'
+import { Card, Button, Typography, Row, Col, Tag, Upload } from 'antd'
 import PieChart from './PieChart'
 import SerialNumberList from './SerialNumberList'
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons'
@@ -62,8 +62,6 @@ const Detail = ({
           </Row>
         </Card>
       </Col>
-
-
       <Col span={18} style={{ height: '550px' }}>
         <Row gutter={[8, 8]}>
           <Col span={12}>
@@ -77,16 +75,19 @@ const Detail = ({
                 <Col span={24}>
                   <Row gutter={[10]} style={{ marginTop: '20px' }}>
                     <Col>
-                      <Upload 
-                        name='file'
+                      <Upload
+                        name="file"
                         data={{ productId: product?.id }}
                         listType="picture-card"
-                        accept='image/jpg, image/jpeg, image/png'
-                        headers={{ Authorization: `Bearer ${localStorage.getItem('token')}` }}
+                        accept="image/jpg, image/jpeg, image/png"
+                        headers={{
+                          Authorization: `Bearer ${localStorage.getItem(
+                            'token'
+                          )}`
+                        }}
                         fileList={productImages}
-                        action={handleUpload} 
-                        onChange={handleChangeUpload}
-                      >
+                        action={handleUpload}
+                        onChange={handleChangeUpload}>
                         {length(productImages) <= 2 && <UploadOutlined />}
                       </Upload>
                     </Col>
@@ -96,8 +97,8 @@ const Detail = ({
             </Card>
           </Col>
 
-          <Col span={12} >
-            <Card bordered={false} style={{height: '100%'}}>
+          <Col span={12}>
+            <Card bordered={false} style={{ height: '100%' }}>
               <Row gutter={[8, 8]}>
                 <Col span={12}>
                   <Title style={{ marginBottom: 0 }} level={4}>

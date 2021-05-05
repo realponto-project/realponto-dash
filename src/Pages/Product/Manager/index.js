@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import {
   applySpec,
   compose,
@@ -10,7 +11,6 @@ import {
   always,
   prop
 } from 'ramda'
-import { withRouter } from 'react-router-dom'
 
 import ManagerContainer from '../../../Containers/Product/Manager'
 import { createProduct, getAll, updateProduct } from '../../../Services/Product'
@@ -20,7 +20,7 @@ const initialFilterState = {
   name: ''
 }
 
-const parsePrice = (value) => value ? String(value).replace(/\D/g, '') : value
+const parsePrice = (value) => (value ? String(value).replace(/\D/g, '') : value)
 const productPayload = applySpec({
   id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
   balance: pathOr(0, ['balance']),
@@ -34,12 +34,8 @@ const productPayload = applySpec({
   activated: pathOr(true, ['activated'])
 })
 
-const Manager = ({
-  productSearch,
-  setProductSearch,
-  cleanProductSearch,
-  history
-}) => {
+const Manager = ({ productSearch, setProductSearch, cleanProductSearch }) => {
+  const history = useHistory()
   const [products, setProducts] = useState({})
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -71,12 +67,11 @@ const Manager = ({
     history.push(`/logged/product/detail/${productId}`)
   }
 
-  const onChangeTable = ({current}) => {
+  const onChangeTable = ({ current }) => {
     setPage(current)
   }
 
   const getAllProducts = async () => {
-
     setLoading(true)
 
     try {
@@ -132,7 +127,7 @@ const Manager = ({
   }
 
   const handleGetProductsByFilters = () => {
-    if(page !== 1){
+    if (page !== 1) {
       setPage(1)
     } else {
       getAllProducts()
@@ -153,6 +148,7 @@ const Manager = ({
       onChangeTable={onChangeTable}
       page={page}
       goToDetail={goToDetail}
+      catalogLink={'/catalog/@Villa_Mada'}
     />
   )
 }
@@ -167,9 +163,6 @@ const mapDispatchToProps = (dispatch) => ({
   cleanProductSearch: () => dispatch({ type: 'CLEAN_PRODUCT_GLOBAL_SEARCH' })
 })
 
-const enhanced = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withRouter
-)
+const enhanced = compose(connect(mapStateToProps, mapDispatchToProps))
 
 export default enhanced(Manager)
