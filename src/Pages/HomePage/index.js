@@ -1,10 +1,10 @@
 import React from 'react'
-import { compose } from 'ramda'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import HomePageContainer from '../../Containers/HomePage'
 
-const HomePage = ({ history }) => {
+const HomePage = () => {
+  const history = useHistory()
 
   const goToLogin = () => history.push('/login')
 
@@ -13,6 +13,4 @@ const HomePage = ({ history }) => {
   />
 }
 
-const enhanced = compose(withRouter)
-
-export default enhanced(HomePage)
+export default HomePage
