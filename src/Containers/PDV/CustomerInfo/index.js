@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Input, Image, Button, Row, Col } from 'antd'
 import ClassNames from 'classnames'
 import TruckSvg from './truck.svg'
@@ -14,6 +14,22 @@ const CustomerInfo = ({
   formCustomer,
   getCustomerAddress
 }) => {
+  const handlePressKey = (event) => {
+    const { ctrlKey, shiftKey, key } = event
+
+    if (ctrlKey && shiftKey) {
+      if (key === '>') formCustomer.submit()
+    }
+  }
+
+  useEffect(() => {
+    window.document.addEventListener('keypress', handlePressKey)
+
+    return () => {
+      window.document.removeEventListener('keypress', handlePressKey)
+    }
+  }, [])
+
   return (
     <>
       <div className={styles.contentFormCheckoutHeader}>
@@ -85,7 +101,10 @@ const CustomerInfo = ({
               message: 'Este campo é obrigatório!'
             }
           ]}>
-          <Input disabled={saleType.saleFast} placeholder="Insira o nome do cliente"/>
+          <Input
+            disabled={saleType.saleFast}
+            placeholder="Insira o nome do cliente"
+          />
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item
@@ -98,7 +117,10 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="Insira o cpf do cliente"/>
+            <Input
+              disabled={saleType.saleFast}
+              placeholder="Insira o cpf do cliente"
+            />
           </Form.Item>
           <Form.Item
             label="Telefone:"
@@ -114,16 +136,20 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="Insira o telefone do cliente"/>
+            <Input
+              disabled={saleType.saleFast}
+              placeholder="Insira o telefone do cliente"
+            />
           </Form.Item>
         </Form.Item>
         <h3>
           <b>Dados da transportadora</b>
         </h3>
-        <Form.Item
-          label="Transportadora:"
-          name="shippingCompany">
-          <Input placeholder="Insira o nome da transportadora" disabled={saleType.saleFast} />
+        <Form.Item label="Transportadora:" name="shippingCompany">
+          <Input
+            placeholder="Insira o nome da transportadora"
+            disabled={saleType.saleFast}
+          />
         </Form.Item>
         <h3>
           <b>Endereço do cliente</b>
@@ -139,7 +165,11 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} name="zipcode" placeholder="88888-888"/>
+            <Input
+              disabled={saleType.saleFast}
+              name="zipcode"
+              placeholder="88888-888"
+            />
           </Form.Item>
           <Form.Item
             label="Rua:"
@@ -155,7 +185,7 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="Insira a rua"/>
+            <Input disabled={saleType.saleFast} placeholder="Insira a rua" />
           </Form.Item>
           <Form.Item
             label="Número:"
@@ -171,7 +201,7 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="888"/>
+            <Input disabled={saleType.saleFast} placeholder="888" />
           </Form.Item>
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
@@ -185,7 +215,7 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="Insira o bairro"/>
+            <Input disabled={saleType.saleFast} placeholder="Insira o bairro" />
           </Form.Item>
           <Form.Item
             label="Cidade:"
@@ -201,7 +231,7 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="Insira a cidade"/>
+            <Input disabled={saleType.saleFast} placeholder="Insira a cidade" />
           </Form.Item>
           <Form.Item
             label="UF:"
@@ -217,7 +247,7 @@ const CustomerInfo = ({
                 message: 'Este campo é obrigatório!'
               }
             ]}>
-            <Input disabled={saleType.saleFast} placeholder="UF"/>
+            <Input disabled={saleType.saleFast} placeholder="UF" />
           </Form.Item>
         </Form.Item>
         <Form.Item style={{ textAlign: 'right' }}>

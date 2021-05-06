@@ -169,7 +169,7 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
           ? {
               ...product,
               quantity:
-              product.quantity === 1 ? product.quantity : product.quantity - 1
+                product.quantity === 1 ? product.quantity : product.quantity - 1
             }
           : product
       )
@@ -274,46 +274,62 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
     })
   }
 
+  const handlePressKey = (event) => {
+    const { ctrlKey, shiftKey, key } = event
+
+    if (ctrlKey && shiftKey) {
+      if (key === 'S') setIsVisibleModalBarcode(true)
+    }
+  }
+
+  useEffect(() => {
+    window.document.addEventListener('keypress', handlePressKey)
+
+    return () => {
+      window.document.removeEventListener('keypress', handlePressKey)
+    }
+  }, [])
+
   return (
-  <Row gutter={[8, 8]}>
-    <Col span={24}>
-      <Header rootRoutes={rootRoutes} />
-    </Col>
-    <Col span={24}>
-    <PDVContainer
-      step={step}
-      handleNextStep={handleNextStep}
-      handlePrevStep={handlePrevStep}
-      handleSaletype={handleSaletype}
-      saleType={saleType}
-      handlePaymentType={handlePaymentType}
-      paymentType={paymentType}
-      formCustomer={formCustomer}
-      formPayment={formPayment}
-      formData={formData}
-      getCustomerAddress={getCustomerAddress}
-      handleSubmit={handleSubmit}
-      onSearch={onSearch}
-      onChange={onChange}
-      searchProduct={searchProduct}
-      products={products}
-      optionSearch={optionSearch}
-      onSelectProduct={onSelectProduct}
-      productList={productList}
-      incrementQuantity={incrementQuantity}
-      decrementQuantity={decrementQuantity}
-      removeProduct={removeProduct}
-      orderCreated={orderCreated}
-      company={company}
-      handleSearchByBarcode={handleSearchByBarcode}
-      isVisibleModalBarcode={isVisibleModalBarcode}
-      setIsVisibleModalBarcode={setIsVisibleModalBarcode}
-      isVisibleModalNotFound={isVisibleModalNotFound}
-      setIsVisibleModalNotFound={setIsVisibleModalNotFound}
-      resetAll={resetAll}
-    />
-    </Col>
-  </Row>
+    <Row gutter={[8, 8]}>
+      <Col span={24}>
+        <Header rootRoutes={rootRoutes} />
+      </Col>
+      <Col span={24}>
+        <PDVContainer
+          step={step}
+          handleNextStep={handleNextStep}
+          handlePrevStep={handlePrevStep}
+          handleSaletype={handleSaletype}
+          saleType={saleType}
+          handlePaymentType={handlePaymentType}
+          paymentType={paymentType}
+          formCustomer={formCustomer}
+          formPayment={formPayment}
+          formData={formData}
+          getCustomerAddress={getCustomerAddress}
+          handleSubmit={handleSubmit}
+          onSearch={onSearch}
+          onChange={onChange}
+          searchProduct={searchProduct}
+          products={products}
+          optionSearch={optionSearch}
+          onSelectProduct={onSelectProduct}
+          productList={productList}
+          incrementQuantity={incrementQuantity}
+          decrementQuantity={decrementQuantity}
+          removeProduct={removeProduct}
+          orderCreated={orderCreated}
+          company={company}
+          handleSearchByBarcode={handleSearchByBarcode}
+          isVisibleModalBarcode={isVisibleModalBarcode}
+          setIsVisibleModalBarcode={setIsVisibleModalBarcode}
+          isVisibleModalNotFound={isVisibleModalNotFound}
+          setIsVisibleModalNotFound={setIsVisibleModalNotFound}
+          resetAll={resetAll}
+        />
+      </Col>
+    </Row>
   )
 }
 

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Form, Input, Image, Select, Button, Row, Col } from 'antd'
+import React, { useEffect } from 'react'
+import { Form, Image, Select, Button, Row, Col } from 'antd'
 import ClassNames from 'classnames'
 import DollarSvg from './dollar.svg'
 import DollarGraySvg from './dollar-gray.svg'
@@ -16,8 +16,26 @@ const PaymentInfo = ({
   handlePrevStep,
   handlePaymentType,
   paymentType,
-  formPayment,
+  formPayment
 }) => {
+  const handlePressKey = (event) => {
+    const { ctrlKey, shiftKey, key } = event
+
+    if (ctrlKey && shiftKey) {
+      if (key === '>') formPayment.submit()
+
+      if (key === '<') handlePrevStep()
+    }
+  }
+
+  useEffect(() => {
+    window.document.addEventListener('keypress', handlePressKey)
+
+    return () => {
+      window.document.removeEventListener('keypress', handlePressKey)
+    }
+  }, [])
+
   return (
     <>
       <div className={styles.contentFormCheckoutHeader}>
