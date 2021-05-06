@@ -20,6 +20,7 @@ const Manager = ({
   handleGetUsersByFilters,
   loading,
   onChangeTable,
+  handleClickMail,
   total,
   page
 }) => {
@@ -115,14 +116,16 @@ const Manager = ({
       </Col>
       <Col span={24}>
         <Card bordered={false}>
-          <UserList 
+          <UserList
             handleSubmitUpdate={handleSubmitUpdate}
             onChangeTable={onChangeTable}
-            datasource={users} 
-            chooseUser={handleChooseUser} 
-            loading={loading} 
+            datasource={users}
+            chooseUser={handleChooseUser}
+            loading={loading}
+            handleClickMail={handleClickMail}
             total={total}
-            page={page}/>
+            page={page}
+          />
         </Card>
       </Col>
     </Row>
