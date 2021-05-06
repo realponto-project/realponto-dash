@@ -37,12 +37,12 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistStore(store)}>
         <Switch>
+          <Route exact path="/" component={HomePage} />
           <Route path="/catalog/:companyId" component={CatalogManager} />
           <Route
             path="/catalog-product/:productId"
             component={CatalogDetails}
           />
-          <Route exact path="/homepage" component={HomePage} />
           <Route exact path="/welcome-member/:token" component={Onboarding} />
           <Route path="/login" component={Login} />
           <Route exact path="/register/sucess" component={Success} />
