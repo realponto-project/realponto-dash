@@ -9,6 +9,10 @@ const getUserById = async (userId, options = {}) => {
   return await axiosIntance.get(`/users/${userId}`, options)
 }
 
+const sendInviteMember = async (userId, options = {}) => {
+  return await axiosIntance.post(`/users/send-invite-member/${userId}`, options)
+}
+
 const createUser = async (values) => {
   return await axiosIntance.post('/users', values)
 }
@@ -36,10 +40,6 @@ const updateUser = async (values) => {
   return await axiosIntance.put(`/users/${values.id}`, values)
 }
 
-const getByIdUser = async (id) => {
-  return await axiosIntance.get(`/users/${id}`)
-}
-
 const updateUserPassword = async (values) => {
   return await axiosIntance.put('/users-update-password', values)
 }
@@ -56,5 +56,6 @@ export {
   updateUserPassword,
   updateMyInfo,
   recoveryUser,
-  resetPassword
+  resetPassword,
+  sendInviteMember
 }
