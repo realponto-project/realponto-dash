@@ -104,6 +104,7 @@ const Manager = ({ myTeamSearch, setMyTeamSearch, cleanMyTeamSearch }) => {
   const handleClickMail = async (userId) => {
     try {
       await sendInviteMember(userId)
+      getAllUsers()
     } catch (err) {
       console.error(err)
     }

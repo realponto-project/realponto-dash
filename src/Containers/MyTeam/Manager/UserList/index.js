@@ -1,8 +1,69 @@
-import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image, Switch } from 'antd'
-import { map } from 'ramda'
+import React, { useEffect, useState } from 'react'
+import {
+  Table,
+  Button,
+  Empty,
+  ConfigProvider,
+  Image,
+  Switch,
+  Tooltip
+} from 'antd'
+import { map, pipe } from 'ramda'
 import NoData from '../../../../Assets/noData.svg'
 import { MailOutlined } from '@ant-design/icons'
+
+const isDisabled = ({ countTokenSended, lastTokenDate }) => {
+  const timeHasPassedMs = new Date() - new Date(lastTokenDate)
+  const timeForPremissionNextSendMs = 300000 * countTokenSended // 5 minutes multiply by count
+
+  return timeHasPassedMs < timeForPremissionNextSendMs
+}
+
+const formatCount = (count) => {
+  if (count <= 0) return ''
+
+  const countSeconds = Math.floor(count / 1000) % 60
+  const countMinutes = Math.floor(count / 60000)
+
+  const formatToString = pipe(String, (value) => value.padStart(2, '0'))
+
+  const countFormated = `${formatToString(countMinutes)}:${formatToString(
+    countSeconds
+  )}`
+
+  return countFormated
+}
+
+const renderColumnMail = ({ handleClickMail }) => (
+  _,
+  { firstAccess, activated, id, countTokenSended, lastTokenDate }
+) => {
+  if (firstAccess && activated) {
+    const [conut, setConut] = useState(0)
+
+    const timeForPremissionNextSendMs = 300000 * countTokenSended // 5 minutes multiply by count
+
+    useEffect(() => {
+      const countTime = setInterval(() => {
+        const timeHasPassedMs = new Date() - new Date(lastTokenDate)
+        setConut(timeForPremissionNextSendMs - timeHasPassedMs)
+      }, 1000)
+
+      return () => clearInterval(countTime)
+    }, [])
+
+    return (
+      <Tooltip title={formatCount(conut)}>
+        <Button
+          type="link"
+          disabled={isDisabled({ countTokenSended, lastTokenDate })}
+          onClick={() => handleClickMail(id)}
+          icon={<MailOutlined />}
+        />
+      </Tooltip>
+    )
+  }
+}
 
 const columns = ({ chooseUser, handleSubmitUpdate, handleClickMail }) => [
   {
@@ -68,17 +129,7 @@ const columns = ({ chooseUser, handleSubmitUpdate, handleClickMail }) => [
     title: '',
     dataIndex: 'firstAccess',
     fixed: 'left',
-    render: (_, { firstAccess, activated, id }) => {
-      if (firstAccess && activated) {
-        return (
-          <Button
-            type="link"
-            onClick={() => handleClickMail(id)}
-            icon={<MailOutlined />}
-          />
-        )
-      }
-    },
+    render: renderColumnMail({ handleClickMail }),
     width: 32
   }
 ]
