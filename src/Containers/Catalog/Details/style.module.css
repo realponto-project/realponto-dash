@@ -59,3 +59,7 @@
   font-size: 1.2rem;
   line-height: 1.5rem;
 }
+
+.dots li button{
+  background-color: #1980ff !important;
+}

@@ -21,9 +21,11 @@ const initialFilterState = {
 }
 
 const parsePrice = (value) => (value ? String(value).replace(/\D/g, '') : value)
+
 const productPayload = applySpec({
   id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
   balance: pathOr(0, ['balance']),
+  showOnCatalog: pathOr(false, ['showOnCatalog']),
   barCode: pathOr(null, ['barCode']),
   buyPrice: pipe(pathOr('0', ['buyPrice']), parsePrice),
   minQuantity: pathOr(null, ['minQuantity']),
