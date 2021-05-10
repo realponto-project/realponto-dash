@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Image, Row, Col, Divider } from 'antd'
 import TruckGraySvg from './truck-gray.svg'
 import { add, equals, length, map, multiply, pathOr, reduce } from 'ramda'
-import styles from './style.module.css'
 import { formatPrice } from '../../../utils'
 
 const Detail = ({
@@ -38,6 +37,22 @@ const Detail = ({
       productList || []
     )
   )
+
+  const handlePressKey = (event) => {
+    const { ctrlKey, shiftKey, key } = event
+
+    if (ctrlKey && shiftKey) {
+      if (key === '<') handlePrevStep()
+    }
+  }
+
+  useEffect(() => {
+    window.document.addEventListener('keypress', handlePressKey)
+
+    return () => {
+      window.document.removeEventListener('keypress', handlePressKey)
+    }
+  }, [])
 
   return (
     <Row gutter={[6, 0]}>
