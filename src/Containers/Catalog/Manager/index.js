@@ -5,6 +5,7 @@ import { DownOutlined } from '@ant-design/icons'
 
 import logo from '../../../Assets/logo.svg'
 import ProductCard from '../../../Components/ProductCard'
+import emptySvg from '../../../Assets/empty.svg'
 
 import styles from './style.module.css'
 
@@ -36,9 +37,7 @@ const Catalog = ({
 }) => {
   return (
     <Row style={{ backgroundColor: '#F2F2F3', minHeight: '100vh' }}>
-      <Row
-        gutter={[35, 20]}
-        style={{ maxWidth: 1200, margin: '10px auto' }}>
+      <Row gutter={[35, 20]} style={{ maxWidth: 1200, margin: '10px auto' }}>
         <Col span={24}>
           <Image src={logo} alt="logo-alxa" preview={false} width={160} />
         </Col>
@@ -53,7 +52,21 @@ const Catalog = ({
         </Col>
 
         <Col span={24}>
-          <h1 className={styles.companyName}>{company?.name}</h1>
+          <Row align="middle" gutter={10}>
+            {company?.logo?.url && (
+              <Col>
+                <Image
+                  wrapperClassName={styles.wrapperImageLogo}
+                  width="2.5rem"
+                  src={company?.logo?.url ?? emptySvg}
+                  alt={company?.logo?.name ?? 'empyt'}
+                />
+              </Col>
+            )}
+            <Col>
+              <h1 className={styles.companyName}>{company?.name}</h1>
+            </Col>
+          </Row>
           {company?.address && (
             <p className={styles.companyInfo}>
               {company.address.street}, {company.address.streetNumber},{' '}
