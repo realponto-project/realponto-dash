@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { baseURL } from '../../utils/axiosInstance'
 
-const getProducts = async (companyId, params = {}) => {
-  return await axios.get(`${baseURL}/catalog/get-products/${companyId}`, {
+const getProducts = async (nickName, params = {}) => {
+  return await axios.get(`${baseURL}/catalog/get-products/${nickName}`, {
     params
   })
 }
@@ -13,11 +13,10 @@ const getProductById = async (producId, params = {}) => {
   })
 }
 
-
-const getCompanyById = async (companyId, params = {}) => {
-  return await axios.get(`${baseURL}/catalog/get-company/${companyId}`, {
+const getCompanyByNickName = async (nickName, params = {}) => {
+  return await axios.get(`${baseURL}/catalog/get-company/${nickName}`, {
     params
   })
 }
 
-export { getProducts, getProductById, getCompanyById }
+export { getProducts, getProductById, getCompanyByNickName }

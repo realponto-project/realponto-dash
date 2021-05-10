@@ -24,7 +24,11 @@ const Onboarding = ({ history, match }) => {
     } catch (error) {
       updateMyInfoService(
         user.id,
-        { firstAccess: true },
+        {
+          firstAccess: true,
+          lastTokenDate: null,
+          countTokenSended: 0
+        },
         { headers: match.params.token }
       ).then(() => history.push('/login'))
       console.log(error)

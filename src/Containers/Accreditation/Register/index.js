@@ -15,7 +15,11 @@ import { CheckOutlined } from '@ant-design/icons'
 import logo from '../../../Assets/logo.svg'
 import allTheData from '../../../Assets/allTheData.svg'
 import styles from './style.module.css'
-import { validateCNPJ, validateEmail } from '../../../utils/validators'
+import {
+  validateCNPJ,
+  validateEmail,
+  validateNickName
+} from '../../../utils/validators'
 
 const { Title, Text, Paragraph } = Typography
 const rules = [{ required: true, message: 'Este campo é obrigatório!' }]
@@ -72,7 +76,7 @@ const Register = ({ handleClickContinue, loading }) => (
                   rules={rules}
                   name="razaoSocial"
                   label="Nome da empresa">
-                  <Input placeholder="Insira o nome da empresa"/>
+                  <Input placeholder="Insira o nome da empresa" />
                 </Form.Item>
                 <Form.Item
                   rules={[
@@ -81,11 +85,22 @@ const Register = ({ handleClickContinue, loading }) => (
                   ]}
                   name="cnpj"
                   label="CPNJ">
-                  <Input placeholder="Insira o cnpj"/>
+                  <Input placeholder="Insira o cnpj" />
                 </Form.Item>
+
+                <Form.Item
+                  rules={[
+                    ...rules,
+                    { validator: (_, value) => validateNickName(value) }
+                  ]}
+                  name="nickName"
+                  label="apelido">
+                  <Input placeholder="Insira o nome fantasia" />
+                </Form.Item>
+
                 <Title level={5}>Dados de acesso</Title>
                 <Form.Item rules={rules} name="responsible" label="Responsável">
-                  <Input placeholder="Insira o nome do responsável"/>
+                  <Input placeholder="Insira o nome do responsável" />
                 </Form.Item>
                 <Form.Item
                   rules={[
@@ -94,25 +109,25 @@ const Register = ({ handleClickContinue, loading }) => (
                   ]}
                   name="email"
                   label="E-mail">
-                  <Input placeholder="Insira o email"/>
+                  <Input placeholder="Insira o email" />
                 </Form.Item>
                 <Form.Item rules={rules} name="password" label="Senha">
-                  <Input.Password placeholder="Insira a senha"/>
+                  <Input.Password placeholder="Insira a senha" />
                 </Form.Item>
               </Card>
 
               <Row justify="center">
                 <Col span={22}>
-                <Form.Item >
-                  <Button
-                    size="large"
-                    htmlType="submit"
-                    loading={loading}
-                    type="primary"
-                    style={{ width: '100%' }}>
-                    Continuar
-                  </Button>
-                </Form.Item>
+                  <Form.Item>
+                    <Button
+                      size="large"
+                      htmlType="submit"
+                      loading={loading}
+                      type="primary"
+                      style={{ width: '100%' }}>
+                      Continuar
+                    </Button>
+                  </Form.Item>
                 </Col>
               </Row>
             </Form>
