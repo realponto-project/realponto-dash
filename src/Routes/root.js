@@ -4,17 +4,33 @@ import OrderDetail from '../Pages/Order/Detail'
 import OrderManager from '../Pages/Order/Manager'
 import CustomerManager from '../Pages/Customer/Manager'
 import ProductManager from '../Pages/Product/Manager'
-import StatusManager from '../Pages/Status/Manager'
-import UpdateMyPassword from '../Pages/UpdateMyPassword'
-import MyTeam from '../Pages/MyTeam'
+// import StatusManager from '../Pages/Status/Manager'
+// import UpdateMyPassword from '../Pages/UpdateMyPassword'
+// import MyTeam from '../Pages/MyTeam'
 import Onboarding from '../Pages/Onboarding'
 import MyInfo from '../Pages/MyInfo'
 import Home from '../Pages/Home'
 import PDV from '../Pages/PDV'
 import Report from '../Pages/Report'
 import ProductDetail from '../Pages/Product/Detail'
+import Credits from '../Pages/Credits'
+import Settings from '../Pages/Settings'
 
 const RootRoutes = [
+  {
+    component: Credits,
+    title: 'GERENCIAMENTO DE CRÉDITOS',
+    path: '/logged/credits/manager',
+    exact: true,
+    goBack: true
+  },
+  {
+    component: Settings,
+    title: 'Configurações',
+    path: '/logged/settings',
+    exact: false,
+    goBack: true
+  },
   {
     component: OrderAdd,
     title: 'ADICIONAR ORDEM DE ENTRADA',
@@ -25,7 +41,7 @@ const RootRoutes = [
   {
     component: Onboarding,
     path: '/user/onboarding',
-    exact: true,
+    exact: true
   },
   {
     component: MyInfo,
@@ -34,27 +50,27 @@ const RootRoutes = [
     exact: true,
     goBack: true
   },
-  {
-    component: StatusManager,
-    title: 'STATUS',
-    path: '/logged/config/status',
-    exact: true,
-    goBack: true
-  },
-  {
-    component: MyTeam,
-    title: 'MINHA EQUIPE',
-    path: '/logged/account-myteam',
-    exact: true,
-    goBack: true
-  },
-  {
-    component: UpdateMyPassword,
-    title: 'ALTERAR SENHA',
-    path: '/logged/account-password',
-    exact: true,
-    goBack: true
-  },
+  // {
+  //   component: StatusManager,
+  //   title: 'STATUS',
+  //   path: '/logged/config/status',
+  //   exact: true,
+  //   goBack: true
+  // },
+  // {
+  //   component: MyTeam,
+  //   title: 'MINHA EQUIPE',
+  //   path: '/logged/account-myteam',
+  //   exact: true,
+  //   goBack: true
+  // },
+  // {
+  //   component: UpdateMyPassword,
+  //   title: 'ALTERAR SENHA',
+  //   path: '/logged/account-password',
+  //   exact: true,
+  //   goBack: true
+  // },
   {
     component: OutOrder,
     title: 'ADICIONAR ORDEM DE SAÍDA',
@@ -101,20 +117,20 @@ const RootRoutes = [
     component: Home,
     title: 'DASHBOARD',
     path: '/logged/dashboard',
-    exact: true,
+    exact: true
   },
   {
     component: PDV,
     title: 'PONTO DE VENDA',
     path: '/pdv',
-    goBack: true,
+    goBack: true
   },
   {
     component: Report,
     title: 'ORDENS CONSOLIDADAS',
     path: '/logged/order/report',
     goBack: true
-  },
+  }
 ]
 
 export default RootRoutes
