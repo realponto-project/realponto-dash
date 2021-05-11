@@ -14,7 +14,7 @@ import {
   BlockOutlined,
   CalculatorOutlined,
   TeamOutlined,
-  DiffOutlined
+  LinkOutlined
 } from '@ant-design/icons'
 
 const { Sider, Content } = Layout
@@ -44,11 +44,11 @@ const menuItems = [
     label: 'Ordens',
     key: '/logged/order/manager'
   },
-  // {
-  //   icon: <DiffOutlined />,
-  //   label: 'Ordens consolidadas',
-  //   key: '/logged/order/report'
-  // }
+  {
+    icon: <LinkOutlined />,
+    label: 'Link de pagamento',
+    key: '/logged/payment-link'
+  }
 ]
 
 const LayoutComponent = ({ children, history, location, company, subscription }) => {

@@ -13,6 +13,7 @@ import Home from '../Pages/Home'
 import PDV from '../Pages/PDV'
 import Report from '../Pages/Report'
 import ProductDetail from '../Pages/Product/Detail'
+import PaymentLink from '../Pages/PaymentLink/Manager'
 
 const RootRoutes = [
   {
@@ -108,6 +109,12 @@ const RootRoutes = [
     title: 'PONTO DE VENDA',
     path: '/pdv',
     goBack: true,
+  },
+  {
+    component: PaymentLink,
+    title: 'LINK DE PAGAMENTO',
+    path: '/logged/payment-link',
+    goBack: true
   },
   {
     component: Report,
