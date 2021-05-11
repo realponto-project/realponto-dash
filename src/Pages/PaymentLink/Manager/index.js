@@ -109,9 +109,8 @@ const Manager = ({
           default_payment_method: 'credit_card'
         }
       })
-      console.log('========>', response)
     } catch (error) {
-      
+      console.log('alerta de nao foi possivel criar link')
     }
   }
 

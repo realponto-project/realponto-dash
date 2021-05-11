@@ -50,9 +50,7 @@ const columns = ({ handleClickEdit }) => [
   }
 ]
 
-
 const PaymentLinkList = ({ datasource, handleClickEdit, loading, onChangeTable, total, page}) => {
-  console.log(datasource)
   return (
     <ConfigProvider renderEmpty={() => <Empty 
       description="Não há dados" 
