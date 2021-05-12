@@ -64,7 +64,7 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
             paymentType.cash || values.paymentMethod === 'debit_card'
               ? {
                   paymentMethod: paymentType.cash ? 'Dinheiro' : 'debit_card',
-                  installments: 1
+                  installment: 1
                 }
               : values
         })
@@ -213,7 +213,7 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
         setOrderCreated(data)
         setFormData({
           payment: {
-            installments: pathOr('', ['installments'], data),
+            installment: pathOr('', ['installment'], data),
             paymentMethod: pathOr('', ['payment'], data)
           },
           customer: applySpec({

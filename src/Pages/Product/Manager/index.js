@@ -36,7 +36,12 @@ const productPayload = applySpec({
   activated: pathOr(true, ['activated'])
 })
 
-const Manager = ({ productSearch, setProductSearch, cleanProductSearch }) => {
+const Manager = ({
+  productSearch,
+  setProductSearch,
+  cleanProductSearch,
+  company
+}) => {
   const history = useHistory()
   const [products, setProducts] = useState({})
   const [page, setPage] = useState(1)
@@ -150,13 +155,14 @@ const Manager = ({ productSearch, setProductSearch, cleanProductSearch }) => {
       onChangeTable={onChangeTable}
       page={page}
       goToDetail={goToDetail}
-      catalogLink={'/catalog/@Villa_Mada'}
+      catalogLink={`/catalog/${company.nickName}`}
     />
   )
 }
 
-const mapStateToProps = ({ productSearch }) => ({
-  productSearch
+const mapStateToProps = ({ productSearch, company }) => ({
+  productSearch,
+  company
 })
 
 const mapDispatchToProps = (dispatch) => ({

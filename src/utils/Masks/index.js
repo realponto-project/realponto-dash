@@ -12,3 +12,5 @@ const mask = (pattern) => (value) => {
 }
 
 export default mask
+
+export const toLocaleString = (value) => value.toLocaleString('pt-BR')

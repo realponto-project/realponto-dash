@@ -116,7 +116,9 @@ const Manager = ({
                       text: `${window.location.origin}/#${catalogLink}`,
                       tooltips: true
                     }}>
-                    <Link to={catalogLink}>Catálogo</Link>
+                    <Link target="_blank" to={catalogLink}>
+                      Catálogo
+                    </Link>
                   </Text>
                 </Col>
               </Row>

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Button, Table, Tag, Empty, ConfigProvider, Image } from 'antd'
+import { Button, Table, Tag } from 'antd'
 import formattedDate from '../../../../utils/parserDate'
-import NoData from '../../../../Assets/noData.svg'
 import EditSerial from '../../../../Containers/Product/Detail/Edit'
 
 const columns = (openSerialEdit) => [
@@ -44,39 +43,36 @@ const columns = (openSerialEdit) => [
     )
   }
 ]
-
-
-const OrderList = ({ 
-    serialNumberData, 
-    onChangeTable, 
-    openSerialEdit, 
-    serialVisibleEdit, 
-    serialNumberSelected, 
-    onCancel, 
-    onOk, 
-    page, 
-    total,
-    loading
-  }) => {
-    return (
-      <ConfigProvider
-        renderEmpty={() => (
-          <Empty
-            description="Não há dados"
-            image={<Image width={85} src={NoData} preview={false} />}
-          />
-        )}>
-          <EditSerial visible={serialVisibleEdit} serialNumber={serialNumberSelected} onCancel={onCancel} onOk={onOk}/>
-        <Table
-          loading={loading}
-          columns={columns(openSerialEdit)}
-          dataSource={serialNumberData}
-          pagination={{ total, current: page}}
-          serialNumberData={serialNumberData}
-          onChange={onChangeTable}
-        />
-      </ConfigProvider>
-    )
+const OrderList = ({
+  serialNumberData,
+  onChangeTable,
+  openSerialEdit,
+  serialVisibleEdit,
+  serialNumberSelected,
+  onCancel,
+  onOk,
+  page,
+  total,
+  loading
+}) => {
+  return (
+    <>
+      <EditSerial
+        visible={serialVisibleEdit}
+        serialNumber={serialNumberSelected}
+        onCancel={onCancel}
+        onOk={onOk}
+      />
+      <Table
+        loading={loading}
+        columns={columns(openSerialEdit)}
+        dataSource={serialNumberData}
+        pagination={{ total, current: page }}
+        serialNumberData={serialNumberData}
+        onChange={onChangeTable}
+      />
+    </>
+  )
 }
 
 export default OrderList

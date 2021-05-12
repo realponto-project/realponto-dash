@@ -34,3 +34,7 @@ body {
 .ant-carousel{
   width: 100% !important;
 }
+
+.ant-tabs-top > .ant-tabs-nav::before{
+  border-color: rgba(0, 0, 0, 0.1)
+}

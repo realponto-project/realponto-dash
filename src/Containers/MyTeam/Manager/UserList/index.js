@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Table,
-  Button,
-  Empty,
-  ConfigProvider,
-  Image,
-  Switch,
-  Tooltip
-} from 'antd'
+import { Table, Button, Switch, Tooltip } from 'antd'
 import { map, pipe } from 'ramda'
-import NoData from '../../../../Assets/noData.svg'
 import { MailOutlined } from '@ant-design/icons'
 
 const isDisabled = ({ countTokenSended, lastTokenDate }) => {
@@ -145,24 +136,16 @@ const UserList = ({
   handleClickMail
 }) => {
   return (
-    <ConfigProvider
-      renderEmpty={() => (
-        <Empty
-          description="Não há dados"
-          image={<Image width={85} src={NoData} preview={false} />}
-        />
-      )}>
-      <Table
-        pagination={{ total, current: page }}
-        onChange={onChangeTable}
-        columns={columns({ chooseUser, handleSubmitUpdate, handleClickMail })}
-        loading={loading}
-        dataSource={map(
-          (dataArray) => ({ ...dataArray, key: dataArray.id }),
-          datasource
-        )}
-      />
-    </ConfigProvider>
+    <Table
+      pagination={{ total, current: page }}
+      onChange={onChangeTable}
+      columns={columns({ chooseUser, handleSubmitUpdate, handleClickMail })}
+      loading={loading}
+      dataSource={map(
+        (dataArray) => ({ ...dataArray, key: dataArray.id }),
+        datasource
+      )}
+    />
   )
 }
 

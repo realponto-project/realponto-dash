@@ -1,8 +1,7 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image } from 'antd'
+import { Table, Button } from 'antd'
 import { cpf, cnpj } from 'cpf-cnpj-validator'
-import {map} from 'ramda'
-import NoData from '../../../../Assets/noData.svg'
+import { map } from 'ramda'
 
 const columns = ({ handleClickEdit }) => [
   {
@@ -16,7 +15,8 @@ const columns = ({ handleClickEdit }) => [
     dataIndex: 'document',
     key: 'document',
     fixed: 'left',
-    render: (text) => (text && text.length > 11 ? cnpj.format(text) : cpf.format(text))
+    render: (text) =>
+      text && text.length > 11 ? cnpj.format(text) : cpf.format(text)
   },
   {
     title: 'Telefone',
@@ -27,27 +27,33 @@ const columns = ({ handleClickEdit }) => [
   {
     title: ' ',
     dataIndex: 'id',
-    render: (id) =>  <Button type="link" onClick={() => handleClickEdit(id)}>
-      Editar
-    </Button>
+    render: (id) => (
+      <Button type="link" onClick={() => handleClickEdit(id)}>
+        Editar
+      </Button>
+    )
   }
 ]
 
-
-const CustomerList = ({ datasource, handleClickEdit, loading, onChangeTable, total, page}) => {
+const CustomerList = ({
+  datasource,
+  handleClickEdit,
+  loading,
+  onChangeTable,
+  total,
+  page
+}) => {
   return (
-    <ConfigProvider renderEmpty={() => <Empty 
-      description="Não há dados" 
-      image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
-      <Table 
-        pagination={{ total, current: page }}
-        onChange={onChangeTable}
-        columns={columns({ handleClickEdit })} 
-        loading={loading} 
-        dataSource={map((dataArray) => ({...dataArray, key: dataArray.id}), datasource)} />
-    </ConfigProvider>
+    <Table
+      pagination={{ total, current: page }}
+      onChange={onChangeTable}
+      columns={columns({ handleClickEdit })}
+      loading={loading}
+      dataSource={map(
+        (dataArray) => ({ ...dataArray, key: dataArray.id }),
+        datasource
+      )}
+    />
   )
 }
 

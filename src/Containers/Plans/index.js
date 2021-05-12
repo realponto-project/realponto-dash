@@ -32,7 +32,7 @@ import { getAll } from '../../Services/Plans'
 import { createSubscription } from '../../Services/Subscription'
 import { createCardHash } from '../../Services/pagarme'
 
-import Logo from './alxa.svg'
+import Logo from '../../Assets/alxa-plus.svg'
 import Visa from './visa.svg'
 import MasterCard from './mastercard.svg'
 
@@ -64,13 +64,15 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
   }
 
   const getAllPlans = () => {
-    getAll({ activated: true, description: 'Anual' }).then(({ data: { source } }) => {
-      const sourceFormated = map(buildPlan, source)
-      setPlans(sourceFormated)
-      setPlanId(
-        prop('key', find(propEq('quantityProduct', 300), sourceFormated))
-      )
-    })
+    getAll({ activated: true, description: 'Anual' }).then(
+      ({ data: { source } }) => {
+        const sourceFormated = map(buildPlan, source)
+        setPlans(sourceFormated)
+        setPlanId(
+          prop('key', find(propEq('quantityProduct', 300), sourceFormated))
+        )
+      }
+    )
   }
 
   useEffect(() => {
@@ -118,16 +120,12 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
     return { [key]: mask(e[key], patterns[key]) }
   }
 
-  const installments = (value) => {
-    setInstallment(value)
-  }
-
   const addSubscription = async (values) => {
     const cardUser = {
       card_holder_name: values.card_holder_name,
       card_number: values.card_number.replace(/\D/g, ''),
       card_expiration_date: values.card_expiration_date.replace(/\D/g, ''),
-      card_cvv: values.card_cvv.replace(/\D/g, ''),
+      card_cvv: values.card_cvv.replace(/\D/g, '')
     }
     try {
       const cardHash = await createCardHash(cardUser)
@@ -137,11 +135,11 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
         activated: true,
         amount: Number(amount) * 100,
         paymentMethod: 'credit_card',
-        installments: installment
+        installment
       })
       setSubscription(data)
       setInstallment(1)
-      return response
+      // return response
     } catch (error) {
       console.error(error)
     }
@@ -238,7 +236,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
                   amount,
                   month,
                   quantityProduct,
-                  text,
+                  text
                 }) => (
                   <Col span={12} key={key}>
                     <div
@@ -312,7 +310,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
                   </label>
                 }
                 name="card_holder_name">
-                <Input placeholder="Insira o nome do titular"/>
+                <Input placeholder="Insira o nome do titular" />
               </Form.Item>
 
               <Form.Item
@@ -328,7 +326,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
                   </label>
                 }
                 name="card_number">
-                <Input placeholder="Insira o número do cartão"/>
+                <Input placeholder="Insira o número do cartão" />
               </Form.Item>
               <Row style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Form.Item
@@ -345,7 +343,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
                     </label>
                   }
                   name="card_expiration_date">
-                  <Input placeholder="Insira a data"/>
+                  <Input placeholder="Insira a data" />
                 </Form.Item>
 
                 <Form.Item
@@ -362,7 +360,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
                     </label>
                   }
                   name="card_cvv">
-                  <Input placeholder="Insira o código"/>
+                  <Input placeholder="Insira o código" />
                 </Form.Item>
 
                 <Form.Item
@@ -378,9 +376,10 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
                       Parcelas
                     </label>
                   }
-                  name="installment"
-                  >
-                  <Select onChange={installments} defaultValue={installment}>
+                  name="installment">
+                  <Select
+                    onChange={(value) => setInstallment(value)}
+                    defaultValue={installment}>
                     <Option value={1}>1</Option>
                     <Option value={2}>2</Option>
                     <Option value={3}>3</Option>
@@ -461,7 +460,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  setSubscription: (payload) => dispatch({ type: 'SET_SUBSCRIPTION', payload})
+  setSubscription: (payload) => dispatch({ type: 'SET_SUBSCRIPTION', payload })
 })
 
 const enhanced = compose(connect(null, mapDispatchToProps))

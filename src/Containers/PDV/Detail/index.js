@@ -13,7 +13,7 @@ const Detail = ({
   resetAll
 }) => {
   const name = pathOr(null, ['customer', 'name'], formData)
-  const installments = pathOr(null, ['payment', 'installments'], formData)
+  const installment = pathOr(null, ['payment', 'installment'], formData)
   const paymentMethod = pathOr(null, ['payment', 'paymentMethod'], formData)
   const street = pathOr(null, ['customer', 'street'], formData)
   const streetNumber = pathOr(null, ['customer', 'streetNumber'], formData)
@@ -108,7 +108,7 @@ const Detail = ({
           <b>
             {paymentMethod === 'Dinheiro' || paymentMethod === 'debit_card'
               ? ''
-              : `${installments} x `}
+              : `${installment} x `}
             {paymentMethodLabel[paymentMethod]}
           </b>
         </h3>

@@ -1,7 +1,6 @@
 import React from 'react'
-import { Table, Button, Empty, ConfigProvider, Image, Switch } from 'antd'
+import { Table, Button, Switch } from 'antd'
 import { map } from 'ramda'
-import NoData from '../../../../Assets/noData.svg'
 
 const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
   {
@@ -10,12 +9,17 @@ const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
     key: 'id',
     fixed: 'left',
     render: (__, record) => (
-      <Switch 
-        style={{width: '70px', backgroundColor: record.activated ? '#65A300' : 'rgba(0,0,0,.25)'}} 
-        checkedChildren="Ativo" 
-        unCheckedChildren="Inativo" 
+      <Switch
+        style={{
+          width: '70px',
+          backgroundColor: record.activated ? '#65A300' : 'rgba(0,0,0,.25)'
+        }}
+        checkedChildren="Ativo"
+        unCheckedChildren="Inativo"
         defaultChecked={record.activated}
-        onChange={(activated) => handleSubmitUpdate({...record, activated, id: record.id})}
+        onChange={(activated) =>
+          handleSubmitUpdate({ ...record, activated, id: record.id })
+        }
       />
     )
   },
@@ -50,17 +54,22 @@ const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
     fixed: 'left',
     render: (_, record) => (
       <>
-        <Button type="link" onClick={() => chooseProduct(record)} disabled={!record.activated}>
+        <Button
+          type="link"
+          onClick={() => chooseProduct(record)}
+          disabled={!record.activated}>
           Editar
         </Button>
-        <Button type="primary" onClick={() => goToDetail(record.id)}>Detalhes</Button>
+        <Button type="primary" onClick={() => goToDetail(record.id)}>
+          Detalhes
+        </Button>
       </>
     )
   }
 ]
 
-const ProductList = ({ 
-  datasource, 
+const ProductList = ({
+  datasource,
   chooseProduct,
   loading,
   onChangeTable,
@@ -70,18 +79,16 @@ const ProductList = ({
   goToDetail
 }) => {
   return (
-    <ConfigProvider renderEmpty={() => <Empty
-      description="Não há dados"
-      image={<Image width={85} src={NoData} preview={false} />}
-      />
-    }>
-      <Table 
-        pagination={{ total, current: page }}
-        onChange={onChangeTable}
-        columns={columns(chooseProduct, handleSubmitUpdate, goToDetail)} 
-        loading={loading} 
-        dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
-    </ConfigProvider>
+    <Table
+      pagination={{ total, current: page }}
+      onChange={onChangeTable}
+      columns={columns(chooseProduct, handleSubmitUpdate, goToDetail)}
+      loading={loading}
+      dataSource={map(
+        (dataArray) => ({ ...dataArray, key: dataArray.id }),
+        datasource || []
+      )}
+    />
   )
 }
 

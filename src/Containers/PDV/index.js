@@ -110,7 +110,7 @@ const PDV = ({
           discount={0}
           items={orderCreated && orderCreated.transactions}
           payment={orderCreated && orderCreated.payment}
-          installments={orderCreated && orderCreated.installments}
+          installment={orderCreated && orderCreated.installment}
           createdAt={orderCreated && orderCreated.createdAt}
         />
       )}
