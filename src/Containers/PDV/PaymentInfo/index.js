@@ -9,7 +9,7 @@ import CreditCardGraySvg from './credit-card-gray.svg'
 import styles from './style.module.css'
 
 const { Option } = Select
-const installments = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+const installmentValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 const PaymentInfo = ({
   handleNextStep,
@@ -113,7 +113,7 @@ const PaymentInfo = ({
         </Form.Item>
         <Form.Item
           label="Quantidade de parcelas:"
-          name="installments"
+          name="installment"
           rules={[
             {
               required: !paymentType.cash,
@@ -123,7 +123,7 @@ const PaymentInfo = ({
           <Select
             placeholder="Selecione o número de parcelas"
             disabled={paymentType.cash}>
-            {installments.map((installment) => (
+            {installmentValues.map((installment) => (
               <Option key={installment} value={installment}>
                 {installment} {installment > 1 ? 'Parcelas' : 'Parcela'}
               </Option>
