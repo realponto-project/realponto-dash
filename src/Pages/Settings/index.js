@@ -7,12 +7,13 @@ import Credits from '../Credits'
 import UpdateMyPassword from '../UpdateMyPassword'
 import StatusManager from '../Status/Manager'
 import MyTeam from '../MyTeam'
+import Company from '../Company'
 
 const { TabPane } = Tabs
 
 const tabs = [
   {
-    key: 1,
+    key: '/logged/settings/company',
     tab: 'Dados cadastrais'
   },
   {
@@ -68,6 +69,11 @@ const Settings = () => {
             exact
             path="/logged/settings/account-myteam"
             component={MyTeam}
+          />
+          <Route
+            exact
+            path="/logged/settings/company"
+            component={Company}
           />
         </Switch>
       </Col>
