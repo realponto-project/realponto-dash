@@ -18,7 +18,8 @@ const fileList = [{
   url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
 }]
 
-const Info = () => {
+const Info = ({handleValueChange, form}) => {
+
   return (
     <Card bordered={false}>
       <Title level={5}>Informações da empresa</Title>
@@ -34,37 +35,40 @@ const Info = () => {
         </Col>
         <Col span={20}>
           <Form 
+            onValuesChange={handleValueChange}
+            onFinish={(values)=>console.log(values)}
+            form={form}
             layout='vertical'
           >
             <Row gutter={[8, 8]}>
               <Col span={12}>
-                <Form.Item label="Razão social">
-                  <Input/>
+                <Form.Item label="Razão social" name="name" rules={[{ required: true, message: 'Campo obrigatório!' }]}>
+                  <Input placeholder="Insira a Razão social"/>
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Nome fantasia">
-                  <Input/>
+                <Form.Item label="Nome fantasia" name="socialName" rules={[{ required: true, message: 'Campo obrigatório!' }]}>
+                  <Input  placeholder="Insira o nome fantasia"/>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label="Cnpj">
-                  <Input/>
+                <Form.Item label="Cnpj" name="document" rules={[{ required: true, message: 'Campo obrigatório!' }]}>
+                  <Input  placeholder="Insira o cnpj"/>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label="Email principal">
-                  <Input/>
+                <Form.Item label="Email principal" name="email" rules={[{ required: true, message: 'Campo obrigatório!' }]}>
+                  <Input  placeholder="Insira o e-mail principal"/>
                 </Form.Item>
               </Col>
               <Col span={8}>
-                <Form.Item label="Tag da loja">
-                  <Input/>
+                <Form.Item label="Tag da loja" name="nickName" rules={[{ required: true, message: 'Campo obrigatório!' }]}>
+                  <Input  placeholder="Insira a tag da loja"/>
                 </Form.Item>
               </Col>
               <Col span={24} style={{ textAlign: 'right' }}>
                 <Form.Item >
-                  <Button type="primary">Salvar</Button>
+                  <Button type="primary" htmlType="submit">Salvar</Button>
                 </Form.Item>
               </Col>
             </Row>

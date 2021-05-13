@@ -7,17 +7,23 @@ import Info from './Info'
 import Address from './Address'
 import BankAccount from './BankAccount'
 
-const Company = () => {
+const Company = ({handleValueChange, form}) => {
   return (
     <Row gutter={[8, 16]}>
       <Col span={24}>
-        <Info/>
+        <Info 
+          handleValueChange={handleValueChange}
+          form = {form}/>
       </Col>
       <Col span={24}>
-        <Address/>
+        <Address 
+          handleValueChange = {handleValueChange}
+          form = {form}/>
       </Col>
       <Col span={24}>
-        <BankAccount/>
+        <BankAccount
+          handleValueChange={handleValueChange}
+          form = {form}/>
       </Col>
     </Row>
   )

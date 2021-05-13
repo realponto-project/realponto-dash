@@ -39,12 +39,24 @@ const customerMask = ({ name, value }) => {
       }
     },
 
+    bankAccount: (value) => {
+      return value
+        .replace(/\D/g, '')
+    },
+
+    agency: (value) => {
+      return value
+        .replace(/\D/g, '')
+    },
+
     zipcode: (value) => {
       return value
         .replace(/\D/g, '')
         .replace(/(\d{5})(\d)/, '$1-$2')
         .replace(/(-\d{3})\d+?$/, '$1')
     }
+
+    
   }
 
   const applyMask = maskSpec[name] || ((value) => value)
