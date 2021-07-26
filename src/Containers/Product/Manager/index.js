@@ -9,7 +9,7 @@ import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { applySpec, compose, prop, __ } from 'ramda'
-// import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
+import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 import { Link } from 'react-router-dom'
 const CheckboxGroup = Checkbox.Group
 
