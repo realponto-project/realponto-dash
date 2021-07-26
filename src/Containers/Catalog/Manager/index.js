@@ -39,7 +39,7 @@ const Catalog = ({
     <Row style={{ backgroundColor: '#F2F2F3', minHeight: '100vh' }}>
       <Row gutter={[35, 20]} style={{ maxWidth: 1200, margin: '10px auto' }}>
         <Col span={24}>
-          <Image src={logo} alt="logo-alxa" preview={false} width={160} />
+          <Image src={logo} alt="logo-daptecn" preview={false} width={160} />
         </Col>
 
         <Col span={24}>

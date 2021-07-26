@@ -131,7 +131,7 @@ const Cupom = ({
         </tr>
         <tr className={styles.sup} style={{ borderTop: '1px dashed #bcbcbc' }}>
           <td colSpan="3" align="center">
-            {company.siteUrl || 'www.alxa.com.br - gestão integrada'}
+            {company.siteUrl || 'www.daptecn.com - gestão integrada'}
           </td>
         </tr>
       </tbody>
