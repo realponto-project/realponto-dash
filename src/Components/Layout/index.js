@@ -14,10 +14,9 @@ import {
   BlockOutlined,
   CalculatorOutlined,
   TeamOutlined,
-  DiffOutlined
 } from '@ant-design/icons'
 
-const { Sider, Content } = Layout
+const { Sider, Content, Footer } = Layout
 const menuItems = [
   {
     icon: <DotChartOutlined />,
@@ -37,18 +36,18 @@ const menuItems = [
   {
     icon: <CalculatorOutlined />,
     label: 'Ponto de venda',
-    key: '/logged/pdv'
+    key: '/pdv'
   },
   {
     icon: <ShrinkOutlined />,
     label: 'Ordens',
     key: '/logged/order/manager'
   },
-  {
-    icon: <DiffOutlined />,
-    label: 'Relatórios',
-    key: '/logged/order/report'
-  }
+  // {
+  //   icon: <DiffOutlined />,
+  //   label: 'Ordens consolidadas',
+  //   key: '/logged/order/report'
+  // }
 ]
 
 const LayoutComponent = ({ children, history, location, company, subscription }) => {
@@ -126,6 +125,14 @@ const LayoutComponent = ({ children, history, location, company, subscription })
           }}>
           {children || 'Nenhum conteúdo criado!'}
         </Content>
+        <Footer
+         style={{
+          marginLeft: '256px',
+          padding: 16,
+        }}
+        >
+          <small>Alexandre dos Santos Soares - CNPJ: 38.186.143/0001-02</small>
+        </Footer>
       </Layout>
     </Layout>
   )

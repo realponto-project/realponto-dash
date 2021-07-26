@@ -10,7 +10,7 @@ import {
   finished,
   customerAssocite
 } from '../../../Services/Order'
-import { getAll } from '../../../Services/User'
+import { getAll, getByIdUser } from '../../../Services/User'
 import { getAll as getAllCustomers } from '../../../Services/Customer'
 
 import {
@@ -21,28 +21,7 @@ import {
 } from '../../../Services/SerialNumber'
 
 const Detail = ({ match, status }) => {
-  const [order, setOrder] = useState({
-    user: {
-      name: ''
-    },
-    status: {
-      color: '',
-      value: ''
-    },
-    customer: {
-      name: '',
-      document: '',
-      phone: '',
-      address: {
-        street: '',
-        streetNumber: '',
-        zipcode: '',
-        city: '',
-        state: '',
-        neighborhood: ''
-      }
-    }
-  })
+  const [order, setOrder] = useState({})
   const [users, setUsers] = useState([])
   const [serialNumbersOuts, setSerialNumbersOuts] = useState([])
   const [customers, setCustomers] = useState([])

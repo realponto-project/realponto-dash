@@ -59,20 +59,27 @@ const Detail = ({
           <Row gutter={[8, 8]}>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Colaborador</p>
-              <Title level={5}>{order.user && order.user.name}</Title>
+              <Title level={5}>{order.user?.name}</Title>
             </Col>
             <Col span={6}>
               <p style={{ marginBottom: '4px' }}>Status</p>
               <Title level={5}>
-                <Tag color={order.status && order.status.color}>
-                  {order.status && order.status.label}
+                <Tag color={order.status?.color}>
+                  {order.status?.label}
                 </Tag>
               </Title>
             </Col>
-            <Col span={6}></Col>
-            <Col span={6} style={{ textAlign: 'right' }}>
-              <p style={{ marginBottom: '4px' }}>
-                Data de criação: {formattedDate(order.createdAt, 'DD/MM/YYYY')}
+            <Col span={6}>
+              <p style={{ marginBottom: '4px' }}>Responsável</p>
+              <Title level={5}>{order.responsibleUser?.name}</Title>
+            </Col>
+            <Col span={6} style={{textAlign: 'right'}}>
+            <p>
+              Protocolo:
+              <Title style={{ display: 'inline'}} level={5}> {order.protocol && String(order.protocol).padStart(6, '0')}</Title>
+              </p>
+              <p>
+                Data de criação: <Title style={{ display: 'inline'}} level={5}>{formattedDate(order.createdAt, 'DD/MM/YYYY')}</Title>
               </p>
             </Col>
           </Row>
@@ -85,7 +92,7 @@ const Detail = ({
             <Card bordered={false}>
               <Row gutter={[8, 8]}>
                 <Col span={12}>
-                  <p>Detalhes do cliente</p>
+                  <Title level={5}>Detalhes do cliente</Title>
                 </Col>
                 <Col span={8} style={{ textAlign: 'right' }}>
                   {!order.customer && order.pendingReview && (
@@ -97,19 +104,19 @@ const Detail = ({
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Nome do cliente</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer.name}
+                    {order.customer?.name ?? '-'}
                   </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>CPF/CNPJ</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer.document}
+                    {order.customer?.document ?? '-'}
                   </Title>
                 </Col>
                 <Col span={8}>
                   <p style={{ marginBottom: '4px' }}>Telefone</p>
                   <Title level={5} style={{ fontWeight: 'normal' }}>
-                    {order.customer && order.customer.phone}
+                    {order.customer?.phone ?? '-'}
                   </Title>
                 </Col>
 
@@ -149,7 +156,7 @@ const Detail = ({
             <Card bordered={false}>
               <Row gutter={[8, 8]}>
                 <Col span={12}>
-                  <p>Produtos</p>
+                <Title level={5}>Produtos</Title>
                 </Col>
                 <Col span={24}>
                   <Table

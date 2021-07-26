@@ -13,7 +13,7 @@ export const Logged = () => (
   <Layout>
     <Row gutter={[8, 8]}>
       <Col span={24}>
-        <Header rootRoutes={rootRoutes} />
+        <Header rootRoutes={rootRoutes} showSettings />
       </Col>
       <Col span={24}>
         <Switch>{rootRoutes.map(renderRoute)}</Switch>

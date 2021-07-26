@@ -17,6 +17,7 @@ const initialFormData = {
   customerId: '',
   userId: '',
   statusId: '',
+  note: '',
   products: []
 }
 
@@ -146,6 +147,10 @@ const Add = ({
     })
   }
 
+  const handleNote = (values) => {
+    setFormData({...formData, note: values})
+  } 
+
   return (
     <Row gutter={[8, 8]}>
       <Col span={24}>
@@ -175,6 +180,7 @@ const Add = ({
                 statusList={statusList}
                 userSelected={userSelected}
                 navigationStep={navigationStep}
+                handleNote={handleNote}
               />
             </Col>
           </Row>

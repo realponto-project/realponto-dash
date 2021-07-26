@@ -1,9 +1,10 @@
 import React from 'react'
-import { AutoComplete, Button, Col, Row } from 'antd'
+import { AutoComplete, Button, Col, Row, Tooltip, Typography } from 'antd'
 import {
   BarcodeOutlined,
   DeleteOutlined,
   DownOutlined,
+  QuestionCircleOutlined,
   UpOutlined
 } from '@ant-design/icons'
 import { length, map } from 'ramda'
@@ -12,12 +13,14 @@ import ClassNames from 'classnames'
 import styles from './style.module.css'
 import { formatPrice } from '../../../utils'
 
+const { Title, Text } = Typography
+
 const productItem = (
   handleClickDelete,
   handleClickUp,
   handleClickDown,
-  orderCreated,
-  isSaved
+  orderCreated
+  // isSaved
 ) => ({ id, name, barCode, quantity, salePrice, balance }) => {
   return (
     <li key={id} className={styles.productItem}>
@@ -75,33 +78,45 @@ const ProductList = ({
 }) => {
   return (
     <div>
-      <h2>Ponto de Venda</h2>
       <div className={styles.searchProduct}>
         <Row gutter={[8, 8]}>
           <Col span={24}>
-            <h4>Buscar produto</h4>
+            <Row justify="space-between" align="bottom">
+              <Title level={5}>Busca por produto:</Title>
+              <Tooltip placement="leftBottom" title="Ctrl + Shift + S">
+                <Text>
+                  Atalho{' '}
+                  <QuestionCircleOutlined
+                    style={{ color: 'rgba(0, 0, 0, .45)' }}
+                  />
+                </Text>
+              </Tooltip>
+            </Row>
           </Col>
-          <Col span={16}>
-            <AutoComplete
-              // disabled={isSaved}
-              onSearch={onSearch}
-              onChange={onChange}
-              onSelect={onSelectProduct}
-              options={optionSearch}
-              placeholder="pequise um produto aqui!"
-              style={{ width: '100%' }}
-              value={searchProduct}
-              disabled={!!orderCreated}
-            />
-          </Col>
-          <Col span={8}>
-            <Button
-              disabled={!!orderCreated}
-              icon={<BarcodeOutlined />}
-              onClick={openModalBarcode}
-              type="primary">
-              Buscar cód. barras
-            </Button>
+          <Col span={24}>
+            <Row justify="space-between" gutter={20}>
+              <Col flex="auto">
+                <AutoComplete
+                  onSearch={onSearch}
+                  onChange={onChange}
+                  onSelect={onSelectProduct}
+                  options={optionSearch}
+                  placeholder="Pesquise por um produto"
+                  style={{ width: '100%' }}
+                  value={searchProduct}
+                  disabled={!!orderCreated}
+                />
+              </Col>
+              <Col>
+                <Button
+                  disabled={!!orderCreated}
+                  icon={<BarcodeOutlined />}
+                  onClick={openModalBarcode}
+                  type="primary">
+                  Código de barras
+                </Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </div>
@@ -114,16 +129,17 @@ const ProductList = ({
         </h1>
       </div>
       <ul className={ClassNames(styles.productList, styles.scrollbarPanelList)}>
-        {productList && map(
-          productItem(
-            removeProduct,
-            incrementQuantity,
-            decrementQuantity,
-            (orderCreated = !orderCreated),
-            false
-          ),
-          productList
-        )}
+        {productList &&
+          map(
+            productItem(
+              removeProduct,
+              incrementQuantity,
+              decrementQuantity,
+              (orderCreated = !orderCreated),
+              false
+            ),
+            productList
+          )}
       </ul>
     </div>
   )

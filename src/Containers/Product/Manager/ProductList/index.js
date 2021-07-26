@@ -3,7 +3,7 @@ import { Table, Button, Empty, ConfigProvider, Image, Switch } from 'antd'
 import { map } from 'ramda'
 import NoData from '../../../../Assets/noData.svg'
 
-const columns = (chooseProduct, handleSubmitUpdate) => [
+const columns = (chooseProduct, handleSubmitUpdate, goToDetail) => [
   {
     title: 'Status',
     dataIndex: 'activated',
@@ -20,12 +20,17 @@ const columns = (chooseProduct, handleSubmitUpdate) => [
     )
   },
   {
-    title: 'Descrição',
+    title: 'Produto',
     dataIndex: 'name',
     key: 'name',
     fixed: 'left'
   },
-
+  {
+    title: 'Categoria',
+    dataIndex: 'category',
+    key: 'category',
+    fixed: 'left'
+  },
   {
     title: 'Qtd mínima',
     dataIndex: 'minQuantity',
@@ -34,10 +39,9 @@ const columns = (chooseProduct, handleSubmitUpdate) => [
   },
   {
     title: 'Qtd estoque',
-    dataIndex: 'record.balance',
+    dataIndex: 'balance',
     key: 'balance',
-    fixed: 'left',
-    render: (_, record) => record.balance
+    fixed: 'left'
   },
   {
     title: '',
@@ -45,14 +49,26 @@ const columns = (chooseProduct, handleSubmitUpdate) => [
     key: 'id',
     fixed: 'left',
     render: (_, record) => (
-      <Button type="link" onClick={() => chooseProduct(record)} disabled={!record.activated}>
-        Editar
-      </Button>
+      <>
+        <Button type="link" onClick={() => chooseProduct(record)} disabled={!record.activated}>
+          Editar
+        </Button>
+        <Button type="primary" onClick={() => goToDetail(record.id)}>Detalhes</Button>
+      </>
     )
   }
 ]
 
-const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total, page, handleSubmitUpdate }) => {
+const ProductList = ({ 
+  datasource, 
+  chooseProduct,
+  loading,
+  onChangeTable,
+  total,
+  page,
+  handleSubmitUpdate,
+  goToDetail
+}) => {
   return (
     <ConfigProvider renderEmpty={() => <Empty
       description="Não há dados"
@@ -62,7 +78,7 @@ const ProductList = ({ datasource, chooseProduct, loading, onChangeTable, total,
       <Table 
         pagination={{ total, current: page }}
         onChange={onChangeTable}
-        columns={columns(chooseProduct, handleSubmitUpdate)} 
+        columns={columns(chooseProduct, handleSubmitUpdate, goToDetail)} 
         loading={loading} 
         dataSource={map((dataArray) => ({ ...dataArray, key: dataArray.id }), datasource || [])} />
     </ConfigProvider>

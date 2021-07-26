@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import {
   applySpec,
   compose,
@@ -19,24 +20,24 @@ const initialFilterState = {
   name: ''
 }
 
-const parsePrice = (value) => value ? value.replace(/\D/g, '') : value
+const parsePrice = (value) => (value ? String(value).replace(/\D/g, '') : value)
+
 const productPayload = applySpec({
   id: ifElse(pathOr(false, ['id']), prop(['id']), always(undefined)),
   balance: pathOr(0, ['balance']),
+  showOnCatalog: pathOr(false, ['showOnCatalog']),
   barCode: pathOr(null, ['barCode']),
   buyPrice: pipe(pathOr('0', ['buyPrice']), parsePrice),
   minQuantity: pathOr(null, ['minQuantity']),
   name: pathOr(null, ['name']),
   salePrice: pipe(pathOr('0', ['salePrice']), parsePrice),
+  category: pathOr(null, ['category']),
+  description: pathOr(null, ['description']),
   activated: pathOr(true, ['activated'])
-
 })
 
-const Manager = ({
-  productSearch,
-  setProductSearch,
-  cleanProductSearch
-}) => {
+const Manager = ({ productSearch, setProductSearch, cleanProductSearch }) => {
+  const history = useHistory()
   const [products, setProducts] = useState({})
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -64,12 +65,15 @@ const Manager = ({
     }
   }
 
-  const onChangeTable = ({current}) => {
+  const goToDetail = (productId) => {
+    history.push(`/logged/product/detail/${productId}`)
+  }
+
+  const onChangeTable = ({ current }) => {
     setPage(current)
   }
 
   const getAllProducts = async () => {
-
     setLoading(true)
 
     try {
@@ -125,7 +129,7 @@ const Manager = ({
   }
 
   const handleGetProductsByFilters = () => {
-    if(page !== 1){
+    if (page !== 1) {
       setPage(1)
     } else {
       getAllProducts()
@@ -145,6 +149,8 @@ const Manager = ({
       loading={loading}
       onChangeTable={onChangeTable}
       page={page}
+      goToDetail={goToDetail}
+      catalogLink={'/catalog/@Villa_Mada'}
     />
   )
 }

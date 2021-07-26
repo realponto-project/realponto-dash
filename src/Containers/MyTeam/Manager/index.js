@@ -20,6 +20,7 @@ const Manager = ({
   handleGetUsersByFilters,
   loading,
   onChangeTable,
+  handleClickMail,
   total,
   page
 }) => {
@@ -85,7 +86,7 @@ const Manager = ({
           <Row gutter={[8, 8]}>
             <Col span={13}>
               <Input
-                placeholder="Filtre por nome ou email."
+                placeholder="Filtre por nome ou email"
                 prefix={<SearchOutlined />}
                 name="name"
                 value={filters.name}
@@ -115,14 +116,16 @@ const Manager = ({
       </Col>
       <Col span={24}>
         <Card bordered={false}>
-          <UserList 
+          <UserList
             handleSubmitUpdate={handleSubmitUpdate}
             onChangeTable={onChangeTable}
-            datasource={users} 
-            chooseUser={handleChooseUser} 
-            loading={loading} 
+            datasource={users}
+            chooseUser={handleChooseUser}
+            loading={loading}
+            handleClickMail={handleClickMail}
             total={total}
-            page={page}/>
+            page={page}
+          />
         </Card>
       </Col>
     </Row>

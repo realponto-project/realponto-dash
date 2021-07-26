@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Modal, Form, Input, InputNumber, Col, Row, Button } from 'antd'
+import { Modal, Form, Input, InputNumber, Col, Row, Button, Switch } from 'antd'
 import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
+
+const { TextArea } = Input
 
 const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
   const [form] = Form.useForm()
@@ -8,7 +10,7 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
 
   return (
     <Modal
-      width={450}
+      width={500}
       visible={visible}
       title="ALTERAR PRODUTO"
       onCancel={() => {
@@ -52,9 +54,15 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
         initialValues={productSelected}>
         <Form.Item
           name="name"
-          label="Descrição"
+          label="Nome"
           rules={[{ required: true, message: 'Este campo é obrigatório!' }]}>
           <Input />
+        </Form.Item>
+        <Form.Item name="category" label="Categoria">
+          <Input placeholder="Insira a categoria" />
+        </Form.Item>
+        <Form.Item name="description" label="Descrição">
+          <TextArea placeholder="Digite a descrição" autoSize />
         </Form.Item>
         <Form.Item
           name="minQuantity"
@@ -63,21 +71,36 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
           <InputNumber min={1} style={{ width: '98%' }} />
         </Form.Item>
         <Form.Item name="barCode" label="Código de barras">
-          <Input placeholder="Insira o código de barras"/>
+          <Input placeholder="Insira o código de barras" />
         </Form.Item>
-        <Row align="space-between">
+        <Row gutter={20}>
           <Col span={12}>
             <Form.Item name="buyPrice" label="Preço custo">
-              <Input 
-              style={{ width: '98%' }}
-              onChange={({ target: { value }}) => form.setFieldsValue({ buyPrice: `${parseValuePTbr(value)}` })} />
+              <Input
+                style={{ width: '98%' }}
+                onChange={({ target: { value } }) =>
+                  form.setFieldsValue({ buyPrice: `${parseValuePTbr(value)}` })
+                }
+              />
             </Form.Item>
           </Col>
-          <Col span={11}>
+          <Col span={12}>
             <Form.Item name="salePrice" label="Preço venda">
-              <Input 
-                style={{ width: '98%' }} 
-                onChange={({ target: { value }}) => form.setFieldsValue({ salePrice: `${parseValuePTbr(value)}` })} />
+              <Input
+                style={{ width: '98%' }}
+                onChange={({ target: { value } }) =>
+                  form.setFieldsValue({ salePrice: `${parseValuePTbr(value)}` })
+                }
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Form.Item
+              name="showOnCatalog"
+              label="Mostrar em catálogo"
+              valuePropName="checked">
+              <Switch />
             </Form.Item>
           </Col>
         </Row>

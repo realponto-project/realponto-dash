@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { applySpec, compose, isEmpty, isNil, not, pathEq, pathOr } from 'ramda'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Form } from 'antd'
+import { Form, Row, Col } from 'antd'
 import getAddress from '../../Services/Address'
 import {
   getAll,
@@ -11,6 +11,8 @@ import {
 } from '../../Services/Product'
 import { createOrder, getOrderById } from '../../Services/Order'
 import PDVContainer from '../../Containers/PDV'
+import Header from '../../Components/Header'
+import rootRoutes from '../../Routes/root'
 
 const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   const [step, setStep] = useState(0)
@@ -32,7 +34,10 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   })
 
   const [searchProduct, setSearchProduct] = useState('')
-  const [products, setProducts] = useState([])
+  const [
+    products
+    // setProducts
+  ] = useState([])
   const [optionSearch, setOptionSearch] = useState([])
   const [isVisibleModalBarcode, setIsVisibleModalBarcode] = useState(false)
   const [isVisibleModalNotFound, setIsVisibleModalNotFound] = useState(false)
@@ -64,10 +69,6 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
               : values
         })
       }
-      setFormPdv({
-        ...formData,
-        productList
-      })
       return setStep(step + 1)
     } catch (error) {
       console.error(error)
@@ -117,15 +118,15 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
   }
 
   const onSearch = (value) => {
-    if (value.length > 3) {
-      getAll().then(({ data }) => {
-        const source = data.source.map((item) => ({
-          label: `${item.name} - quantidade: ${item.balance}`,
-          value: item.id
-        }))
-        setOptionSearch(source)
-      })
-    }
+    // if (value.length > 3) {
+    getAll({ name: value }).then(({ data }) => {
+      const source = data.source.map((item) => ({
+        label: `${item.name} - quantidade: ${item.balance}`,
+        value: item.id
+      }))
+      setOptionSearch(source)
+    })
+    // }
   }
 
   const handleSearchByBarcode = async (value) => {
@@ -185,6 +186,10 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
     try {
       const { data } = await getProductById(value)
 
+      const balance = pathOr(false, ['balance'], data)
+
+      if (!balance) throw new Error('insufficient balance')
+
       setProductList([
         ...productList,
         {
@@ -242,6 +247,13 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
     }
   }, [])
 
+  useEffect(() => {
+    setFormPdv({
+      ...formData,
+      productList
+    })
+  }, [productList, formData])
+
   const resetAll = () => {
     setStep(0)
     formCustomer.resetFields()
@@ -262,39 +274,62 @@ const PDV = ({ setFormPdv, company, formPdv, clearFormPdv }) => {
     })
   }
 
+  const handlePressKey = (event) => {
+    const { ctrlKey, shiftKey, key } = event
+
+    if (ctrlKey && shiftKey) {
+      if (key === 'S') setIsVisibleModalBarcode(true)
+    }
+  }
+
+  useEffect(() => {
+    window.document.addEventListener('keypress', handlePressKey)
+
+    return () => {
+      window.document.removeEventListener('keypress', handlePressKey)
+    }
+  }, [])
+
   return (
-    <PDVContainer
-      step={step}
-      handleNextStep={handleNextStep}
-      handlePrevStep={handlePrevStep}
-      handleSaletype={handleSaletype}
-      saleType={saleType}
-      handlePaymentType={handlePaymentType}
-      paymentType={paymentType}
-      formCustomer={formCustomer}
-      formPayment={formPayment}
-      formData={formData}
-      getCustomerAddress={getCustomerAddress}
-      handleSubmit={handleSubmit}
-      onSearch={onSearch}
-      onChange={onChange}
-      searchProduct={searchProduct}
-      products={products}
-      optionSearch={optionSearch}
-      onSelectProduct={onSelectProduct}
-      productList={productList}
-      incrementQuantity={incrementQuantity}
-      decrementQuantity={decrementQuantity}
-      removeProduct={removeProduct}
-      orderCreated={orderCreated}
-      company={company}
-      handleSearchByBarcode={handleSearchByBarcode}
-      isVisibleModalBarcode={isVisibleModalBarcode}
-      setIsVisibleModalBarcode={setIsVisibleModalBarcode}
-      isVisibleModalNotFound={isVisibleModalNotFound}
-      setIsVisibleModalNotFound={setIsVisibleModalNotFound}
-      resetAll={resetAll}
-    />
+    <Row gutter={[8, 8]}>
+      <Col span={24}>
+        <Header rootRoutes={rootRoutes} />
+      </Col>
+      <Col span={24}>
+        <PDVContainer
+          step={step}
+          handleNextStep={handleNextStep}
+          handlePrevStep={handlePrevStep}
+          handleSaletype={handleSaletype}
+          saleType={saleType}
+          handlePaymentType={handlePaymentType}
+          paymentType={paymentType}
+          formCustomer={formCustomer}
+          formPayment={formPayment}
+          formData={formData}
+          getCustomerAddress={getCustomerAddress}
+          handleSubmit={handleSubmit}
+          onSearch={onSearch}
+          onChange={onChange}
+          searchProduct={searchProduct}
+          products={products}
+          optionSearch={optionSearch}
+          onSelectProduct={onSelectProduct}
+          productList={productList}
+          incrementQuantity={incrementQuantity}
+          decrementQuantity={decrementQuantity}
+          removeProduct={removeProduct}
+          orderCreated={orderCreated}
+          company={company}
+          handleSearchByBarcode={handleSearchByBarcode}
+          isVisibleModalBarcode={isVisibleModalBarcode}
+          setIsVisibleModalBarcode={setIsVisibleModalBarcode}
+          isVisibleModalNotFound={isVisibleModalNotFound}
+          setIsVisibleModalNotFound={setIsVisibleModalNotFound}
+          resetAll={resetAll}
+        />
+      </Col>
+    </Row>
   )
 }
 

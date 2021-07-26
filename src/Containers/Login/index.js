@@ -13,7 +13,8 @@ const Login = ({
   authentication,
   isVisibleMessageError,
   loading,
-  registerPath
+  registerPath,
+  forgotPassPath
 }) => {
   const onFinish = (values) => {
     authentication(values)
@@ -29,13 +30,13 @@ const Login = ({
                 <Image width={362} src={onlineResume} preview={false} />
               </Row>
               <Row justify="center">
-                <h1 className={styles.title}>Conheça o alxa dashboard!</h1>
+                <h1 className={styles.title}>Conheça o daptecn dashboard!</h1>
               </Row>
               <Row justify="center">
                 <Col span={16}>
                   <Paragraph style={{ textAlign: 'center' }}>
                     Gestão de verdade para o seu négocio, fácil, rápido e preço
-                    justo, com o alxa, você tem ao seu alcance, gestão de
+                    justo, com o daptecn, você tem ao seu alcance, gestão de
                     clientes, produtos, pedidos e muito mais!
                   </Paragraph>
                 </Col>
@@ -54,10 +55,10 @@ const Login = ({
           <Col span={20}>
             <Form layout="vertical" onFinish={onFinish}>
               <Form.Item label="E-mail" name="email" rules={rules}>
-                <Input />
+                <Input placeholder="Insira seu email"/>
               </Form.Item>
               <Form.Item label="Senha" name="password" rules={rules}>
-                <Input.Password />
+                <Input.Password placeholder="Insira sua senha"/>
               </Form.Item>
               <Form.Item>
                 <Button
@@ -65,7 +66,7 @@ const Login = ({
                   loading={loading}
                   size="large"
                   type="primary"
-                  style={{ width: '100%', marginTop: 35 }}>
+                  style={{ width: '100%', marginTop: 10 }}>
                   Acessar
                 </Button>
               </Form.Item>
@@ -87,9 +88,15 @@ const Login = ({
           </Paragraph>
         </Row>
 
-        <Row justify="center">
-          <Link to={registerPath}>Cadastre-se agora</Link>
+        <Row justify="space-between">
+          <Col span={12} align="center">
+            <Link to={registerPath}>Cadastre-se agora</Link>
+          </Col>
+          <Col span={12}  align="center">
+            <Link to={forgotPassPath}>Esqueceu sua senha?</Link>
+          </Col>
         </Row>
+
       </Col>
     </Row>
   )

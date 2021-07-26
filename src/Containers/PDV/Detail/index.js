@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Image, Row, Col, Divider } from 'antd'
 import TruckGraySvg from './truck-gray.svg'
-import { add, map, multiply, pathOr, reduce } from 'ramda'
-import styles from './style.module.css'
+import { add, equals, length, map, multiply, pathOr, reduce } from 'ramda'
 import { formatPrice } from '../../../utils'
 
 const Detail = ({
@@ -10,7 +9,7 @@ const Detail = ({
   formData,
   handleSubmit,
   orderCreated,
-  productList,
+  productList = [],
   resetAll
 }) => {
   const name = pathOr(null, ['customer', 'name'], formData)
@@ -28,17 +27,32 @@ const Detail = ({
     Dinheiro: 'Dinheiro'
   }
 
-  const amount = reduce(
-    add,
-    0,
-    map(({ quantity }) => quantity, productList)
-  )
+  const amount = length(productList)
 
   const subTotal = reduce(
     add,
     0,
-    map(({ quantity, salePrice }) => multiply(quantity, salePrice), productList)
+    map(
+      ({ quantity, salePrice }) => multiply(quantity, salePrice),
+      productList || []
+    )
   )
+
+  const handlePressKey = (event) => {
+    const { ctrlKey, shiftKey, key } = event
+
+    if (ctrlKey && shiftKey) {
+      if (key === '<') handlePrevStep()
+    }
+  }
+
+  useEffect(() => {
+    window.document.addEventListener('keypress', handlePressKey)
+
+    return () => {
+      window.document.removeEventListener('keypress', handlePressKey)
+    }
+  }, [])
 
   return (
     <Row gutter={[6, 0]}>
@@ -137,7 +151,11 @@ const Detail = ({
             </Button>
           </Col>
           <Col span={12} style={{ textAlign: 'right' }}>
-            <Button onClick={handleSubmit} type="primary" block>
+            <Button
+              disabled={equals(length(productList), 0)}
+              onClick={handleSubmit}
+              type="primary"
+              block>
               Salvar
             </Button>
           </Col>
