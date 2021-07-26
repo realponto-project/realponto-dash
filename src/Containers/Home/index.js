@@ -24,13 +24,13 @@ const Home = ({
     <Row gutter={[18, 18]}>
       <Col span={24}>
         <h1 className={styles.welcomeTitle}>Bem-vindo</h1>
-        <p className={styles.welcomeSubtitle}>Ao <b>alxa dashboard</b> para suas análises</p>
+        <p className={styles.welcomeSubtitle}>Ao <b>daptecn dashboard</b> para suas análises</p>
       </Col>
       <Col span={12}>
         <div className={styles.cardPremiumAd}>
           <div>
             <h2 className={styles.cardPremiumTitle}>HOME PREMIUM</h2>
-            <p className={styles.cardPremiumSubtitle}>Aguarde em breve no <b>alxa</b>, nova <b>Home Premium</b>,  mais controle e métricas.</p>
+            <p className={styles.cardPremiumSubtitle}>Aguarde em breve no <b>daptecn</b>, nova <b>Home Premium</b>,  mais controle e métricas.</p>
           </div>
           <Image src={PersonAd} alt="person ad" preview={false} />
         </div>
@@ -76,7 +76,7 @@ const Home = ({
                   <span className={styles.cardEmptyStateTitleSpan}> venda</span>!
                 </h1>
                 <p className={styles.cardEmptyStateSubtitle}>Você ainda não possue nenhuma venda para calcularmos as suas métricas.</p>
-                <p className={styles.cardEmptyStateSubtitle}>Cadastre um <b>produto</b>, acesse o <b>ponto de venda</b> e comece a utilizar o <b>alxa</b>!</p>
+                <p className={styles.cardEmptyStateSubtitle}>Cadastre um <b>produto</b>, acesse o <b>ponto de venda</b> e comece a utilizar o <b>daptecn</b>!</p>
               </div>
               <Image src={EmptyStateSvg} preview={false} alt="empty state" />
             </div>

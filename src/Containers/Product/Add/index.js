@@ -118,7 +118,7 @@ const Add = ({ visible, onCreate, onCancel }) => {
             <Form.Item
               valuePropName="checked"
               name="showOnCatalog"
-              label="Mostrar em catálodo">
+              label="Mostrar em catálogo">
               <Switch />
             </Form.Item>
           </Col>

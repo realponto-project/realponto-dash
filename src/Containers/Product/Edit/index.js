@@ -98,7 +98,7 @@ const Edit = ({ visible, onEdit, onCancel, productSelected }) => {
           <Col span={12}>
             <Form.Item
               name="showOnCatalog"
-              label="Mostrar em catálodo"
+              label="Mostrar em catálogo"
               valuePropName="checked">
               <Switch />
             </Form.Item>
