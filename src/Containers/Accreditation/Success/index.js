@@ -19,14 +19,11 @@ const Sucess = ({ goToLogin }) => (
 
         <p>
           Estamos validando os seus dados e preparando nossa dashboard para você
-          em poucos instanteces você já pode começar a utilizar o alxa.
+          em poucos instanteces você já pode começar a utilizar o daptecn.
         </p>
 
         <p>
-          Não perca tempo compartilhe com os seus amigos essa solução incrível{' '}
-          <Link href="https://ant.design" target="_blank">
-            compartilhar!
-          </Link>
+          Não perca tempo e comece a usar agora mesmo!
         </p>
 
         <br />

@@ -30,13 +30,13 @@ const Login = ({
                 <Image width={362} src={onlineResume} preview={false} />
               </Row>
               <Row justify="center">
-                <h1 className={styles.title}>Conheça o alxa dashboard!</h1>
+                <h1 className={styles.title}>Conheça o daptecn dashboard!</h1>
               </Row>
               <Row justify="center">
                 <Col span={16}>
                   <Paragraph style={{ textAlign: 'center' }}>
                     Gestão de verdade para o seu négocio, fácil, rápido e preço
-                    justo, com o alxa, você tem ao seu alcance, gestão de
+                    justo, com o daptecn, você tem ao seu alcance, gestão de
                     clientes, produtos, pedidos e muito mais!
                   </Paragraph>
                 </Col>

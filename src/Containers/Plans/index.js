@@ -175,7 +175,7 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
             />
 
             <Title level={2} style={{ marginTop: '20px' }}>
-              Tenha mais controle na sua empresa com o alxa PLUS!
+              Tenha mais controle na sua empresa com o daptecn PLUS!
             </Title>
 
             <Paragraph className={styles.fontSize16}>

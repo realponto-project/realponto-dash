@@ -29,8 +29,8 @@ const Register = ({ handleClickContinue, loading }) => (
     <Col span={16}>
       <div className={styles.contentPublicity}>
         <Image width={160} src={logo} preview={false} />
-        <h1>Tenha mais controle na sua empresa com o alxa!</h1>
-        <h4>Aproveite todas as nossa funcionalidades:</h4>
+        <h1>Tenha mais controle na sua empresa com o daptecn</h1>
+        <h4>Aproveite todas as nossa funcionalidades</h4>
         <Space direction="vertical" style={{ margin: '0 0 170px 10px' }}>
           <Text>
             <CheckOutlined /> Gestão de estoque
