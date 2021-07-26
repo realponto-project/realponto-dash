@@ -99,7 +99,7 @@ const RootRoutes = [
   },
   {
     component: Home,
-    title: 'DASHBOARD',
+    title: '',
     path: '/logged/dashboard',
     exact: true,
   },

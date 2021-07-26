@@ -19,7 +19,7 @@ const AdSide = ({ plans }) => {
 
   const price =
     plans.length > 0
-      ? `R$ ${plans[1].amount.toString().replace(/(\d)(\d{2})$/, '$1,$2')}/mês`
+      ? `R$ ${plans[2].amount.toString().replace(/(\d)(\d{2})$/, '$1,$2')}/mês`
       : ''
 
   return (

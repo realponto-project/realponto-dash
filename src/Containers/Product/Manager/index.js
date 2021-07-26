@@ -9,7 +9,7 @@ import ProductList from './ProductList'
 
 import { PlusOutlined, SearchOutlined } from '@ant-design/icons'
 import { applySpec, compose, prop, __ } from 'ramda'
-import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
+// import { parseValuePTbr } from '../../../utils/Masks/myInfoMasks'
 import { Link } from 'react-router-dom'
 const CheckboxGroup = Checkbox.Group
 
@@ -110,7 +110,7 @@ const Manager = ({
                     Adicionar produto
                   </Button>
                 </Col>
-                <Col span={24}>
+                {/* <Col span={24}>
                   <Text
                     copyable={{
                       text: `${window.location.origin}/#${catalogLink}`,
@@ -118,7 +118,7 @@ const Manager = ({
                     }}>
                     <Link to={catalogLink}>Catálogo</Link>
                   </Text>
-                </Col>
+                </Col> */}
               </Row>
             </Col>
           </Row>
