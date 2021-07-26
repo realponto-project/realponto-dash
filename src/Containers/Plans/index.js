@@ -395,6 +395,11 @@ const Plan = ({ isVisible, handleCancel, setSubscription }) => {
               </Row>
 
               <Row span={24}>
+                <Col span={24}>
+                  <Paragraph className={styles.fontSize16}>
+                    <small>O pagamento do plano é feito de forma integral, valor do plano mesal mutiplicado por 12x podendo ser parcelado em até 3x</small>
+                  </Paragraph>
+                </Col>
                 <Col span={12}>
                   <Paragraph className={styles.textSignature}>
                     Valor total
