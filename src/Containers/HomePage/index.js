@@ -23,7 +23,7 @@ const HomePage = ({ goToLogin }) => {
         <Col span={14} style={{ padding: '20px 100px' }}>
           <Title level={2}>Sistema de gestão</Title>
           <Paragraph style={{ margin: '50px 0' }}>
-            O alxa é um sistema de gestão, ideal para pequenas e médias
+            O daptecn é um sistema de gestão, ideal para pequenas e médias
             empresas. Comece agora a usar o sistema totalmente grátis por um
             período de 3 mêses e até 300 produtos cadastrados.
           </Paragraph>
@@ -72,7 +72,7 @@ const HomePage = ({ goToLogin }) => {
               Controle
             </Title>
             <Paragraph style={{ color: '#818181' }}>
-              O alxa possui um exelente painel de controle, com indicadores de
+              O daptecn possui um exelente painel de controle, com indicadores de
               pedidos, vendas e muito mais.
             </Paragraph>
           </Card>
@@ -84,9 +84,9 @@ const HomePage = ({ goToLogin }) => {
           <Image preview={false} width={250} src={finance} />
         </Col>
         <Col span={16}>
-          <Title level={3}>Venda com a ajuda do Alxa</Title>
+          <Title level={3}>Venda com a ajuda do daptecn</Title>
           <Title level={4} style={{ color: '#818181' }}>
-            O alxa gera um catálogo de forma gratuíta com base em seus produtos
+            O daptecn gera um catálogo de forma gratuíta com base em seus produtos
             cadastrados, basta ativar o campo referênte ao catálogo e o mesmo
             estara disponível em seu catálogo, que você poderá compartilhar com
             seus clientes.
@@ -116,7 +116,7 @@ const HomePage = ({ goToLogin }) => {
 
             <Col>
               <Title level={5} style={{ color: '#818181' }}>
-                <MailOutlined /> suporte@alxa.com
+                <MailOutlined /> suporte@daptecn.com
               </Title>
             </Col>
           </Row>

@@ -106,7 +106,7 @@ const ResetPass = ({ handleSubmit, loading, sucess, goToLogin }) => {
             <Col span={20} align="center">
               <Paragraph>Sua senha foi alterada com sucesso.</Paragraph>
 
-              <Paragraph>Caso você não tenha efetuado essa mudança, nos informe imeditamente no email suporte@alxa.com.br.</Paragraph>
+              <Paragraph>Caso você não tenha efetuado essa mudança, nos informe imeditamente no email suporte@daptecn.com.</Paragraph>
             </Col>
           </Row>
           <Button
