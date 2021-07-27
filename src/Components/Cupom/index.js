@@ -37,7 +37,7 @@ const Cupom = ({
   discount,
   items = [],
   payment,
-  installments,
+  installment,
   formData,
   createdAt
 }) => {
@@ -113,7 +113,7 @@ const Cupom = ({
         <tr className={styles.top3}>
           <td colSpan="2">FORMA DE PAGAMENTO</td>
           <td align="right">
-            {payment !== 'Dinheiro' && `${installments} x `}{' '}
+            {payment !== 'Dinheiro' && `${installment} x `}{' '}
             {paymentLabel[payment]}
           </td>
         </tr>
