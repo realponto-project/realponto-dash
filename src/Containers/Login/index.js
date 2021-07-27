@@ -84,7 +84,7 @@ const Login = ({
 
         <Row justify="center">
           <Paragraph style={{ textAlign: 'center' }}>
-            Ainda não possui conta no alxa?
+            Ainda não possui conta no daptecn?
           </Paragraph>
         </Row>
 
