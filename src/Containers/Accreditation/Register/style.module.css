@@ -29,8 +29,14 @@
   line-height: 41px;
 }
 
+@media(max-width:1360px){
+  .wrapperAllTheData{
+    display: none;
+  }
+}
+
 .contentPublicity div.wrapperAllTheData{
-  bottom: 40%;
+  top: 35%;
   position: absolute;
   right: 0;
   margin-right: 50px;
