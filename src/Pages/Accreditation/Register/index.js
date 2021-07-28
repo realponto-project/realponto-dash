@@ -8,7 +8,8 @@ import { createCompany } from '../../../Services/Company'
 const buildCompany = applySpec({
   name: pathOr('', ['razaoSocial']),
   nickName: pathOr('', ['nickName']),
-  document: pathOr('', ['cnpj'])
+  document: pathOr('', ['cnpj']),
+  referer: pathOr('daptecn', ['referer']),
 })
 const buildUser = applySpec({
   name: pathOr('', ['responsible']),
